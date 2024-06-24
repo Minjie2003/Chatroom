@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.MessageMapper">
+    <resultMap id="Message" type="com.example.demo.enity.Message">
+        <id column="id" property="id"></id>
+        <result property="category" column="category"></result>
+        <result property="content" column="content"></result>
+        <result property="sendId" column="send_id"></result>
+        <result property="sendTime" column="send_time"></result>
+        <result property="sessionId" column="session_id"></result>
+    </resultMap>
+    <resultMap id="MessageVO" type="com.example.demo.VO.MessageVO" extends="Message">
+        <result property="headPath" column="photo"></result>
+        <result property="username" column="username"></result>
+
+    </resultMap>
+    <insert id="insertMessage" useGeneratedKeys="true" keyProperty="id">
+        insert into Message_info (content,category,send_id,session_id)values(#{content},#{category},#{sendId},#{sessionId})
+    </insert>
+    <select id="selectAllBySessionId" resultMap="MessageVO">
+            select u.username,m.id,m.content,m.session_id,m.send_id,m.send_time,m.category,u.photo from
+            (select * from message_info where session_id = #{sessionId} ) as m
+            join
+            user_info as u
+            on m.send_id = u.id
+            order by send_time desc
+            limit 5
+    </select>
+    <select id="selectById" resultMap="Message">
+        select id,content,session_id,send_id,send_time,category from message_info where id = #{id}
+    </select>
+    <select id="selectRestBySessionId" resultMap="MessageVO">
+        select u.username,m.id,m.content,m.session_id,m.send_id,m.send_time,m.category,u.photo from
+        (select * from message_info where session_id = #{sessionId} ) as m
+        join
+        user_info as u
+        on m.send_id = u.id
+        order by send_time desc
+         limit 1000 offset 5
+    </select>
+</mapper>

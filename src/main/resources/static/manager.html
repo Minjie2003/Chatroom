@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/manager.css">
+    <script src="js/context_path.js"></script>
+    <script src="js/jquery.js"></script>    
+    <script src="js/manager/choose.js"></script>
+    <script src="js/manager/manage.js"></script>
+    <title>管理员管理界面</title>
+</head>
+<body>
+    <div class="content">
+        <!-- 小窗口单独页面-->
+    <div class="small_window_page">
+        <div class="small_window">
+            <div class="option_row">
+                <div onclick="close_small_window()">x</div>
+            </div>
+            <div class="message_password">
+                <h2>请输入验证密码</h2>
+                <div class="password_row">
+                    <h3>密码：</h3>
+                    <input type="password" id="temp_input">
+                </div>
+                <button id="send_button" onclick="identify()">确认</button>
+            </div>
+            
+        </div>
+    </div>
+        <!-- 导航栏 -->
+        <div class="title">
+            
+            <div class="space-left">
+                <img src="./image/头像.png" alt="网络聊天室系统" class="logo">
+                <div class="title-name">网络聊天室系统</div>
+            </div>
+            <div class="space-right" >
+                <div class="logout hide">注销</div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="manager_content">
+                <div class="select_row">
+                    <div id="user_manage" class="choice choosen" onclick="choose_manage(this)">用户管理</div>
+                    <div id="chatroom_manage" class="choice" onclick="choose_manage(this)">聊天室管理</div>
+                    <div id="report_manage" class="choice" onclick="choose_manage(this)">举报管理</div>
+                </div>
+                <div id="show_info">
+                    
+                        
+                    
+                </div>
+                <div class="page_index_row">
+                    <input value="1" type="number" min= 1 id="page_index" onkeyup="check_enter(event)">/
+                    <span id="max_index">34</span>
+                </div>
+                
+                
+            </div>
+
+        </div>
+        
+    </div>
+    <div class="cover"></div>
+</body>
+</html>
