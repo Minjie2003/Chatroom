@@ -1,0 +1,2491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/context_path.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/windows.js"></script>
+    <script src="js/show_message_list.js"></script>
+    <script src="js/menu.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/chatroom.css">
+
+    <title>Document</title>
+</head>
+<body>
+   <!-- 主体页面 -->
+   <div class="content">
+    <!-- 导航栏 -->
+    <div class="title">
+        
+        <div class="space-left">
+            <img src="./image/头像.png" alt="网络聊天室系统" class="logo">
+            <div class="title-name">网络聊天室系统</div>
+        </div>
+        <div class="space-right" >
+            <img src="./image/通知.png" alt="" id="advice" onclick="show_advice()">
+            <div class="logout" onclick="logout()">注销</div>
+        </div>
+        
+    </div>
+<!-- 屏蔽所有操作页 -->
+<div id="disabled"></div>
+<!-- 小窗口单独页面-->
+    <div class="small_window_page">
+        <div class="small_window">
+            <div class="option_row">
+                <div onclick="close_small_window()">x</div>
+            </div>
+            
+            
+        </div>
+    </div>
+    <!-- 窗口单独页面 -->
+    <div class="window_page" >
+        <div class="window">
+           
+        </div>
+    </div>
+    <div class="main ">
+        
+        <div class="main-box ">
+            
+            
+            <!-- 左边框 -->
+            <div class="box-left">
+                <!--用户信息行 -->
+                <div class="user_info">
+                    <img class="head" src="" alt="用户信息" onclick="show_userinfo()">
+                    <div class="user_name">名称</div>
+                </div>
+                <!-- 搜索行 -->
+                <div class="select">
+                    <input type="text" class="select_input">
+                    <img src="image/搜索.png" alt="" onclick="select_contact()">
+                    
+                </div>
+                <!-- 列表选择 -->
+                <div class="choose">
+                    <div class="session" onclick="show_sessions()">
+                        <img src="image/选中会话.png" alt="" class="session_img">
+                    </div>
+                    <div class="contacts" onclick="show_contacts()">
+                        <img src="image/联系人.png" alt="" class="contacts_img">
+                    </div>
+                </div>
+                <!-- 会话列表 -->
+                <ul class="session_list ">
+                    <li oncontextmenu="show_session_menu(event,this)">
+                        <img src="" alt="">
+                        <div class="session_info" data-session-id="" data-category="" data-is-deleted="" >
+                            <div class="first_row">
+                                <h3>会话名</h3>
+                                <span class="time">时间</span>
+                            </div>
+                            <div class="second_row"><div class="last_message">哈哈红红火火恍恍惚惚</div>
+                                
+                                <div class="unread_num"></div>
+                            </div>
+                            
+                        </div>
+                    </li>
+                    
+                </ul>
+                <!-- 联系人列表 -->
+                <div class="contacts_group_list hide">
+                    <details class="contacts_list">
+                        <!-- 一个好友分组 -->
+                        <summary>好友</summary>
+                        <div class="contacts_row">
+                            <img src="" alt="">
+                            <span>好友名</span>
+                            
+                        </div>
+                        <div class="contacts_row">
+                            <img src="" alt="">
+                            <span>好友名</span>
+                            
+                        </div>
+                    </details>
+                    <details class="contacts_list">
+                        <summary>好友</summary>
+                        <div class="contacts_row">
+                            <img src="" alt="">
+                            <span>好友名</span>
+                        </div>
+                        <div class="contacts_row">
+                            <img src="" alt="">
+                            <span class="offline">好友名</span>
+                            
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <!-- 右边框 -->
+            <div class="box-right ">
+                <div class="session_name" onclick="get_session_info()"></div>
+                <div class="chat_content">
+                    
+
+                    
+                </div>
+                <!-- 图片发送行 -->
+                <div class="image_send">
+
+                    <input type="file" class="hide" id="input_file" accept="image/*">
+                    <img class="input_image" src="image/图片.png" alt="">
+                </div>
+                <!-- 文本输入框 -->
+                <textarea name="" id="message_input" cols="30" rows="10" onkeyup="check_enter(event)"></textarea>
+                <!-- 发送按钮行 -->
+                <div class="send_row">
+                    <button class="send_button" onclick="send_message()" >发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 做背景 -->
+<div class="cover"></div>
+   <div id="contextMenu">
+
+   </div>
+</body>
+<script>
+    // 获取文件输入框
+    var input_file = jQuery("#input_file");
+    // 获取文件图片
+    var input_image = jQuery(".input_image");
+    // 获取聊天会话列表
+    var session_list = jQuery(".session_list");
+    // 获取好友分组列表
+    var contacts_group_list = jQuery(".contacts_group_list");
+    // 获取联系人分组
+    var contact_group_list_info;
+    // 获取会话按钮的图标
+    var session_img = jQuery(".session_img");
+    // 获取联系人图标
+    var contacts_img = jQuery(".contacts_img");
+    // 获取聊天框
+    var chat_content = jQuery(".chat_content");
+    // 获取搜索输入框
+    var select_input = jQuery(".select_input");
+    // 获取弹窗
+    var windows = jQuery(".window");
+    // 获取弹窗页面
+    var window_page = jQuery(".window_page");
+    // 获取小窗口页面
+    var small_window_page = jQuery(".small_window_page");
+    // 获取小窗口
+    var small_window = jQuery(".small_window");
+    // 保存用户信息 
+    var userinfo;
+    // 用户会话列表
+    var contact_session_list;
+   // 被选中的会话
+    var choose_session;
+    // 获取输入框
+    var message_input = jQuery("#message_input");
+    // websocket对象
+    var websocket;
+    // 屏蔽页
+    var disabled = jQuery("#disabled");
+    // 权限变量
+    var permit = 0;
+    // 选中的聊天室信息
+    var chatroom_info;
+
+    // 聊天室成员信息
+    var chatroom_member;
+    // 选中的用户信息
+    var contact_info;
+    // 通知好友信息
+    var advice_friend_info;
+    // 通知聊天室
+    var advice_chatroom_info;
+    // 通知警告
+    var advice_warn_info;
+    // 通知举报
+    var advice_report_info;
+    // 通知图片
+    var advice_img = jQuery("#advice");
+    // 选中右键菜单
+    var context_menu = jQuery("#contextMenu");
+    // 默认时间格式器
+    var timeOptions = {
+        year:"numeric",
+        month: "2-digit",
+        day:"2-digit",
+        hour:'2-digit',
+        minute:'2-digit',
+        hour12:false,
+    };
+    var format = Intl.DateTimeFormat("zh-CN",timeOptions);
+    // 屏蔽所有点击操作
+    function disabled_all(){
+        disabled.css("z-index",6);
+    }
+    // 取消屏蔽操作
+    function remove_disabled_all(){
+        disabled.css("z-index",-1);
+    }
+    // 将通知信息标记为已读
+    function read_advice(id){
+        jQuery.ajax({
+            url:context_path+"/advice/read_advice",
+            method:"get",
+            data:{
+                id:id
+            },
+            success:function(res){
+                if(res.code == 200){
+                    
+                }else if(res.code == 0){
+                    alert("更新通知的读取状态时后端没有接受到参数");
+                }else{
+                    alert("更新通知的读取状态时服务器出现错误："+res.message);
+                }
+            }
+
+        })
+    }
+    // 接受好友请求
+    function accept_req(dom){
+        // 屏蔽所有按钮
+        disabled.css("z-index",6);
+        // 获取接收按钮
+        var button = jQuery(dom);
+        jQuery.ajax({
+            url:context_path+"/advice/accept_advice",
+            method:'get',
+            data:{
+                id:button.data("id")
+            },
+            success:function(res){
+                disabled.css("z-index",-1);
+                if(res.code == 200){
+                    
+                }else if(res.code == 0){
+                    alert("发送接收请求的时候后端没有接受到通知Id");
+                }else{
+                    alert("发送接收请求的时候服务器出现错误："+res.message);
+                }
+            }
+        });
+    }
+    // 拒绝好友请求
+    function refuse_req(dom){
+        // 屏蔽所有按钮
+        disabled.css("z-index",6);
+        // 获取拒绝按钮
+        var button = jQuery(dom);
+        jQuery.ajax({
+            url:context_path+"/advice/refuse_advice",
+            method:'get',
+            data:{
+                id:button.data("id")
+            },
+            success:function(res){
+                if(res.code == 200){
+                    
+                }else if(res.code == 0){
+                    alert("发送拒绝请求的时候后端没有接受到通知Id");
+                }else{
+                    alert("发送拒绝请求的时候服务器出现错误："+res.message);
+                }
+            }
+        });
+    }
+    
+    // 修改聊天室信息点击函数
+    function update_chatroom(){
+        // 初始化小窗口
+        init_small_window();
+        // 获取HTML
+        var HTMLString = update_chatroom_HTML();
+        // 插入HTML
+        small_window.append(HTMLString);
+        // 显示小窗口
+        small_window_page.css("z-index",5);
+    }
+    // 构造修改聊天室信息小窗口HTML
+    function update_chatroom_HTML(){
+        var HTMLString = "";
+        // 加入头像行
+        HTMLString = HTMLString + 
+            `<div class="info_row">
+                <label for="chatroom_head_photo">
+                    <img src="`+chatroom_info.photo+`" alt="" id="head_info">
+                </label>
+                
+                    <input type="file" name="photo" id="chatroom_head_photo" accept="image/*">
+                    <button id="update_head" onclick="update_chatroom_head()">保存头像</button>
+           </div>`;
+        // 加入聊天室名行
+        HTMLString = HTMLString + 
+            `<div class="info_row">
+                <label for="name">聊天室名：</label>
+                <input type="text" id="name" value="`+chatroom_info.name+`">
+            </div>`;
+        // 加入保存信息按钮
+        HTMLString = HTMLString +
+            `<div class="info_row">
+                <button id="update_info" onclick="update_chatroom_name()">保存信息</button>    
+            </div>`;
+        return HTMLString;
+        
+    }
+    // 发送更新聊天室头像请求
+    function update_chatroom_head(){
+        // 获取文件输入
+        var input_file = jQuery("#chatroom_head_photo")[0];
+        // 非空校验
+        var file = input_file.files[0];
+        if(!file){
+            alert("请先选择头像图片!");
+            return;
+        }
+        // 创建 FormData 对象
+        var formData = new FormData();
+        formData.append("chatroomId",choose_session.data("session-id"));
+        formData.append("photo", file); // "photo" 是服务器端期望接收文件的字段名
+
+        // 发送请求
+        jQuery.ajax({
+            url: context_path + "/chatroom/update_chatroom_head",
+            method: "post",
+            data: formData,
+            processData: false,  // 不处理数据
+            contentType: false,  // 不设置内容类型
+            success: function (res) {
+                if(res.code == 200){
+                    // 更新成功
+                    alert("头像更新成功");
+                    // 关闭窗口
+                    close_small_window();
+                    close_window();
+                }else if(res.code  == 0){
+                    // 没有数据传入
+                    alert("文件数据为空");
+                }else{
+                    alert("错误信息："+res.message);
+                }
+
+            }
+        });
+    }
+    // 发送更新聊天室名称请求
+    function update_chatroom_name(){
+        // 选中名称输入框
+        var input_name = jQuery("#name");
+        // 发送更新请求
+        jQuery.ajax({
+            url:context_path+"/chatroom/update_chatroom_name",
+            method:"post",
+            data:{
+                chatroomId:choose_session.data("session-id"),
+                name:input_name.val()
+            },
+            success:function(res){
+                if(res.code  == 200){
+                    alert("聊天室更新成功！");
+                    // 关闭窗口
+                    close_small_window();
+                    close_window();
+                }else if(res.code == 0){
+                    alert("更新名字时时，后端没有接收到新名称");
+                }else{
+                    alert("更新名称时，服务器出现错误："+res.message);
+                }
+            }
+        })
+    }
+    // 确认发出移除请求按钮点击函数
+    function send_remove_member(){
+        // 获取被选中的用户行
+        var  choose_member = jQuery(":checkbox:checked");
+        if(choose_member.length == 0){
+            alert("没有选择成员！");
+            return;
+        }
+        // 被选中的成员的id数组
+        var id =[];
+        // 获取所有的选中项id
+        choose_member.each(function (i) {
+            id.push($(this).attr("id"));
+        });
+        // 发送移除用户请求
+        remove_member_req(id,choose_session.data("contact-id"));
+    }
+    // 移除按钮点击函数
+    function remove_member(){
+        init_small_window();
+        // 获取成员列表小窗HTML结构
+        var HTMLString = remove_member_HTML();
+        // 向小窗中插入结构
+        small_window.append(HTMLString);
+        // 显示小窗
+        small_window_page.css("z-index",5);
+    }
+    // 构造移除用户HTML
+    function remove_member_HTML(){
+        var HTMLString = "<div class='member_list'>";
+        // 非空标志
+        var flag=0;
+        for (let i = 0; i < chatroom_member.length; i++) {
+            var member = chatroom_member[i];
+            // 判断成员是否是群主
+            if(member.id == userinfo.id){
+                continue;
+            }
+            flag = 1;
+            if(member.state == 1) {
+                // 在线
+
+                HTMLString = HTMLString +
+                    `<div class="right_row online">
+                                    <input type="checkbox"  id="`+ member.id+`">
+                                    <img src="` + member.photo + `" alt="" class="member_head">
+                                    <span class="user_name online"> ` + member.username + "(" + member.accountNum + ")" + `</span>
+                                </div>`;
+            }else{
+                // 离线
+                HTMLString = HTMLString +
+                    `<div class="right_row">
+                                    <input type="checkbox"  id="`+ member.id+`">
+                                    <img src="` + member.photo + `" alt="" class="member_head">
+                                    <span class="user_name"> ` + member.username + "(" + member.accountNum + ")" + `</span>
+                                </div>`;
+            }
+        }
+        if(flag == 0){
+            HTMLString = HTMLString +
+                `<div style="text-align: center">没有其他成员</div>`;
+        }
+        HTMLString = HTMLString +
+            `</div>`;
+        // 插入确认按钮
+        HTMLString = HTMLString +
+            `<button onclick="send_remove_member()">确认</button>`;
+        return HTMLString;
+    }
+    // 发出移除用户请求
+    function remove_member_req(id,chatroom_id){
+        jQuery.ajax({
+            url:context_path+"/contact_session/remove_members",
+            method:"post",
+            data:{
+                id:id,
+                chatroomId:chatroom_id
+            },
+            success:function(res){
+                if(res.code == 200){
+                    alert("移除成功!");
+                    // 关闭小窗和大窗
+                    close_small_window();
+                    close_window();
+                }else if(res.code == 0){
+                    alert("移除用户请求的参数没有被后端接收到");
+                }else{
+                    alert("移除用户时服务器出错："+res.message);
+                }
+            }
+        })
+    }
+    // 邀请用户点击函数
+    function invite_chatroom(){
+        init_small_window();
+        // 获取结构字符串
+        var HTMLString = invite_chatroom_HTML();
+        // 插入小窗口
+        small_window.append(HTMLString);
+        // 显示小窗口
+        small_window_page.css("z-index",5);
+
+    }
+    // 构造邀请好友HTML
+    function invite_chatroom_HTML(){
+        var HTMLString ='<div class="choose_list">';
+        // 插入可选的用户
+        var flag = 0;
+        for (let i = 0; i < contact_session_list.length; i++) {
+            var session = contact_session_list[i];
+            if(session.category == 1 && session.isDeleted == 0){
+                // 是用户会话
+                let j;
+                for (j = 0; j < chatroom_member.length; j++) {
+                    if(chatroom_member[j].id == session.contactId){
+                        // 已经在群聊中了
+                        break;
+                    }
+                }
+                if(j >= chatroom_member.length){
+
+                    // 不在群聊中，可以邀请
+                    flag =1;
+                    HTMLString = HTMLString +
+                        `<div class="choose_row">
+                    <input type="checkbox" class="choose_point" data-id="`+session.contactId+`">
+                    <img src="`+ session.headPath+`" alt="" class="friend_head">
+                    <div>`+ session.nickName+`</div>
+                </div>`;
+                }
+            }
+        }
+        if(flag == 0){
+            // 没有好友可选
+            HTMLString = HTMLString +
+                `<div style="text-align: center">没有好友可选</div>`;
+        }
+        // 添加选择列表结尾
+        HTMLString = HTMLString +
+            `</div>
+            <button onclick="send_invite_chatroom()"> 邀请 </button>`;
+        // 返回HTML字符串
+        return HTMLString;
+    }
+    // 发送邀请请求
+    function send_invite_chatroom(){
+        // 获取所有的选中的好友
+        var choose_friend = $(":checkbox:checked");
+        // 非空校验
+        if(choose_friend == null || choose_friend.length == 0){
+            alert("没有好友被选中");
+            return;
+        }
+        // 定义id数组
+        var id = [];
+        // 获取所有的选中项id
+        choose_friend.each(function (i) {
+            id.push($(this).attr("data-id"));
+        });
+        invite_chatroom_req(id);
+    }
+    // 邀请好友进群
+    function invite_chatroom_req(receive_id){
+        jQuery.ajax({
+            url:context_path+"/advice/invite_chatroom",
+            method:"post",
+            data:{
+                id:receive_id,
+                chatroomId:choose_session.data("contact-id")
+            },
+            success:function (res){
+                if(res.code == 200){
+                    // 邀请成功
+                    alert("邀请请求已经发送");
+                    // 关闭小窗
+                    close_small_window();
+                }else if(res.code == 0){
+                    alert("邀请其他用户时，后端没有接收到id数组");
+                }else {
+                    alert("邀请其他用户时，服务器出现错误:"+res.message);
+                }
+            }
+        })
+    }
+    // 点击发送进群请求
+    function add_chatroom(dom){
+        // 获取dom对象
+        var row_info = jQuery(dom);
+        // 初始化小窗
+        init_small_window();
+        // 构造小窗
+        var HTMLString = add_chatroom_HTML(row_info.data("creator-id"),row_info.data("chatroom-id"));
+        small_window.append(HTMLString);
+        // 显示小窗
+        small_window_page.css("z-index",5);
+    }
+    // 构造初始化小窗函数
+    function add_chatroom_HTML(receive_id,chatroom_id){
+        var HTMLString = '';
+        HTMLString = HTMLString +
+            `<div class="content_info">
+                <h3 style="text-align: center">申请入群</h3>
+                <div class="content_row">
+                    <div>验证信息：</div>
+                    <textarea class="content_text"></textarea>
+                </div>
+                <button class="content_send" onclick="add_chatroom_info_req(`+receive_id+`,`+chatroom_id+`)">确认 </button>
+            </div>`;
+        return HTMLString;
+    }
+    // 点击添加好友
+    function add_friend(dom){
+        var row_info = jQuery(dom);
+        // 初始化小窗口
+        init_small_window();
+        // 调用验证信息小窗构造函数
+        var HTMLString = add_friend_HTML(row_info.data("user-id"));
+        // 渲染小窗结构
+        small_window.append(HTMLString);
+        // 显示小窗
+        small_window_page.css("z-index",5);
+    }
+    function add_friend_HTML(receive_id){
+        var HTMLString = ``;
+        HTMLString = HTMLString +
+            ` <div class="content_info">
+                <h3 style="text-align: center">好友请求</h3>
+                <div class="content_row">
+                    <div>验证信息：</div>
+                    <textarea class="content_text"></textarea>
+                </div>
+                <button class="content_send" onclick="friend_req(`+receive_id+`)">确认 </button>
+            </div>`;
+        return HTMLString;
+    }
+    // 发送好友请求
+    function friend_req(receive_id){
+        var content = jQuery(".content_text").val();
+        jQuery.ajax({
+            url:context_path+"/advice/friend_req",
+            method:"post",
+            data:{
+                receiveId:receive_id,
+                content:content
+            },
+            success:function (res){
+                if(res.code == 200){
+                    alert("好友请求发送成功");
+                     //关闭小窗和大窗
+                    close_small_window();
+                    close_window();
+                }else if(res.code ==0){
+                    alert("发送好友请求的receiveId未被后端接收到");
+                }else if(res.code == 1){
+                    alert("该用户已经是你的好友");
+                    //关闭小窗和大窗
+                    close_small_window();
+
+                }else{
+                    alert("发送好友请求时服务器出现错误:"+res.message);
+                }
+            }
+
+        })
+    }
+    // 发送举报信息
+    function report_info_req(receive_id){
+        var content = jQuery(".content_text").val();
+        jQuery.ajax({
+            url:context_path+"/advice/report_info",
+            method:'post',
+            data:{
+                receiveId:receive_id,
+                content:content
+            },
+            success:function (res){
+                if(res.code == 200){
+                  alert("举报成功！");
+                  get_all_report_advice();
+                  close_small_window();
+                }else if(res.code == 0){
+                    alert("发送举报信息的参数未被接收到");
+                }else{
+
+                    alert("发送举报信息的参数出错:"+res.message);
+                }
+            }
+        });
+    }
+    // 发送邀请好友加群请求
+    function invite_info_req(receive_id,chatroom_id){
+        var content = jQuery(".content_text").val();
+        jQuery.ajax({
+            url:context_path+"/advice/invite_chatroom",
+            method:'post',
+            data:{
+                receiveId:receive_id,
+                chatroomId:chatroom_id,
+                content:content
+            },
+            success:function (res){
+                if(res.code == 200){
+                    alert("邀请成功！");
+                }else if(res.code == 0){
+                    alert("邀请好友进群时服务器没有获取到参数");
+                }else {
+                    alert("邀请好友进群时服务器出错:"+res.message);
+                }
+            }
+        })
+    }
+    // 发送加入群聊请求
+    function add_chatroom_info_req(receive_id,chatroom_id){
+        var content = jQuery(".content_text").val();
+        jQuery.ajax({
+            url:context_path+"/advice/add_chatroom",
+            method:"post",
+            data:{
+                receiveId:receive_id,
+                chatroomId:chatroom_id,
+                content:content
+            },
+            success:function (res){
+                if(res.code == 200){
+                    alert("发送请求成功！");
+                    //关闭小窗和大窗
+                    close_small_window();
+                    close_window();
+                }else if(res.code == 0){
+                    alert("发送加入群聊请求时参数未被后端接收到！");
+                }else if(res.code == 1){
+                    alert("您已经是该群聊天的成员了!");
+                    //关闭小窗
+                    close_small_window();
+
+                }else if(res.code == 2){
+                    alert("该聊天室已经被解散了");
+                }else{
+                    alert("发送加入群聊请求时服务器出错："+res.message);
+                }
+            }
+        })
+    }
+    // 显示所有举报信息
+    function show_report_info(){
+        windows.text("");
+        init_window();
+        var HTMLString =
+            `
+            <div class="select_row">
+                <div class="friend" onclick="show_friend_req()">好友</div>
+                <div class="chat" onclick="show_chatroom_req()">群聊</div>
+                <div class="report bold_and_large">举报</div>
+                <div class="warn" onclick="show_warn_info()">警告</div>
+            </div>
+            <div id="advice_content">`;
+        for (let i = 0; i < advice_report_info.length; i++) {
+            var advice = advice_report_info[i];
+            // 更新通知读取状态
+            if(advice.isRead == 0){
+                read_advice(advice.id);
+            }
+            HTMLString = HTMLString +
+                `<div class="advice_row">
+                <div class="time_row">`+ format.format(new Date(advice.sendTime))+`</div>
+                <div class="report_request advice_content">
+                    <div>您 因</div>
+                    <div class="content_detail">(`+ advice.content+`)</div>
+                    <div>举报</div>
+                    <img src="`+advice.headPath+`" alt="">
+                    <div>`+ advice.username+` 处理结果为：  </div>
+                    `;
+            if(advice.result == 0){
+                HTMLString = HTMLString +
+                    `<div class="content_detail"> 管理员还未处理</div>
+                </div>
+            </div>`;
+            }else if(advice.result == 1){
+                HTMLString = HTMLString +
+                    `<div class="content_detail"> 警告</div>
+                </div>
+            </div>`;
+            }else{
+                HTMLString =HTMLString +
+                    `<div class="content_detail"> 封号</div>
+                </div>
+            </div>`;
+            }
+        }
+        if(advice_report_info.length == 0){
+            HTMLString = HTMLString +
+                `无举报信息`;
+        }
+        htmlString = HTMLString + 
+            `</div>`;
+        windows.append(HTMLString);
+    }
+    // 显示所有警告信息
+    function show_warn_info(){
+        windows.text("");
+        init_window();
+        var HTMLString =
+            `
+            <div class="select_row">
+                <div class="friend" onclick="show_friend_req()">好友</div>
+                <div class="chat" onclick="show_chatroom_req()">群聊</div>
+                <div class="report" onclick="show_report_info()">举报</div>
+                <div class="warn bold_and_large">警告</div>
+            </div>
+            <div id="advice_content">`;
+        for (let i = 0; i < advice_warn_info.length; i++) {
+            var advice = advice_warn_info[i];
+            // 判断信息时已读还是未读
+            if(advice.isRead == 0){
+                read_advice(advice.id);
+                advice.isRead=1;
+            }
+            HTMLString = HTMLString +
+                `<div class="advice_row">
+                <div class="time_row"> `+format.format(new Date(advice.sendTime))+`</div>
+                <div class="warn advice_content">
+                    <div>您因 </div>
+                    <div class="content_detail">（`+advice.content+`）</div>
+                    <div>被其他用户举报，请规范自己的言行！</div>
+                </div>
+            </div>`;
+        }
+        if(advice_warn_info.length == 0){
+            HTMLString = HTMLString +
+                `没有其他警告信息`;
+        }
+        HTMLString = HTMLString + 
+            `</div>`;
+       windows.append(HTMLString);
+
+    }
+    // 显示所有的聊天室请求
+    function show_chatroom_req(){
+        windows.text("");
+        init_window();
+        var HTMLString =
+            `<div class="select_row">
+                <div class="friend" onclick="show_friend_req()">好友</div>
+                <div class="chat bold_and_large">群聊</div>
+                <div class="report" onclick="show_report_info()">举报</div>
+                <div class="warn" onclick="show_warn_info()">警告</div>
+            </div>
+            <div id="advice_content">`;
+        for (let i = 0; i < advice_chatroom_info.length; i++) {
+            var advice = advice_chatroom_info[i];
+            // 判断信息时已读还是未读
+            if(advice.isRead == 0){
+                read_advice(advice.id);
+            }
+            // 判断是邀请进群还是请求进群
+            if(advice.category == 1){
+                // 邀请进群
+                HTMLString = HTMLString +
+                    `<div id="advice_content">
+                    <div class="advice_row">
+                <div class="time_row"> `+format.format(new Date(advice.sendTime))+`</div>
+                <div class="chatroom_invite_request advice_content">
+                    <img src="`+ advice.headPath+`" alt="">
+                    <div class="content_detail">`+ advice.username+`(备注信息：`+ advice.content+`) </div>
+                    <div>邀请你加入群聊</div>
+                    <div class="content_detail">`+ advice.name+`（`+advice.chatroomId+`）</div>
+                    `;
+
+            }else{
+                // 请求进群
+                HTMLString = HTMLString +
+                    `<div class="advice_row">
+                <div class="time_row"> `+ format.format(new Date(advice.sendTime))+`</div>
+                <div class="chatroom_add_request advice_content">
+                    <img src="`+ advice.headPath+`" alt="">
+                    <div class="content_detail">`+ advice.username+`(备注信息：`+ advice.content+`) </div>
+                    <div>请求加入群聊</div>
+                    <div class="content_detail">`+ advice.name+`（`+advice.chatroomId+`）</div>
+                    `;
+            }
+            if(advice.result == 0){
+                // 未处理
+                HTMLString = HTMLString +
+                    `<button class="accept_button" data-id="`+ advice.id+`" onclick="accept_req(this)">接收</button>
+                    <button class="refuse_button" data-id="`+ advice.id+`" onclick="refuse_req(this)">拒绝 </button>
+                </div>
+            </div>`;
+            }else if(advice.result == 1){
+                // 已拒绝
+                HTMLString = HTMLString +
+                    `<div class="content_detail"> 已拒绝</div>
+                </div>
+            </div>`;
+            }else if(advice.result == 2){
+                // 已接受
+                HTMLString = HTMLString +
+                    `<div class="content_detail"> 已接受</div>
+                </div>
+            </div>`;
+            }
+
+        }
+        if(advice_chatroom_info.length == 0){
+            HTMLString = HTMLString +
+                `没有其他聊天室请求`;
+        }
+        HTMLString = HTMLString +
+        `</div>`;
+        windows.append(HTMLString);
+    }
+    // 显示所有好友请求
+    function show_friend_req(){
+        windows.text("");
+        init_window();
+        var HTMLString =
+            `
+            <div class="select_row">
+                <div class="friend bold_and_large">好友</div>
+                <div class="chat" onclick="show_chatroom_req()">群聊</div>
+                <div class="report" onclick="show_report_info()">举报</div>
+                <div class="warn" onclick="show_warn_info()">警告</div>
+            </div>
+            <div id="advice_content">`;
+        for (let i = 0; i < advice_friend_info.length; i++) {
+            var advice = advice_friend_info[i];
+            if(advice.isRead == 0){
+                read_advice(advice.id);
+            }
+            HTMLString = HTMLString +
+                `<div class="advice_row">
+                <div class="time_row"> `+format.format(new Date(advice.sendTime))+`</div>
+                <div class="friend_request advice_content">
+                    <img src="`+advice.headPath+`" alt="">
+                    <div class="content_detail">`+ advice.username+`(备注信息：`+ advice.content+`)</div>
+                    <div>请求添加你为好友 </div>
+                  `;
+            if(advice.result == 0){
+                // 未处理
+                HTMLString = HTMLString +
+                    `<button class="accept_button" data-id="`+ advice.id+`" onclick="accept_req(this)">接收</button>
+                    <button class="refuse_button" data-id="`+ advice.id+`" onclick="refuse_req(this)">拒绝 </button>
+                </div>
+            </div>`;
+            }else if(advice.result == 1){
+                // 已拒绝
+                HTMLString = HTMLString +
+                    `<div class="content_detail"> 已拒绝</div>
+                </div>
+            </div>`;
+            }else if(advice.result == 2){
+                // 已接受
+                HTMLString = HTMLString +
+                    `<div class="content_detail"> 已接受</div>
+                </div>
+            </div>`;
+            }
+        }
+        if(advice_friend_info.length == 0){
+            HTMLString = HTMLString +
+                `没有其他好友请求`;
+        }
+        HTMLString = HTMLString +
+        `</div>`;
+
+        windows.append(HTMLString);    }
+
+    // 显示所有的举报信息
+    function show_advice(){
+        // 显示好友请求
+        show_friend_req();
+        // 显示窗口
+        window_page.css("z-index",4);
+        
+        advice_img.attr("src","./image/通知.png");
+
+    }
+    // 请求所有通知信息
+    function get_all_advice(){
+        get_all_report_advice();
+        get_all_friend_advice();
+        get_all_warn_advice();
+        get_all_chatroom_advice();
+    }
+    // 请求举报advice信息
+    function get_all_report_advice(){
+        jQuery.ajax({
+            url:context_path+"/advice/get_all_report_advice",
+            method:"get",
+            success:function (res){
+                if(res.code == 200){
+                    // 保存advice
+                    advice_report_info = res.data;
+
+                    // 检查是否未读通知
+                    for (let i = 0; i < advice_report_info.length; i++) {
+                        if( advice_report_info[i].isRead == 0 ){
+                            advice_img.attr("src","./image/有信息通知.png");
+                            return;
+                        }
+                    }
+
+
+                }else if(res.code == 0){
+                    // 未获取到
+                    alert("获取通知信息时Id未被后端接收到");
+                }else{
+                    // 服务器出错
+                    alert("获取通知信息出错："+res.message);
+                }
+            }
+        });
+    }
+    get_all_report_advice();
+    // 请求警告advice信息
+    function get_all_warn_advice(){
+        jQuery.ajax({
+            url:context_path+"/advice/get_all_warn_advice",
+            method:"get",
+            success:function (res){
+                if(res.code == 200){
+                    // 保存advice
+                    advice_warn_info = res.data;
+
+                    // 检查是否未读通知
+                    for (let i = 0; i < advice_warn_info.length; i++) {
+                        if( advice_warn_info[i].isRead == 0 ){
+                            advice_img.attr("src","./image/有信息通知.png");
+                            return;
+                        }
+                    }
+
+
+                }else if(res.code == 0){
+                    // 未获取到
+                    alert("获取通知信息时Id未被后端接收到");
+                }else{
+                    // 服务器出错
+                    alert("获取通知信息出错："+res.message);
+                }
+            }
+        });
+    }
+    get_all_warn_advice();
+
+    // 请求聊天室advice信息
+    function get_all_chatroom_advice(){
+        jQuery.ajax({
+            url:context_path+"/advice/get_all_chatroom_advice",
+            method:"get",
+            success:function (res){
+                if(res.code == 200){
+                    // 保存advice
+                    advice_chatroom_info = res.data;
+
+                    // 检查是否未读通知
+                    for (let i = 0; i < advice_chatroom_info.length; i++) {
+                        if( advice_chatroom_info[i].isRead == 0 ){
+                            advice_img.attr("src","./image/有信息通知.png");
+                            return;
+                        }
+                    }
+
+
+                }else if(res.code == 0){
+                    // 未获取到
+                    alert("获取通知信息时Id未被后端接收到");
+                }else{
+                    // 服务器出错
+                    alert("获取通知信息出错："+res.message);
+                }
+            }
+        });
+    }
+    get_all_chatroom_advice();
+    // 请求好友advice信息
+    function get_all_friend_advice(){
+        jQuery.ajax({
+            url:context_path+"/advice/get_all_friend_advice",
+            method:"get",
+            success:function (res){
+                if(res.code == 200){
+                    // 保存advice
+                    advice_friend_info = res.data;
+
+                    // 检查是否未读通知
+                    for (let i = 0; i < advice_friend_info.length; i++) {
+                        if( advice_friend_info[i].isRead == 0 ){
+                            advice_img.attr("src","./image/有信息通知.png");
+                            return;
+                        }
+                    }
+
+
+                }else if(res.code == 0){
+                    // 未获取到
+                    alert("获取通知信息时Id未被后端接收到");
+                }else{
+                    // 服务器出错
+                    alert("获取通知信息出错："+res.message);
+                }
+            }
+        });
+    }
+    get_all_friend_advice();
+    // 修改会话的备注
+    function update_nick_name(){
+        // 获取输入行
+         var nickNameInput = jQuery("#nickName");
+        if(nickNameInput.val().trim() == choose_session.data("nickname")){
+            alert("必须修改备注才能更新!")
+            return;
+        }
+        
+        // 发送更新请求
+        jQuery.ajax({
+            url:context_path+"/contact_session/update_nick_name",
+            method:'get',
+            data:{
+                id:choose_session.data("id"),
+                nickName:nickNameInput.val().trim()
+            },
+            success:function (res){
+                if(res.code ==200){
+                    alert("更新成功");
+                    close_window();
+                    get_session_message();
+                }else if(res.code == 0){
+                    alert("在更新会话备注时，后端没有获取到参数");
+                }else{
+                    alert("在更新会话备注时，服务器出现错误了："+res,message);
+                }
+            }
+        })
+    }
+    function show_origin_content(){
+        var session_name = jQuery(".session_name");
+        session_name.text("");
+        chat_content.text("");
+    }
+    // 退出聊天室
+    function exit_chatroom(){
+        jQuery.ajax({
+            url:context_path+"/contact_session/exit_chatroom",
+            method:"get",
+            data:{
+                id:choose_session.data("id")
+            },
+            success:function(res){
+                if(res.code == 200){
+                    alert("退出聊天室成功");
+                    close_window();
+                    get_session_message();
+                    show_origin_content();
+                    // 显示初始页面
+                }else if(res.code == 0){
+                    alert("在退出聊天室时，后端没有接受到前端发送的数据");
+                }else{
+                    alert("在退出聊天室时，服务器出现了错误:"+res.message);
+                }
+            }
+        })
+    }
+    // 删除好友
+    function delete_friend(){
+        jQuery.ajax({
+            url:context_path+"/contact_session/delete_friend",
+            method:"get",
+            data:{
+                sessionId:choose_session.data("session-id")
+            },
+            success:function(res){
+                if(res.code == 200){
+                    alert("删除好友成功!");
+                    close_window();
+                    get_session_message();
+                    show_origin_content();
+                }else if(res.code == 0){
+                    alert("在删除好友时，后端没有接受到前端发送的数据");
+                }else{
+                    alert("在删除好友时，服务器出现了错误:"+res.message);
+                }
+            }
+        })
+    }
+    function ban_chatroom(){
+        jQuery.ajax({
+            url:context_path+"/contact_session/ban_chatroom",
+            method:"get",
+            data:{
+                sessionId :choose_session.data("session-id")
+            },
+            success:function(res){
+                if(res.code == 200){
+                    alert("解散成功");
+                    close_window();
+                    show_origin_content();
+                }else if(res.code == 0){
+                    alert("解散聊天室时，参数没有被后端接收到");
+                }else{
+                    alert("解散聊天室时出现错误："+res.message);
+                }
+            }
+        })
+    }
+    // 获取会话信息
+    function get_session_info(){
+        // 初始化窗口
+        init_window();
+        // 判断是否有选中的群聊
+        if(choose_session == null){
+            return;
+        }
+        // 判断会话是群聊还是私聊
+        if(choose_session.data("category") == 0){
+            // 群聊
+            // 构造基本结构
+            var HTMLString =
+                `<div class="chatroom_info">
+                     <div class="left_info"></div>
+                     <div class="right_info"></div>
+                  </div>`;
+            windows.append(HTMLString);
+
+            // 获取聊天室基本信息
+            jQuery.ajax({
+                url:context_path+"/chatroom/get_chatroom_info",
+                method:"get",
+                data:{
+                    sessionId:choose_session.data("session-id"),
+                },
+                success:function (res){
+                    if(res.code == 200){
+                        // 选中左边信息部分
+                        var left_info = jQuery(".left_info");
+                        // 保存聊天室信息
+                        chatroom_info = res.data;
+                        var HTMLString= "";
+                        HTMLString = HTMLString +
+                            `<h3 >聊天室信息 </h3>
+                             <img src="`+ chatroom_info.photo+`" alt="" class="chatroom_head">
+                            <div class="left_row">
+                                <span class="">名称：</span>
+                                <span class="detail">`+chatroom_info.name+` </span>
+                            </div>
+                            <div class="left_row">
+                                <span class=""> 创建者：</span>
+                                <span class="detail"> `+ chatroom_info.username+` </span>
+                            </div>
+                            <div class="left_row">
+                                <span class=""> 备注：</span>
+                                <input type="text" id="nickName" value="`+ choose_session.data("nickname")+`">
+                                <button onclick="update_nick_name()"> 修改备注</button>
+                            </div>
+                            <div class="left_row">
+                                <span>创建者账号：</span>
+                                <span>`+ chatroom_info.accountNum+` </span>
+                            </div>
+                            <div class="left_row">
+                                <span>总人数：</span>
+                                <span>`+ chatroom_info.userNum+` 人</span>
+                            </div>`;
+                        // 判断用户是群主还是成员
+                        if(chatroom_info.creatorId == userinfo.id){
+                            // 是群主
+                            HTMLString = HTMLString +
+                                `<div class="left_row">
+                                    <button onclick="invite_chatroom()">邀请 </button>
+                                    <button onclick="remove_member()">移出 </button>
+                                    <button onclick="update_chatroom()">修改信息</button>
+                                    <button onclick="ban_chatroom()">解散聊天室 </button>
+                                </div>`;
+                        }else{
+                            // 不是群主
+                            HTMLString = HTMLString +
+                                `<div class="left_row">
+                                <button onclick="invite_chatroom()">邀请 </button>
+                                <button onclick="exit_chatroom()">退出 </button>
+                            </div>`;
+                        }
+                        // 插入聊天室信息
+                        left_info.append(HTMLString);
+
+
+                    }else if(res.code == 0){
+                        // 参数未传递
+                        alert("获取聊天室信息id未被后端接收到");
+                    }else{
+                        alert("获取聊天室信息出现错误："+res.message);
+                    }
+                }
+            });
+            // 获取聊天室成员信息
+            jQuery.ajax({
+                url:context_path+"/contact_session/get_chatroom_person",
+                method:"get",
+                data:{
+                    sessionId:choose_session.data("session-id")
+                },
+                success:function (res){
+                    if(res.code == 200){
+                        // 选中右边信息框
+                        var right_info = jQuery(".right_info");
+                        // 保存用户成员信息
+                        chatroom_member = res.data;
+                        var HTMLString = `<h3>聊天室成员：</h3>`;
+                        var flag = 0;
+                        // 插入成员信息
+                        for (let i = 0; i < chatroom_member.length; i++) {
+                            flag = 1;
+                            var member = chatroom_member[i];
+                            if(member.state == 1) {
+                                // 在线
+
+                                HTMLString = HTMLString +
+                                    `<div class="right_row online">
+                                    <input type="checkbox" class="hide" id="`+ member.id+`">
+                                    <img src="` + member.photo + `" alt="" class="member_head">
+                                    <span class="user_name online"> ` + member.username + "(" + member.accountNum + ")" + `</span>
+                                </div>`;
+                            }else{
+                                // 离线
+                                HTMLString = HTMLString +
+                                    `<div class="right_row">
+                                    <input type="checkbox" class="hide" id="`+ member.id+`">
+                                    <img src="` + member.photo + `" alt="" class="member_head">
+                                    <span class="user_name"> ` + member.username + "(" + member.accountNum + ")" + `</span>
+                                </div>`;
+                            }
+                        }
+                        // 渲染成员信息
+                        right_info.append(HTMLString);
+                    }else if(res.code == 0){
+                        alert("获取聊天室成员信息时sessionId未被后端接收到");
+                    }else{
+                        alert("获取聊天室成员信息时发生错误:"+res.message);
+                    }
+                }
+
+            });
+            // 显示窗口
+            window_page.css("z-index",4);
+        }else{
+            // 私聊
+
+                        var HTMLString = "";
+                        HTMLString = HTMLString +
+                            `<div class="contact_info">
+                               <div class="info_row">
+                                   <h3>用户信息 </h3>
+                               </div>
+                               <div class="info_row">
+                                   <img src="`+ contact_info.photo+`" alt="">
+                               </div>
+                               <div class="info_row">
+                                   <span>用户名：`+ contact_info.username+`</span>
+                               </div>
+                               <div class="info_row">
+                                <span class=""> 备注：</span>
+                                <input type="text" id="nickName" value="`+ choose_session.data("nickname")+`">
+                                <button onclick="update_nick_name()"> 修改备注</button>
+                            </div>
+                               
+                               <div class="info_row">
+                                   <span>账号：`+ contact_info.accountNum+`</span>
+                               </div>
+                               <div class="info_row">
+                                   <span>居住地：`+ contact_info.location+`</span>
+                               </div>
+                               <div class="info_row">
+                                   <span>邮箱：`+ contact_info.mail+`</span>
+                               </div>
+                               <div class="info_row">
+                                   <span>性别：`+ contact_info.sex+`</span>
+                               </div>`;
+                        if(choose_session.data("is-deleted") == 1){
+                            HTMLString = HTMLString +
+                                `<div class="info_row">
+                                   <button class="add" data-user-id="`+ contact_info.id+`" onclick="add_friend(this)">添加 </button>
+                               </div>
+                           </div>`;
+                        }else{
+                            HTMLString = HTMLString +
+                                `<div class="info_row">
+                                   <button class="delete" onclick="delete_friend()">删除 </button>
+                               </div>
+                           </div>`;
+                        }
+                        windows.append(HTMLString);
+                        window_page.css("z-index",4);
+
+        }
+
+
+    }
+    // 获取聊天记录权限
+    function get_permit(){
+        // 获取输入框
+        var input = jQuery("#temp_input");
+        if(input.val().trim()==""){
+            alert("请先输入密码");
+            return;
+        }
+        // 发送获取权限请求
+        jQuery.ajax({
+            url:context_path+"/user/get_permit",
+            method:'post',
+            data:{
+              password:input.val().trim()
+            },
+            success:function (res){
+                if(res.code == 200){
+                    // 设置permit
+                    permit = 1;
+                    // 显示成功
+                    alert("获取权限成功");
+                    close_window();
+
+                }else if(res.code == 3){
+                    // 密码错误
+                    alert("密码错误！");
+
+                }else{
+                    // 出现错误
+                    alert("获取权限允许是发生错误:"+data.message);
+                }
+            }
+        })
+    }
+    // 显示历史聊天记录
+    function show_more(dom){
+        // 获取当前按钮
+        var show_more = jQuery(dom);
+        // 判断是否有权限
+        if(permit != 1){
+            alert("请先输入密码获取权限");
+            // 显示密码窗口
+            // 初始化窗口
+            init_window();
+            var HTMLString =
+                `<div class="message_password">
+                    <h2>获取聊天记录</h2>
+                    <div class="password_row">
+                        <h3>密码：</h3>
+                        <input type="password" id="temp_input">
+                    </div>
+                    <button id="send_button" onclick="get_permit()">确认</button>
+                </div>`;
+            windows.append(HTMLString);
+            // 显示窗口
+            window_page.css("z-index",4);
+            return;
+        }
+        // 发送获取后续聊天记录请求
+        jQuery.ajax({
+            url:context_path+"/message/get_rest_message",
+            method:"get",
+            data:{
+                sessionId:choose_session.data("session-id")
+            },
+            success:function (res){
+                if(res.code == 200){
+                    // 将查看更多隐藏
+                    show_more.addClass("hide");
+                    // 插入聊天记录
+                    var HTMLString = display(choose_session.data("category"),res.data);
+                    // 头插数据
+                    chat_content.prepend(HTMLString);
+                    // 滚动到底部
+                    scroll_bottom();
+                }else if(res.code == 0){
+                    alert("获取所有消息时服务器未能接收到sessionId");
+                }else if(res.code == 1){
+                    alert("没有权限获取历史聊天记录！");
+                }else{
+                    alert("获取所有消息时服务器出错"+res.message);
+                }
+            }
+        })
+    }
+    // 给发送按键绑定enter快捷键
+    function check_enter(e){
+        if(e.key === "Enter"){
+            // 调用send_message函数
+            send_message();
+        }
+    }
+    // 发送信息
+    function send_message(){
+        // 判断是否有回话被选中
+        if(choose_session == null){
+            message_input.val("");
+            return;
+        }
+        // 判断会话是否可用
+        if(choose_session.data("is-deleted") == 1){
+            alert("您已被移出会话，不可向此会话发送信息");
+            return;
+        }
+        // 非空校验
+        if(message_input.val().trim() == ""){
+            message_input.val("");
+            return;
+        }
+        jQuery.ajax({
+           url:context_path+"/message/send_message",
+            method:"post",
+            data:{
+                contactSessionId:choose_session.data("id"),
+                sessionId:choose_session.data("session-id"),
+                content:message_input.val().trim()
+            },
+            success:function (res){
+                if(res.code == 200){
+
+                    // 构造HTML结构
+                    var HTMLString = "";
+                    if(choose_session.data("category") == 1){
+                        HTMLString = HTMLString +
+                        `<div class="message_row_right">
+                                <span class="message_right" oncontextmenu="show_send_redirect_menu(event,this)">`+ message_input.val()+`</span>
+                                <img src="`+ userinfo.photo+`" alt="" class="photo">
+                         </div>`;
+                    }else{
+                        HTMLString = HTMLString +
+                        `<div class="message_row_right">
+                               
+
+                                    <div>
+                                        <div class="right_name">`+ userinfo.username+`</div>
+                                        <span class="message_right" oncontextmenu="show_send_redirect_menu(event,this)">`+ message_input.val()+`</span>
+                                    </div>
+                                <img src="`+ userinfo.photo+`" alt="" class="photo">
+                         </div>`;
+                    }
+                    
+                    // 将输入框置空
+                    chat_content.append(HTMLString);
+                    // 将session显示的最后一条消息更新为发送的消息
+                    var last_message = choose_session.find(".last_message");
+                    last_message.text(message_input.val());
+                    message_input.val("");
+                    scroll_bottom();
+                }else if(res.code == 0){
+                    // 参数没有传递到后端
+                    alert("发送信息的参数出错");
+                }else{
+                    alert("发送出现错误:"+res.message);
+                }
+            }
+
+        });
+
+
+
+
+    }
+    // 展示获取到的前两百条信息
+    function show_message_list( message_list,isDeleted,category){
+        // 获取聊天内容框
+        chat_content.text("");
+        // 判断聊天记录数目是否超过的两百条
+        if(message_list.length == 5){
+                chat_content.append(`<div class="show_more" onclick="show_more(this)">查看更多<div>`);
+        }
+        // 定义插入聊天内容
+        var HTMLString = "";
+        // 将所有聊天记录构造成html标签，并将数据存入HTMLString
+        HTMLString = display(category,message_list)
+        // 如果没有记录则显示没有信息
+        if(HTMLString == ""){
+            HTMLString = HTMLString +
+                ` <div class="message_time">`+ "当前会话没有发送过消息"+`</div>`;
+        }
+
+        // 判断该会话是否将用户删除
+        if(isDeleted == 1){
+            HTMLString = HTMLString +
+                ` <div class="delete">您已被移出该会话,无法发送信息</div>`;
+        }
+        // 将文件插入到聊天内容框中
+        chat_content.append(HTMLString);
+        // 将滚动条滚动到最下面
+        scroll_bottom();
+
+    }
+    // 点击会话函数
+    function focus_session(dom){
+        // 获取被点击的会话
+        var contact_session = jQuery(dom);
+        // 移除这个回话的hide类
+        contact_session.css("dispaly","block");
+        // 切换会话选中效果
+        if(choose_session == null){
+            choose_session = contact_session;
+            contact_session.addClass("session_choose");
+        }else{
+            choose_session.removeClass("session_choose");
+            contact_session.addClass("session_choose");
+            choose_session = contact_session;
+        }
+
+        // 获取会话名称框
+        var session_name = jQuery(".session_name");
+        // 判断是否是用户会话
+        if(contact_session.data("category") == 1){
+            // 请求用户在线状态
+            jQuery.ajax({
+                url:context_path+"/user/get_contact_info",
+                data:{
+                    id:contact_session.data("contact-id")
+                },
+                method:"get",
+                success:function (res){
+                    if(res.code == 200){
+                        if(res.data.state == 1){
+                            // 在线
+                            session_name.addClass("online");
+                        }
+                        contact_info = res.data;
+                    }else if(res.code == 0){
+                        alert("contact_id没有被服务器识别到");
+                    }else{
+                        alert("获取联系人是否在线出错:"+res.message);
+                    }
+                }
+            });
+        }else{
+            // 移除会话名称的在线状态
+            session_name.removeClass("online");
+
+        }
+        // 修改被选中会话名称
+        if(contact_session.data("nickname") == null || contact_session.data("nickname") == ""){
+            session_name.text(contact_session.data("username"));
+        }else{
+            session_name.text(contact_session.data("nickname"));    
+        }
+        
+        // 发送获取聊天记录的请求
+        jQuery.ajax({
+            url:context_path+"/message/get_message_list",
+            method:"post",
+            data:{
+                sessionId:contact_session.data("session-id"),
+
+            },
+            success:function (res){
+                if(res.code == 200){
+                    // 渲染聊天信息展示界面
+                        show_message_list(res.data,choose_session.data("is-deleted"),choose_session.data("category"));
+
+                }else if(res.code == 0){
+                    // sessionId未能被服务器接受
+                    alert("服务器未能接收到SessionId");
+                }else{
+                    alert("获取会话聊天记录出错："+res.message);
+                }
+            }
+        });
+        // 将未读信息置为空
+        // 获取未读数目标签
+        var unread_num = choose_session.find(".unread_num");
+        // 判断未读数目是否为空
+        if( unread_num.text() != ""){
+            // 将unread_num置为空
+            unread_num.text("");
+            // 将unread_num设置为不可见
+            unread_num.addClass("hide");
+            // 发送请求，清空unreadNum
+            jQuery.ajax({
+                url:context_path+"/contact_session/clear_unread_num",
+                method:"post",
+                data:{
+                    id:choose_session.data("id")
+                },
+                success:function (res){
+                    if(res.code == 200){
+                        // 成功了
+                    }else if(res.code == 0){
+                        // 参数错误
+                        alert("清空unreadNum请求的Id参数没有被接收到");
+                    }else{
+                        // 服务器错误
+                        alert("清空unreadNum请求错误："+res.message);
+                    }
+                }
+
+            })
+        }
+
+    }
+    // 修改用户信息函数
+    function update_userinfo(){
+        // 获取修改信息按钮
+        var update_info_button = jQuery("#update_info");
+        // 将按钮设置为不可用
+        update_info_button.attr("disabled","disabled");
+        
+        // 获取用户名输入框
+        var username = jQuery("#username");
+        // 获取所在地输入框
+        var location = jQuery("#location");
+        // 获取被选中的性别
+        var sex = $('input[name="sex"]:checked');
+        // 发送用户数据更新请求
+        jQuery.ajax({
+            url:context_path+"/user/update_userinfo",
+            method:"post",
+            data:{
+                sex:sex.val(),
+                location:location.val(),
+                username:username.val(),
+                id:userinfo.id
+            },
+            success:function(res){
+                if(res.code == 200 ){
+                    // 修改信息成功
+                    alert("用户信息修改成功!");
+                    // 关闭窗口
+                    close_window();
+                    // 重新设置用户数据
+                    set_userinfo();
+                }else if(res.code == 0){
+                    // 输入参数有误
+                    alert("输入参数有误!");
+                    // 将按钮设置为可用
+                    update_info_button.removeAttr("disabled");
+                }else{
+                    // 服务器出错
+                    alert("错误信息："+res.message);
+                    // 将按钮设置为可用
+                    update_info_button.removeAttr("disabled");
+                }
+                
+            }
+        });
+
+    }
+    // 显示用户信息窗口函数
+    function show_userinfo(){
+        // 初始化窗口
+        init_window();
+        // 创建要插入的Html字符串
+        var HTMLString = "";
+        // 加入头像行
+        HTMLString = HTMLString + 
+            `<div class="info_row">
+                <label for="head_photo">
+                    <img src="`+userinfo.photo+`" alt="" id="head_info">
+                </label>
+                
+                    <input type="file" name="photo" id="head_photo">
+                    <button id="update_head" onclick="update_head()">保存头像</button>
+           </div>`;
+        // 加入用户名行
+        HTMLString = HTMLString + 
+            `<div class="info_row">
+                <label for="username">用户名：</label>
+                <input type="text" id="username" value="`+userinfo.username+`">
+            </div>`;
+        // 加入所在地行
+        HTMLString = HTMLString +
+            `<div class="info_row">
+                <label for="location">所在地：</label>
+                <input type="text" id="location" name="location" value="`+ userinfo.location+`">
+            </div>`;
+        // 加入性别行
+        if(userinfo.sex == '男'){
+            HTMLString = HTMLString + 
+            `<div class="info_row">
+                <label >性别：</label>
+                <input value="男" type="radio" id="male" name="sex" checked="checked">
+                <label for="male">男</label>
+                <input value="女" type="radio" id="female" name="sex">
+                <label for="female">女</label>
+            </div>`;
+        }else{
+            HTMLString = HTMLString + 
+            `<div class="info_row">
+                <label >性别：</label>
+                <input type="radio" value="男" id="male" name="sex" >
+                <label for="male" data-sex="男" >男</label>
+                <input type="radio" value="女" id="female" name="sex" checked="checked">
+                <label for="female">女</label>
+            </div>`;
+        }
+         // 加入账号行
+         HTMLString = HTMLString +
+            `<div class="info_row">
+                <label for="account_num">账号：</label>
+                <div id = "account_num">`+userinfo.accountNum+`</div>
+            </div>`;
+        // 加入邮箱行
+        HTMLString = HTMLString +
+            `<div class="info_row">
+                <label for="mail">邮箱：</label>
+                <div id = "mail">`+userinfo.mail+`</div>
+           </div>`;
+        // 加入保存信息按钮行
+        HTMLString = HTMLString +
+           `<div class="info_row">
+                <button id="update_info" onclick="update_userinfo()">保存信息</button>    
+           </div>`;
+        // 构建窗口结构
+        windows.append(HTMLString);
+        // 显示窗口
+        window_page.css("z-index",4);
+    }
+    // 发送新头像请求函数
+    function update_head(){
+        // 获取文件输入
+        var input_file = jQuery("#head_photo")[0];
+        // 非空校验
+        var file = input_file.files[0];
+        if(!file){
+            alert("请先选择头像图片!");
+            return;
+        }
+        // 创建 FormData 对象
+        var formData = new FormData();
+        formData.append("photo", file); // "photo" 是服务器端期望接收文件的字段名
+
+        // 发送请求
+        jQuery.ajax({
+            url: context_path + "/user/update_head",
+            method: "post",
+            data: formData,
+            processData: false,  // 不处理数据
+            contentType: false,  // 不设置内容类型
+            success: function (res) {
+                if(res.code == 200){
+                    // 更新成功
+                    alert("头像更新成功");
+                    // 关闭窗口
+                    close_window();
+                    // 更新用户信息
+                    set_userinfo();
+                }else if(res.code  == 0){
+                    // 没有数据传入
+                    alert("文件数据为空");
+                }else{
+                    alert("错误信息："+res.message);
+                }
+
+            }
+        });
+
+    }
+
+    // 发送获取用户信息的请求
+    function set_userinfo(){
+        jQuery.ajax({
+            method:"get",
+            url:context_path+"/user/get_userinfo",
+            success:function(res){
+                if(res.code == 200){
+                    userinfo = res.data;
+                    // 建立webSocket连接
+                    create_websocket();
+                    // 发送获取通知请求
+
+                    // 用户界面显示
+                    // 获取用户头像
+                    var head = jQuery(".head");
+                    // 获取用户名称
+                    var user_name = jQuery(".user_name");
+                    // 设置用户头像
+                    head.attr("src",userinfo.photo);
+                    // 设置用户昵称
+                    user_name.text(userinfo.username);
+                }else{
+                    alert("错误信息"+res.message);
+                }
+            }
+        })
+    }
+    set_userinfo();
+     // 获取用户会话列表请求
+     function get_session_message(){
+         jQuery.ajax({
+             url:context_path+"/contact_session/get_contact_session_list",
+             method:"get",
+             success:function(res){
+                 if(res.code == 200 ){
+
+                     // 获取成功
+                     contact_session_list = res.data;
+                     update_user_session();
+                     update_contact_list();
+                     // 判断是否是接受到其他用户信息才触发的获取会话列表
+                     if(choose_session != null){
+                         // 更新choose_session为刷新后的session
+                         var new_session = jQuery("#"+choose_session.attr("id"));
+                         choose_session = null;
+                         new_session.click();
+                     }
+                 }else if(res.code == 0){
+                     // 参数传递不成功
+                     alert("userId 没有被传送到后端！");
+                 }else{
+                     // 服务器出现异常
+                     alert("错误信息："+res.message);
+                 }
+             }
+         });
+     }
+    get_session_message();
+    // 更新用户会话列表函数
+    function update_user_session(){
+        session_list.text("");
+        var HTMLstring = "";
+        // 定义时间格式
+        var timeOptions = {
+                        hour:'2-digit',
+                        minute:'2-digit',
+                        hour12:false
+                    }
+        var timeFormat = new Intl.DateTimeFormat('zh-CN',timeOptions);
+         // 定义日期格式
+        var dateOptions = {
+                            month:'2-digit',
+                            day:'2-digit'
+                        }
+        var dateFormat = new Intl.DateTimeFormat('zh-CN',dateOptions);
+        for(var i = 0;i< contact_session_list.length;i++){
+            var session = contact_session_list[i];
+            
+            // 判断当前会话是否被隐藏
+            if(session.isHide !== 1){
+                // 没有隐藏
+                HTMLstring = HTMLstring + 
+                    `<li oncontextmenu="show_session_menu(event,this)" onclick="focus_session(this)" id="`+ session.id+`" data-username="`+ session.username+`" data-session-id="`+session.sessionId+`" data-category="`+session.category+`" data-is-deleted="`+ session.isDeleted+`" data-nickname="`+session.nickName +`" data-contact-id="`+ session.contactId+`" data-id="`+ session.id+`">
+                        <img src="`+session.headPath+`" >
+                        <div class="session_info" >
+                            <div class="first_row">
+                                `;
+                if(session.nickname == null || session.username == ""){
+                    HTMLstring = HTMLstring +
+                        `<h3>`+session.username +`</h3>`;
+                }else{
+                    HTMLstring = HTMLstring +
+                        `<h3>`+session.nickName +`</h3>`;
+                }
+            
+            
+                // 定义当前时间
+                var dateNow = new Date();
+                // 定义最后一条消息的发送时间
+                var dateSend;         
+                if(session.sendTime != null){
+                    // 显示正常的时间
+                    dateSend = new Date(session.sendTime);
+                    
+                }else{
+                    // 显示建立会话时的时间
+                    dateSend = new Date(session.creatTime);
+                }
+                
+                // 判断sendTime是否是今天
+                if(dateNow.getDate() !== dateSend.getDate()){
+                    // 不是同一天，判断是否是同一年
+                    if(dateNow.getFullYear() !== dateSend.getFullYear()){
+                        // 不是同一年，不显示时间
+                        HTMLstring = HTMLstring +
+                        `<span class="time"></span>
+                        </div>
+                        <div class="second_row">`;
+                    }else{
+                        // 是同一年,显示日期
+                       
+                        HTMLstring = HTMLstring +
+                        `<span class="time">`+ dateFormat.format(dateSend)+`</span>
+                        </div>
+                        <div class="second_row">`;
+                    }
+                }else{
+                    // 是同一天,显示时间
+                    
+                    // 创建时间格式器
+                    HTMLstring = HTMLstring +
+                        `<span class="time">`+timeFormat.format(dateSend) +`</span>
+                        </div>
+                        <div class="second_row">`;
+                }
+
+                // 判断最后一条消息是否为null
+                if(session.lastContent != null){
+                    // 不为null
+
+                    // 判断消息种类
+                    if(session.messageType == 1){
+                        // 这个消息是图片
+                        HTMLstring = HTMLstring +
+                            `<div class="last_message">[图片]</div>`;
+                    }else{
+                        // 判断是否超过十个字符
+                        if (session.lastContent.length > 10) {
+                            // 截取字符串并添加省略号
+                            session.lastContent = session.lastContent.slice(0, 7) + '...';
+                        }
+                        HTMLstring = HTMLstring + 
+                            `<div class="last_message">`+session.lastContent+`</div>`;
+
+                    }
+                    // 判断是否有未读信息
+                    if(session.unreadNum == 0){
+                        HTMLstring = HTMLstring + 
+                            `<div class="unread_num hide"></div>`;
+                    }else{
+                        HTMLstring = HTMLstring + 
+                            `<div class="unread_num ">`+ session.unreadNum+`</div>`;
+                    }
+                    
+                }else{
+                    // 没有发过消息 
+                    HTMLstring = HTMLstring +
+                        `<div class="last_message hide"></div>
+                        <div class="unread_num hide"></div>`;
+                }
+            }
+            
+        }
+        session_list.append(HTMLstring);
+    }
+    // 显示双击的会话
+    function dbfocus_session(dom){
+        // 获取被双击的联系人
+        var contact = jQuery(dom);
+        // 获取会话id
+        var id= contact.data("id");
+        // 获取要显示的会话
+        var session = jQuery("#"+id);
+        show_sessions();
+        if(session.length == 0 || session.is(":hidden")){
+            // 发送显示会话请求
+            jQuery.ajax({
+                url:context_path+"/contact_session/show_session",
+                method:'get',
+                data:{
+                    id:id
+                },
+                success:function(res){
+                    if(res.code == 200){
+                        get_session_message();
+                        
+                        
+                        setTimeout(dbfocus_session(dom),1000);
+                    }else if (res.code == 0){
+                        alert("将会话的从隐藏修改到显示时后台没有接受到id");
+                    }else{
+                        alert("将会话的从隐藏修改到显示时服务器出错:"+res.message);
+                    }
+                }
+            })
+        }else{
+            session.click();
+        }
+
+        
+        
+    }
+    // 创建分组小窗显示
+    function create_chatroom(){
+        // 初始化小窗
+        init_small_window();
+        // 获取HTML
+        var HTMLString = create_chatroom_HTML();
+        // 插入小窗
+        small_window.append(HTMLString);
+        // 显示小窗
+        small_window_page.css("z-index",5);
+    }
+    // 创建分组小窗HTML
+    function create_chatroom_HTML(){ 
+        var HTMLString = 
+    `<div class="message_password">
+    <h2>创建新群聊</h2>
+    <div class="password_row">
+        <h3>新群聊名：</h3>
+        <input type="text" id="temp_input">
+    </div>
+        <button id="send_button" onclick="create_chatroom_req()">确认</button>
+    </div>`;
+
+        return HTMLString;
+    }
+    // 发送创建群聊函数
+    function create_chatroom_req(){
+        // 获取群聊名输入框
+        var name_input = jQuery("#temp_input");
+        // 判断输入框中是否有字符
+        if(name_input.val().trim()==""){
+            alert("群聊名不能为空!");
+            return ;
+        }
+        // 发送请求
+        jQuery.ajax({
+            url:context_path+"/chatroom/create_chatroom",
+            method:"get",
+            data:{
+                name:name_input.val().trim()
+            },
+            success:function(res){
+                if(res.code == 200){
+                    //关闭小窗
+                    close_small_window(); 
+                    //重新获取会话
+                    get_session_message();
+                    alert("创建群聊成功!");
+                }else if(res,code == 0){
+                    alert("创建分组时后端没有接收到发送的数据");
+                }else{
+                    alert("创建分组时服务器出现错误:"+res.message);
+                }
+            }
+        }) 
+        
+
+    }
+    function logout(){
+        jQuery.ajax({
+            url:context_path+"/user/logout",
+            method:'get',
+            success:function(res){
+                if(res.code !=200){
+                    alert("注销时出现错误:"+res.message);
+                    
+                }
+                window.location.href = "./login.html";
+            }
+        })
+    }
+    // 更新联系人列表 必须要保证联系人会话已经初始化好了在调用
+    function update_contact_list(){
+        
+        jQuery.ajax({
+            url:context_path+"/contact_group/get_group",
+            method:"get",
+            success:function(res){
+                if(res.code ==200){
+                    // 置空好友列表
+                    contacts_group_list.text("");
+                    // 获取成功
+                    contact_group_list_info = res.data;
+                    // 建立分组
+                    var HTMLString = 
+                        `<div id="create_chatroom_row">
+                            <img src="image/创建聊天室.png" alt="创建聊天室" id="create_chatroom" onclick="create_chatroom()">
+                        </div>`;
+                    for(let i =0;i<contact_group_list_info.length;i++){
+                        var contact = contact_group_list_info[i];
+                        HTMLString = HTMLString + 
+                            `<details class="contacts_list">
+                                <summary oncontextmenu="show_create_group_menu(event,this)">`+contact.name +`</summary>`;
+                        // 插入组员
+                        for(let j = 0 ;j<contact_session_list.length; j++){
+                            var session = contact_session_list[j];
+                            if(session.groupId == contact.id && session.isDeleted == 0){
+                                HTMLString = HTMLString +
+                                    `<div oncontextmenu="show_switch_group_menu(event,this)" class="contacts_row" ondblclick="dbfocus_session(this)" data-id="`+ session.id+`" data-category="`+ contact.category+`" data-group-id="`+ contact.id+`">
+                                        <img src="`+ session.headPath+`" alt="">
+                                        <span>`+ session.nickName+`</span>
+                                    </div>`;
+                            }
+
+                        }
+                        // 添加尾标签
+                        HTMLString = HTMLString +
+                            `</details>`;
+
+                        
+                        
+                    }
+                    // 将数据插入dom树
+                    contacts_group_list.append(HTMLString);
+                }else{
+                    alert("获取联系人分组出错："+res.message);
+                }
+            }
+        });
+        
+    }
+    
+    // 调整窗口渲染层数
+    function close_window(){
+        // 隐藏窗口
+        window_page.css("z-index",-1);
+        // 将窗口内容清楚
+        windows.text("");
+    }
+    function close_small_window(){
+        // 隐藏窗口
+        small_window_page.css("z-index",-1);
+        // 请求输入框的值
+        small_window.text("");
+    }
+    
+    // 搜索按钮点击函数
+    function select_contact(){
+        // 非空判断
+        
+        if(select_input.val().trim() == ""){
+            alert("请先输入关键字！");
+            select_input.focus();
+            return;
+        }
+        
+        // 初始化弹窗内容
+        init_window();
+        // 构造用户聊天室选项和列表
+        var strHTML = 
+            `
+            <div class="choice">
+                <div class="user  bold_and_large" onclick="show_user_list()">用户</div>
+                <div class="chatroom" onclick="show_chatroom_list()">聊天室</div>
+            </div>
+            <ul class="user_list">
+                
+            </ul>
+            <ul class="chatroom_list hide">
+                
+            </ul>
+            `;
+        // 加入弹窗
+        windows.append(strHTML);
+        // 显示窗口
+        window_page.css("z-index",3);
+        var user_list = jQuery(".user_list");
+        // 搜索用户请求
+        jQuery.ajax({
+            url:context_path+"/user/select_user",
+            method:"post",
+            data:{
+                key:select_input.val().trim()
+            },
+            success:function(res){
+                if(res.code == 200){
+                    var list = res.data;
+                    var str = "";
+                    if(list.length == 0){
+                        // 未搜索到结果
+                        str = "没有查询到结果";
+                    }else{
+                        // 有结果
+                        list.forEach(element => {
+                        str = str+
+                        `<li class="user_row">
+                            <img src="`+ element.photo +`">
+                            <div class="username">`+ element.username+
+                                `(`+element.accountNum +`)`+`</div>
+                            <button class="add_apply" data-user-id="`+ element.id+`" onclick="add_friend(this)">+添加</button>
+                        </li>`
+                        });
+                    }
+                    
+                    
+                    user_list.append(str);
+                }else if(res.code = 0){
+                    alert("输入框没有输入关键字");
+                }else{
+                    alert("用户列：" + res.message);
+                }
+            }
+        });
+        
+        // 搜索聊天室请求
+        jQuery.ajax({
+            url:context_path+"/chatroom/select_chatroom",
+            method:"post",
+            data:{
+                key:select_input.val()
+            },
+            success:function(res){
+                if(res.code == 200){
+                    var list = res.data;
+                    var str = "";
+                    if(list.length == 0){
+                        // 未搜索到结果
+                        str = "没有查询到结果";
+                    }else{
+                        // 有结果
+                        list.forEach(element => {
+                            str = str+
+                            `<li class="chatroom_row">
+                                <img src="`+ element.photo +`">
+                                <div class="username">`+ element.name+
+                                    `(`+element.userNum +`人)`+`</div>
+                                <button class="join_apply" data-creator-id="`+element.creatorId+`" data-chatroom-id="`+element.sessionId+`" onclick="add_chatroom(this)">+申请加入</button>
+                            </li>`
+                        });
+                    }
+                    
+                    // 获取聊天室列表
+                    var chatroom_list = jQuery(".chatroom_list");
+                    chatroom_list.append(str);
+                }else if(res.code = 0){
+                    alert("输入框没有输入关键字");
+                }else{
+                    alert("聊天室列:"+res.message);
+                }
+            }
+        });
+    }
+
+    // 显示用户列表函数
+    function show_user_list(){
+        // 获取用户列表
+        var user_list = jQuery(".user_list");
+        // 获取聊天室列表
+        var chatroom_list = jQuery(".chatroom_list");
+        // 显示用户列表
+        user_list.removeClass("hide");
+        // 隐藏聊天室列表
+        chatroom_list.addClass("hide");
+        // 获取用户选项 
+        var user = jQuery(".user");
+        // 获取聊天室选项
+        var chatromm = jQuery(".chatroom");
+        // 用户被选中样式
+        user.addClass("bold_and_large");
+        // 移除聊天室被选中样式
+        chatromm.removeClass("bold_and_large");
+
+    }
+
+    // 显示聊天室列表函数
+    function show_chatroom_list(){
+        
+        // 获取用户列表
+        var user_list = jQuery(".user_list");
+        // 获取聊天室列表
+        var chatroom_list = jQuery(".chatroom_list");
+        // 隐藏用户列表
+        user_list.addClass("hide");
+        // 显示聊天室列表
+        chatroom_list.removeClass("hide");
+        // 获取用户选项 
+        var user = jQuery(".user");
+        // 获取聊天室选项
+        var chatromm = jQuery(".chatroom");
+        // 用户被选中样式
+        user.removeClass("bold_and_large");
+        // 移除聊天室被选中样式
+        chatromm.addClass("bold_and_large");
+    }
+    // 绑定图片点击事件
+    input_image.on("click",function(){
+        input_file.click();
+    });
+    // 上传文件之后进行的操作函数
+    input_file.on("change",function(){
+        // 判断是否有回话被选中
+        if(choose_session == null){
+            return;
+        }
+        if(choose_session.data("is-deleted") == 1){
+            alert("您已被移出会话，不可向此会话发送信息");
+            return;
+        }
+        const selectedFile = input_file[0].files[0];
+        if (selectedFile) {
+           
+
+            // 最大文件大小（20MB）
+            const maxSize = 20 * 1024 * 1024;
+
+           
+                // 检查文件大小
+                if (selectedFile.size <= maxSize) {
+                    // 文件类型和大小都符合要求
+
+                    console.log('文件类型和大小都符合要求，可以继续处理。');
+                    // 获取文件的url
+                    var imageURL = URL.createObjectURL(selectedFile);
+                    // 形成聊天信息
+                    const htmlString = `<div class="message_row_right">
+                            <img src="` + imageURL +`" alt="" class="message_photo">
+                            <img src="`+ userinfo.photo+`" alt="" class="photo">
+                        </div>`;
+                    // 将文件显示在聊天框中
+                    chat_content.append(htmlString);
+                    // 内容滚至底部
+                    scroll_bottom();
+                    // 修改会话最后一条信息显示
+                    var last_message = choose_session.find(".last_message");
+                    last_message.text("[图片]");
+                    // 将文件发送给后端
+                    var formData = new FormData();
+                    // 获取sessionId
+                    var session_id = choose_session.data("session-id");
+                    formData.append("file",selectedFile);
+                    formData.append("sessionId",session_id);
+                    formData.append("contactSessionId",choose_session.data("id"));
+                    // 将图片发送给后端
+                    jQuery.ajax({
+                        url:context_path+"/message/send_picture",
+                        method:"post",
+                        data:formData,
+                        contentType:false,
+                        processData: false,
+                        success:function (res){
+                            if(res.code == 200){
+                                // 发送成功
+                            }else if(res.code == 0){
+                                // 文件没有被后端获取到
+                                alert("发送的图片文件没有被后端获取到");
+                            }else{
+                                    alert("发送图片文件出现错误："+res.message);
+                            
+                            }
+                        }
+                    })
+                    
+                } else {
+                    // 文件大小超过限制
+                    alert('文件大小超过限制（最大20MB）。');
+                }
+           
+        }
+        input_file.val('');
+    });
+
+    // 显示聊天会话函数
+    function show_sessions(){
+        session_list.removeClass("hide");
+        contacts_group_list.addClass("hide");
+        session_img.attr("src","image/选中会话.png");
+        contacts_img.attr("src","image/联系人.png");
+    }
+    // 显示联系人列表函数
+    function show_contacts(){
+        session_list.addClass("hide");
+        contacts_group_list.removeClass("hide");
+        session_img.attr("src","image/会话.png");
+        contacts_img.attr("src","image/选中联系人.png");
+    }
+    // 内容划到底部函数
+    function scroll_bottom(){
+        var scrollHeight = chat_content.prop("scrollHeight");
+        chat_content.scrollTop(scrollHeight);
+    }
+    scroll_bottom();
+    // 建立websocket连接
+    function create_websocket(){
+        websocket =new WebSocket("ws://127.0.0.1:8080/my_chatroom/server/"+userinfo.id);
+        websocket.onopen = function(){
+            console.log("连接成功！");
+        }
+        // 连接关闭后
+        websocket.onclose = function(){
+            console.log("连接断开了");
+        }
+        // 连接异常时
+        websocket.onerror = function(){
+            console.log("连接出现异常了");
+        }
+        // 接收到消息后
+        websocket.onmessage = function(e){
+            console.log("接收到消息了"+e.data);
+            if(e.data == "重新请求用户会话列表"){
+                get_session_message();
+                
+            }else if(e.data == "有新的用户请求"){
+                get_all_friend_advice();
+                // 屏蔽所有操作
+                disabled_all();
+                // 定时1秒更新
+                setTimeout(show_friend_req,500);
+                // 取消屏蔽
+                remove_disabled_all();
+            }else if(e.data == "有新的聊天室请求"){
+                get_all_chatroom_advice();
+                // 屏蔽所有操作
+                disabled_all();
+                // 定时1秒更新
+                setTimeout(show_chatroom_req,500);
+                // 取消屏蔽
+                remove_disabled_all();
+            }else if(e.data == "有新的警告请求"){
+                get_all_warn_advice();
+                
+            }else if(e.data == "有新的举报内容"){
+                get_all_report_advice();
+            }
+        }
+    }
+</script>
+</html>

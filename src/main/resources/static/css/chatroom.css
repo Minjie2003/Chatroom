@@ -1,0 +1,866 @@
+/* 整个黑白操作框 */
+.content .main .main-box{
+    min-width: 800px;
+    min-height: 500px;
+    display: flex;
+    
+
+}
+/*通知图片*/
+#advice{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    margin: 5px 20px 5px 5px;
+    cursor: pointer;
+}
+/* 左边的黑色部分 */
+.content .main .main-box .box-left{
+    width: 250px;
+    height: 500px;
+    background-color: rgb(47, 50, 57);
+    
+}
+/* 右边的白色部分 */
+.content .main .main-box .box-right{
+    
+    min-width: 550px;
+    height: 500px;
+    background-color: rgb(238, 238, 238);
+}
+/* 左边的用户信息行 和 搜索行 */
+.content .main .main-box .box-left .user_info,.select{
+    display: flex;
+}
+
+/* 用户信息行的头像 */
+.content .main .main-box .box-left .user_info img{
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin: 10px;
+    cursor: pointer;
+}
+/* 头像被鼠标悬浮时的样式 */
+.content .main .main-box .box-left .user_info img:hover{
+    box-shadow: -1px -1px 1px rgba(144, 148, 157, 0.5),1px 1px 1px rgba(20,20,20, 0.5);
+}
+/* 头像被鼠标点击时的样式 */
+.content .main .main-box .box-left .user_info img:active{
+    box-shadow: 1px 1px 1px rgba(144, 148, 157, 0.5),-1px -1px 1px rgba(20,20,20, 0.5);
+}
+/* 用户名 */
+.content .main .main-box .box-left .user_info .user_name{
+    line-height: 50px;
+    color: rgb(238, 238, 238);
+    margin: 10px;
+}
+/* 搜索图标 */
+.content .main .main-box .box-left .select img{
+    width: 18px;
+    height: 18px;
+    margin-top: 10px;
+    display: block;
+    cursor: pointer;
+}
+/* 搜索图标的悬浮样式 */
+.content .main .main-box .box-left .select img:hover{
+    box-shadow: -1px -1px 1px rgba(213, 216, 224, 0.5),1px 1px 1px rgba(20,20,20, 0.5);
+}
+/* 搜索图标点击样式 */
+.content .main .main-box .box-left .select img:active{
+    box-shadow: 1px 1px 1px rgba(213, 216, 224, 0.5),-1px -1px 1px rgba(20,20,20, 0.5);
+}
+/* 搜索输入框 */
+.content .main .main-box .box-left .select input{
+    margin: 10px;
+    border-radius: 5px;
+    margin-left: 20px;
+    height: 20px;
+    border:none;
+    min-width: 180px;
+    padding-left: 5px;
+    color: rgb(238, 238, 238);
+    background-color: rgba(30,30,30,0.6);
+}
+/* 搜索输入框的选中时样式 */
+.content .main .main-box .box-left .select input:focus{
+    outline: none;
+    box-shadow: 1px 1px 1px rgba(213, 216, 224, 0.5),-1px -1px 1px rgba(20,20,20, 0.5);;
+}
+/* 列表选择行 */
+.content .main .main-box .box-left .choose{
+    display: flex;
+}
+/* 会话 和 联系人 */
+.content .main .main-box .box-left .choose .session,.contacts{
+    width: 125px;
+    height: 50px;
+    margin: 10px 10px 0 10px;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+/* 会话 和 联系人的图标 */
+.content .main .main-box .box-left .choose img{
+    width: 30px;
+    height: 30px;
+}
+/* 悬浮会话和联系人 */
+.content .main .main-box .box-left .choose .session:hover,.content .main .main-box .box-left .contacts:hover{
+    box-shadow: -1px -1px 1px rgba(213, 216, 224, 0.5),1px 1px 1px rgba(20,20,20, 0.5);
+}
+/* 选中会话 或 联系人 */
+.content .main .main-box .box-left .choose .session:active,.content .main .main-box .box-left .contacts:active{
+    box-shadow: 1px 1px 1px rgba(213, 216, 224, 0.5),-1px -1px 1px rgba(20,20,20, 0.5);
+}
+/* 会话列表 */
+.content .main .main-box .box-left .session_list{
+    list-style: none;
+    height: 325px;
+    width: 250px;
+    overflow: auto;
+}
+/* 会话项 */
+.content .main .main-box .box-left .session_list li{
+    border-top:solid rgba(20,20,20,0.3 );
+    display: flex;
+    cursor: pointer;
+}
+/* 会话项悬浮时 */
+.content .main .main-box .box-left .session_list li:hover{
+    background-color: rgba(100,100,100, 0.5);
+    box-shadow: -1px -1px 1px rgba(213, 216, 224, 0.5),1px 1px 1px rgba(20,20,20, 0.5);
+}
+/* 会话被点击时 */
+.content .main .main-box .box-left .session_list li:active{
+    
+    box-shadow: 1px 1px 1px rgba(213, 216, 224, 0.5),-1px -1px 1px rgba(20,20,20, 0.5);
+}
+/*会话被选中时*/
+.session_choose{
+    background-color: rgba(100,100,100, 0.5);
+    box-shadow: -1px -1px 1px rgba(213, 216, 224, 0.5),1px 1px 1px rgba(20,20,20, 0.5);
+}
+/* 会话头像 */
+.content .main .main-box .box-left .session_list li img{
+    width: 50px;
+    height: 50px;
+    margin:10px 0 10px 10px;
+}
+/* 会话文字信息 */
+.content .main .main-box .box-left .session_list li .session_info{
+    margin: 10px;
+    width: 170px;
+    color: rgb(238, 238, 238);
+}
+/* 会话信息第一行 */
+.content .main .main-box .box-left .session_list li .session_info .first_row{
+    display: flex;
+}
+/* 最后一条消息的时间 */
+.content .main .main-box .box-left .session_list li .session_info .first_row .time{
+    text-align: right;
+    max-width: 70px;
+    min-width: 70px;
+    line-height: 20px;
+    font-size: 10px;
+}
+/* 会话名称 */
+.content .main .main-box .box-left .session_list li .session_info .first_row h3{
+    font-size: 13px;
+    font-weight: bolder;
+    line-height: 20px;
+    max-width: 100px;
+    min-width: 100px;
+}
+/* 会话信息第二行 */
+.content .main .main-box .box-left .session_list li .session_info .second_row{
+    display: flex;
+    align-items: center;
+}
+
+/* 会话最后一条信息 */
+.content .main .main-box .box-left .session_list li .session_info .second_row .last_message{
+    line-height:30px ;
+    font-size: small;
+    max-width: 150px;
+    min-width: 150px;
+}
+/* 会话未读信息数 */
+.content .main .main-box .box-left .session_list li .session_info .second_row .unread_num{
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: small;
+    width: 20px;
+    border-radius: 10px;
+    background-color: red;
+    color: aliceblue;
+
+}
+/* 好友分组列表 */
+.content .main .main-box .box-left .contacts_group_list{
+    height: 325px;
+    width: 250px;
+    overflow: auto;
+}
+/* 好友列表 */
+.content .main .main-box .box-left .contacts_list{
+    margin-left: 10px;
+    cursor: pointer;
+    color:  rgb(238, 238, 238);
+    border-top:solid rgba(20,20,20,0.3 );
+}
+/* 好友分组名 */
+.content .main .main-box .box-left .contacts_list summary{
+    margin: 5px;
+}
+/* 好友行 */
+.content .main .main-box .box-left .contacts_list .contacts_row{
+    display: flex;
+    border-radius: 10px;
+}
+/* 悬浮好友行 */
+.content .main .main-box .box-left .contacts_list .contacts_row:hover{
+    background-color: rgba(100,100,100, 0.5);
+    box-shadow: -1px -1px 1px rgba(213, 216, 224, 0.5),1px 1px 1px rgba(20,20,20, 0.5);
+}
+/* 好友头像 */
+.content .main .main-box .box-left .contacts_list img{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    margin: 5px;
+}
+/* 好友名称 */
+.content .main .main-box .box-left .contacts_list span{
+    margin: 5px;
+    line-height: 30px;
+}
+/* 离线用户名 */
+.offline{
+    color:rgb(50,50,50);
+}
+/* 会话名称 */
+.content .main .main-box .box-right .session_name{
+    line-height: 50px;
+    text-align: center;
+    height: 50px;
+    border-bottom: solid 1px rgba(50,50,50, 0.5);
+    cursor: pointer;
+}
+.content .main .main-box .box-right .session_name:hover{
+    text-decoration: underline;
+}
+/* 联系人在线的会话名称状态 */
+.online{
+    color: red;
+}
+/* 聊天记录框 */
+.content .main .main-box .box-right .chat_content{
+    height: 300px;
+    overflow: auto;
+    border-bottom: solid 1px rgba(50,50,50, 0.5);
+}
+/*时间行*/
+.content .main .main-box .box-right .chat_content .message_time {
+    width: 150px;
+    background-color: rgb(50,50,50,0.5);
+    margin: 10px auto;
+    text-align: center;
+    border-radius: 10px;
+    font-size: small;
+    color: rgba(255,255,255,0.8);
+
+}
+/* 聊天消息行-左 */
+.content .main .main-box .box-right .chat_content .message_row_left{
+    display: flex;
+    justify-content: left;
+    margin: 10px;
+}
+/* 聊天信息行-右 */
+.content .main .main-box .box-right .chat_content .message_row_right{
+    display: flex;
+    justify-content: right;
+    margin: 10px;
+    
+}
+/* 查看更多信息 */
+.content .main .main-box .box-right .chat_content .show_more{
+    text-align: center;
+    margin-top: 10px;
+    cursor: pointer;
+}
+/* 悬浮查看更多信息*/
+.content .main .main-box .box-right .chat_content .show_more:hover{
+    color: blue;
+    text-decoration: underline;
+}
+/* 显示被移除会话行*/
+.content .main .main-box .box-right .chat_content .delete{
+    color: rgb(255,255,255);
+
+    text-align: center;
+    margin: 10px auto;
+    width: 250px;
+    background-color: red;
+    border-radius: 10px;
+    font-size: small;
+}
+/* 聊天头像 */
+.content .main .main-box .box-right .chat_content .photo{
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+}
+/* 左聊天内容 */
+.content .main .main-box .box-right .chat_content .message_row_left .message_left{
+    display: block;
+    margin-top: 5px;
+    height: 35px;
+    max-width: 250px;
+    padding: 0 10px;
+    line-height: 35px;
+    border-radius: 5px;
+    background-color: rgb(255,255,255);
+}
+/* 右聊天内容  */
+.content .main .main-box .box-right .chat_content .message_row_right .message_right{
+    display: block;
+    height: 35px;
+    margin-top: 5px;
+    max-width: 250px;
+    padding: 0 10px;
+    line-height: 35px;
+    border-radius: 5px;
+    background-color: rgb(149,236,105);
+}
+/* 右聊天用户名*/
+.content .main .main-box .box-right .chat_content .message_row_right .right_name{
+    text-align: end;
+}
+/* 聊天图片 左右 */
+.content .main .main-box .box-right .chat_content .message_photo{
+    max-width: 250px;
+    margin-top: 5px;
+}
+/* 隐藏滚动条 */
+::-webkit-scrollbar {
+     display: none;
+}
+/* 图片发送 */
+.content .main .main-box .box-right .image_send img{
+    height: 20px;
+    width: 20px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+/* 图片发送被悬浮 */
+.content .main .main-box .box-right .image_send img:hover{
+   background-color: rgb(255,255,255);
+
+}
+
+/* 文字输入框 */
+.content .main .main-box .box-right #message_input{
+    border: none;
+    outline: none;
+    width: 550px;
+    height: 100px;
+    resize: none;
+    padding: 5px;
+    font-size: larger;
+    font-weight: normal;
+    background-color: rgba(100,100,100, 0);
+
+}
+/* 发送行 */
+.content .main .main-box .box-right .send_row{
+    height: 20px;
+    display: flex;
+    justify-content: end;
+}
+/* 发送按钮 */
+.content .main .main-box .box-right .send_row .send_button{
+    height: 20px;
+    width: 100px;
+    cursor: pointer;
+
+}
+
+/* 搜索结果弹窗选项行*/
+.content .window_page .window .choice{
+    display: flex;
+    justify-content: center;
+    background-color: rgb(47, 50, 57);
+    padding: 2px;
+}
+/* 用户 和 聊天室 选项 */
+.content  .window_page .window .choice .user,.chatroom{
+    width: 100px;
+    
+    text-align: center;
+    color: rgb(238, 238, 238);
+    height: 50px;
+    line-height: 50px;
+    cursor: pointer;
+    margin: 2px;
+}
+/* 选项间隔 */
+.content .window_page  .window .choice .user{
+    border-right:solid 2px ;
+}
+/* 用户 和 聊天室 悬浮 */
+.content .window_page  .window .choice .user:hover,.chatroom:hover {
+    font-weight: bolder;
+    font-size: larger;
+}
+/* 字体变大加粗 */
+.bold_and_large{
+    font-weight: bolder;
+    font-size: larger;
+}
+/* 用户列 和 聊天列*/
+.content  .window_page .window .user_list , .chatroom_list{
+    list-style: none;
+    overflow: auto;
+}
+/* 用户行 和 聊天室行 */
+.content  .window_page .window .user_list .user_row, .chatroom_list .chatroom_row{
+    display: flex;
+    margin: 5px;
+    
+    border-bottom: solid 1px;
+    align-items: center;
+}
+/* 聊天室行的左边信息长度 */
+.content .window_page  .window .user_list .user_row .username , .chatroom_list .chatroom_row .username{
+    width: 340px;
+}
+
+/* 用户行左边信息长度 */
+/* 添加按钮 和 申请加入按钮 */
+.content  .window_page .window .user_list .user_row button, .chatroom_list .chatroom_row button{
+    background-color: rgb(149,236,105);
+    font-weight: bolder;
+    border-radius: 5px;
+    padding: 2px;
+    /* margin-left: 250px; */
+    cursor: pointer;
+    max-height: 25px;
+    min-width: 73px;
+}
+/* 用户头像 和 聊天室头像 */
+.content .window_page  .window .user_list .user_row img, .chatroom_list .chatroom_row img{
+    height: 50px;
+    width: 50px;
+    margin: 5px;
+    border-radius: 5px;
+}
+/* 设置窗口的z轴坐标 */
+.set_z_index{
+    /* 比背景低一级 */
+    z-index: -1;
+}
+/* 设置用户信息显示栏 */
+.content .window_page  .window .info_row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    border-bottom: solid 1px;
+}
+/* 设置用户信息的头像栏 */
+.content .window_page  .window .info_row img{
+    height: 50px;
+    width: 50px;
+    margin: 5px;
+    cursor: pointer;
+}
+/* 设置用户信息input标签的基本样式 */
+.content .window_page  .window .info_row input{
+    margin: 5px;
+    padding: 2px;
+    
+}
+/* 设置头像输入标签 */
+.content .window_page  .window .info_row #head_photo{
+    display: none;
+}
+/* 保存信息按钮 */
+#send_button,.content .window_page  .window .info_row #update_info,#update_head{
+    margin: 5px;
+    background-color: rgb(149,236,105);
+    padding: 2px;
+    cursor: pointer;
+}
+/* 保存信息按钮点击样式 */
+#send_button:active,.content .window_page  .window .info_row #update_info:active , #update_head:active{
+    background-color: red;
+}
+/*设置用户信息行的内容样式*/
+.content .window_page  .window .info_row span{
+    height: 30px;
+    line-height: 30px;
+}
+/*设置删除和添加按钮样式*/
+.content .window_page  .window .info_row .delete , .add{
+    margin: 5px;
+    padding: 0 5px 0 5px ;
+}
+/* 设置用户信息div标签的基本样式 */
+.content .window_page  .window .info_row div{
+    width: 178px;
+}
+
+
+/* 获取历史聊天记录内容框*/
+.content .window_page  .window .message_password{
+    margin-top: 100px;
+
+}
+/* 获取历史消息权限密码行 */
+.content .window_page  .window .message_password .password_row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* 获取聊天记录标题*/
+.content .window_page  .window .message_password h2{
+    text-align: center;
+    margin: 10px;
+}
+/* 密码行输入框*/
+.content .window_page  .window .message_password .password_row input{
+    border-radius: 5px;
+    padding:1px 1px 1px 3px;
+}
+/* 确认按钮*/
+#send_button{
+    display: block;
+    margin: 10px auto;
+    padding: 2px 10px 2px 10px;
+}
+/* 聊天室信息*/
+.content .window_page  .window .chatroom_info{
+    display: flex;
+}
+/* 聊天室信息左*/
+.content .window_page  .window .chatroom_info .left_info{
+    border-right: solid 1px;
+    min-width: 230px;
+    min-height: 350px;
+    margin: 10px;
+}
+/* 聊天室信息左*/
+.content .window_page  .window .chatroom_info .right_info{
+    width: 230px;
+    height: 350px;
+    margin: 10px;
+    overflow: auto;
+}
+/*聊天室头像*/
+.content .window_page  .window .chatroom_info .left_info .chatroom_head{
+    width: 50px;
+    height: 50px;
+    margin-left: 80px;
+
+}
+/*左边的每行*/
+.content .window_page  .window .chatroom_info .left_info .left_row{
+    margin: 10px;
+    border-bottom: solid 1px;
+
+}
+/* 右边的行*/
+.content .window_page  .window .chatroom_info .right_info .right_row{
+    margin: 10px;
+    font-size: small;
+    border-bottom: solid 1px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 40px;
+    line-height: 40px;
+}
+/* 成员头像*/
+.content .window_page  .window .chatroom_info .right_info .right_row .member_head{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+}
+/* 成员信息*/
+.content .window_page  .window .chatroom_info .right_info .right_row .user_name{
+    margin-left: 10px;
+}
+/* 通知选择行*/
+.content .window_page  .window .select_row{
+    display: flex;
+    justify-content: space-around;
+    background-color: rgb(47,50,57);
+}
+/* 通知选择行的选项 */
+.content .window_page  .window .select_row div{
+    color: rgb(200,200,200);
+    width: 100px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+}
+/* 选项被悬浮 */
+.content .window_page  .window .select_row div:hover{
+    font-size: larger;
+    font-weight: bold;
+}
+/* 通知块 */
+.content .window_page  .window .advice_row{
+    margin: 5px;
+    border-radius: 5px;
+    border: rgb(150,150,150) solid 1px ;
+    box-shadow: 1px 1px 1px rgb(47,50,57),-1px -1px 1px rgb(200,200,200);
+}
+/* 时间行 */
+.content .window_page  .window .advice_row .time_row{
+    margin: 5px;
+    text-align: center;
+    font-size: small;
+}
+/*通知信息行*/
+.content .window_page  .window .advice_row .advice_content{
+    display: flex;
+    margin: 5px;
+    align-items: center;
+    justify-content: center;
+    font-size: small;
+}
+/*举报内容高亮*/
+.content .window_page  .window .advice_row .content_detail{
+    color: blue;
+
+}
+/*接收或拒绝按钮*/
+.content .window_page  .window .advice_row button{
+    margin:0 5px;
+}
+/*接收按钮*/
+.content .window_page  .window .advice_row .accept_button{
+    background-color: rgb(149,236,105);
+    padding: 2px;
+    cursor: pointer;
+}
+/*拒绝按钮*/
+.content .window_page  .window .advice_row .refuse_button{
+    background-color: red;
+    padding: 2px;
+    cursor: pointer;
+    color: aliceblue;
+}
+/* 通知信息里的头像*/
+.content .window_page  .window .advice_row img{
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+}
+/* 通知信息自动生成滚轮 */
+#advice_content{
+    height: 350px;
+    width: 500px;
+    overflow: auto;
+}
+/*验证信息行*/
+.content .small_window_page .small_window .content_info .content_row{
+    display: flex;
+    justify-content: space-around;
+    margin: 5px;
+
+
+}
+/* 验证信息输入*/
+.content .small_window_page .small_window .content_info .content_row .content_text{
+    width: 300px;
+    height: 200px;
+    resize:none;
+    padding: 5px;
+}
+/* 确认按钮 */
+.content .small_window_page .small_window .content_info .content_send{
+    width: 70px;
+    height: 20px;
+    background-color: rgb(149,236,105);
+    margin-top: 10px;
+    margin-left: 150px;
+}
+/* 右键菜单框*/
+#contextMenu {
+    width: 100px;
+    position: absolute;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    z-index: 4;
+
+}
+/* 右键菜单选项*/
+#contextMenu .option{
+    line-height: 20px;
+    text-align: center;
+    font-size:small;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    cursor: pointer;
+}
+/* 右键菜单选项悬浮*/
+#contextMenu .option:hover{
+    background: #cccccc;
+}
+/* 邀请用户选项列表*/
+.content .small_window_page .small_window .choose_list{
+    margin: 5px;
+    overflow: auto;
+    height: 200px;
+    box-shadow:  1px 1px 1px,-1px -1px 1px;
+}
+/* 邀请用户行 */
+.content .small_window_page .small_window .choose_list .choose_row{
+    display: flex;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    border-bottom: solid 1px;
+}
+/* 邀请用户头像 */
+.content .small_window_page .small_window .choose_list .choose_row img{
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    margin: 5px 5px 5px 20px;
+}
+/*邀请按钮*/
+.content .small_window_page .small_window button{
+    margin: 5px 5px 5px 180px;
+    padding: 0 5px;
+
+}
+/* 小窗口用户列表*/
+.content .small_window_page .small_window .member_list{
+    height: 250px;
+    overflow: auto;
+}
+/* */
+/* 右边的行*/
+.content .small_window_page .small_window .member_list .right_row{
+    margin: 10px;
+
+    border-bottom: solid 1px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 40px;
+    line-height: 40px;
+}
+/* 成员头像*/
+.content .small_window_page .small_window .member_list .right_row .member_head{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+}
+/* 成员信息*/
+.content .small_window_page .small_window .member_list .right_row .user_name{
+    margin-left: 10px;
+}
+
+/* 设置聊天室信息显示栏 */
+.content .small_window_page .small_window .info_row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    border-bottom: solid 1px;
+}
+/* 设置聊天室信息的头像栏 */
+.content .small_window_page .small_window .info_row img{
+    height: 50px;
+    width: 50px;
+    margin: 5px;
+    cursor: pointer;
+}
+/* 设置聊天室信息input标签的基本样式 */
+.content .small_window_page .small_window .info_row input{
+    margin: 5px;
+    padding: 2px;
+    
+}
+/* 设置聊天室头像输入标签 */
+.content .small_window_page .small_window .info_row #chatroom_head_photo{
+    display: none;
+}
+/* 保存信息按钮 */
+.content .small_window_page .small_window .info_row #update_info,#update_head{
+    margin: 5px;
+    background-color: rgb(149,236,105);
+    padding: 2px;
+    cursor: pointer;
+}
+/* 保存信息按钮点击样式 */
+.content .small_window_page .small_window .info_row #update_info:active , #update_head:active{
+    background-color: red;
+}
+/* 屏蔽页 */
+#disabled{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(100,100,100, 0.2);
+    z-index: -2;
+}
+.hide{
+    display: none;
+}
+
+/* 创建新分组内容框*/
+.content .small_window_page  .small_window .message_password{
+    margin-top: 50px;
+}
+/* 创建新分组分组名行 */
+.content .small_window_page  .small_window .message_password .password_row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* 创建新分组标题*/
+.content .small_window_page  .small_window  .message_password h2{
+    text-align: center;
+    margin: 10px;
+}
+/* 新分组名输入框*/
+.content .small_window_page  .small_window .message_password .password_row input{
+    border-radius: 5px;
+    padding:1px 1px 1px 3px;
+}
+/* 新分组种类选择行*/
+.content .small_window_page  .small_window .message_password .check_row{
+    display: flex;
+    justify-content: center;
+}
+/* 新分组种类选择input*/
+.content .small_window_page  .small_window .message_password .check_row input{
+    margin-right: 10px;
+}
+/* 创建群聊行 */
+#create_chatroom_row{
+    margin-left: 10px;
+    
+    
+    border-top:solid rgba(20,20,20,0.3 );
+}
+/* 创建群聊按钮 */
+#create_chatroom{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}

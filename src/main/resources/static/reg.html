@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/context_path.js"></script>
+    <title>注册页面</title>
+</head>
+<body>
+    <!-- 主体页面 -->
+    <div class="content">
+        <!-- 导航栏 -->
+        <div class="title">
+            
+            <div class="space-left">
+                <img src="./image/头像.png" alt="网络聊天室系统" class="logo">
+                <div class="title-name">网页聊天室系统</div>
+            </div>
+            <div class="space-right" >
+                <div class="logout hide">注销</div>
+                <a href="login.html" > 登录</a>
+            </div>
+            
+        </div>
+        <div class="main">
+            <div class="content-box">
+                <!-- 注册账号标题 -->
+                <div class="login-title">注册</div>
+                <!-- 账号行 -->
+                <div class="row">
+                    <span>账号：</span>
+                    <input type="text" id="account_num">
+                </div>
+                <!-- 密码行 -->
+                <div class="row">
+                    <span>密码：</span>
+                    <input type="password" id="password">
+                </div>
+                <!-- 确认密码行 -->
+                <div class="row">
+                    <span>确认密码：</span>
+                    <input type="password" id="password_2">
+                </div>
+                <!-- 注册邮箱 -->
+                <div class="row">
+                    <span>邮箱：</span>
+                    <input type="text" id="mail">
+                </div>
+                <!-- 验证码行 -->
+                <div class="row">
+                    <span>验证码：</span>
+                    <input type="text" id="verify">
+                    <button class="mail_button" onclick="get_reg_mail_verify()"> 获取验证码 </button>
+                </div>
+                <button class="submit" onclick="reg()">注册</button>
+            </div>
+        </div>
+    </div>
+    <!-- 做背景 -->
+    <div class="cover"></div>
+    <script>
+        // 获取验证码按钮
+        var mail_button=jQuery(".mail_button");
+        // 获取邮箱输入框
+        var mail=jQuery("#mail");
+        // 获取密码输入框
+        var password=jQuery("#password");
+        // 获取确认密码输入框
+        var password_2=jQuery("#password_2");
+        // 获取账号输入框
+        var account_num=jQuery("#account_num");
+        // 获取验证码输入框
+        var verify=jQuery("#verify");
+
+        // 获取验证函数
+        function get_reg_mail_verify(){
+            // 禁用按钮
+            mail_button.attr("disabled","disabled");
+            
+            // 判断该邮箱输入框是否有输入
+            if(mail.val().trim() != ""){
+                //有输入,发请求
+                jQuery.ajax({
+                    url:context_path+"/user/get_reg_mail_verify",
+                    method:"get",
+                    data:{
+                        mail:mail.val()
+                    },
+                    success:function(res){
+                        if(res.code == 200){
+                            // 定时器函数，禁用发送验证码按钮60秒
+                            handleClick();
+                            alert("验证码已经发送至邮箱！");
+                            
+                            
+                        }else if(res.code == 1) {
+                            // 邮箱不存在
+                            alert("邮箱不存在，请检查邮箱是否正确！");
+                            // 启用按钮
+                            mail_button.removeAttr("disabled");
+                            mail.focus();
+                        }else if(res.code == 2){
+                            alert("邮箱已经被使用了！");
+                            // 启用按钮
+                            mail_button.removeAttr("disabled");
+                        }else if(res.code == 0){
+                            alert("邮箱未输入！");
+                            // 启用按钮
+                            mail_button.removeAttr("disabled");
+                        }else{
+                            // 服务器错误 
+                            alert("错误信息："+res.message);
+                            // 启用按钮
+                            mail_button.removeAttr("disabled");
+                        }
+                    }
+
+                })
+
+            }else{
+                // 没有输入
+                alert("请输入邮箱！");
+                // 启用按钮
+                mail_button.removeAttr("disabled");
+                mail.focus();
+            }
+        }
+
+        // 设置定时器，防止多次发送
+        function handleClick() {
+            
+            
+
+
+                // 显示60秒倒计时
+                var secondsRemaining = 60;
+                mail_button.text(secondsRemaining + "秒后可重发");
+
+                // 创建定时器，每秒更新倒计时
+                var timer = setInterval(function () {
+                    secondsRemaining--;
+                    mail_button.text(secondsRemaining + "秒后可重发");
+
+                    // 如果倒计时结束，启用按钮并清除定时器
+                    if (secondsRemaining <= 0) {
+                        mail_button.removeAttr("disabled");
+                        mail_button.text("获取验证码");
+                        clearInterval(timer);
+                    }
+                }, 1000);
+            
+        }
+        // 设置注册按钮点击函数
+        var reg_button= jQuery(".submit");
+        function reg(){
+            // 保证输入正确且完备
+            // 非空校验
+            if(account_num.val().trim()==""){
+                alert("请输入账号！");
+                account_num.focus();
+                return;
+            }else if( password.val().trim()==""){
+                alert("请输入密码");
+                password.focus();
+                return;
+            }else if(password_2.val().trim()==""){
+                alert("请输入确认密码");
+                password_2.focus();
+                return;
+            }else if(mail.val().trim()==""){
+                alert("请输入邮箱！");
+                mail.focus();
+                return;
+            }else if(verify.val().trim()==""){
+                alert("请输入验证码");
+                verify.focus();
+                return;
+            }
+            // 判断密码和确认密码是否相等
+            if(password.val()!=password_2.val()){
+                alert("请确认密码和验证密码相同！");
+                password_2.focus();
+                return;
+            }
+            // 发送注册请求
+            jQuery.ajax({
+                method:"post",
+                url:context_path+"/user/reg",
+                data:{
+                    password:password.val(),
+                    accountNum:account_num.val(),
+                    mail:mail.val(),
+                    mailVerify:verify.val()
+                },
+                success:function(res){
+                    if(res.code==200){
+                        // 注册成功
+                        alert("注册成功!");
+                        // 跳转去登录页面
+                        location.href=context_path+"/login.html";
+                    }else if(res.code == 1){
+                        // 账号重复
+                        alert("该账号已被注册过，请重新输入！");
+                        account_num.focus();
+                    }else if(res.code == 2){
+                        // 验证码错误
+                        alert("验证码错误！");
+                        verify.focus();
+                    }else if(res.code == 3){
+                        // 参数有空字符串
+                        alert("输入框存在空字符串！");
+                    }else if(res.code == 4){
+                        // 该邮箱未获取验证码
+                        alert("验证码错误！");
+                        verify.focus();
+                    }else if(res.code == 5){
+                        // 服务器内部错误
+                        alert("服务器内部错误："+res.message);
+                    }
+                }
+            })
+
+        }
+    </script>
+</body>
+</html>

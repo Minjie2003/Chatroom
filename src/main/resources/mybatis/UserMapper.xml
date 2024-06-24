@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserMapper">
+<!--    普通用户返回结果的映射-->
+    <resultMap id="UserInfo" type="com.example.demo.enity.UserInfo">
+        <id property="id" column="id"></id>
+        <result property="accountNum" column="account_num"></result>
+        <result property="birthday" column="birthday"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="location" column="location"></result>
+        <result property="mail" column="mail"></result>
+        <result property="password" column="password"></result>
+        <result property="photo" column="photo"></result>
+        <result property="sex" column="sex"></result>
+        <result property="state" column="state"></result>
+        <result property="username" column="username"></result>
+    </resultMap>
+<!--    搜索用户返回结果的映射-->
+    <resultMap id="UserSelectVO" type="com.example.demo.VO.UserSelectVO">
+        <result property="id" column="id"></result>
+        <result property="username" column="username"></result>
+        <result property="photo" column="photo"></result>
+        <result property="accountNum" column="account_num"></result>
+    </resultMap>
+
+    <select id="selectByAccountName" resultMap="UserInfo">
+        select id,account_num,birthday,update_time,create_time,location,mail,password,photo,sex,state,username
+        from user_info where account_num = #{accountNum}
+    </select>
+    <insert id="InsertUserinfo"  useGeneratedKeys="true" keyProperty="id">
+        insert into user_info (account_num,password,mail,create_time) values (#{accountNum},#{password},#{mail},#{createTime})
+    </insert>
+    <select id="selectByMail" resultMap="UserInfo">
+        select id,account_num,birthday,update_time,create_time,location,mail,password,photo,sex,state,username
+        from user_info where mail = #{mail}
+    </select>
+    <update id="updatePassword">
+        update user_info set password = #{password} where account_num = #{accountNum}
+    </update>
+    <update id="updateUserinfo">
+        update user_info
+        <trim prefix="set"  suffixOverrides=",">
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="location != null and location !=''">
+                location = #{location},
+            </if>
+            <if test="sex != null and  sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="photo != null and photo != ''">
+                photo = #{photo},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <select id="selectByAccountNumOrUsername" resultMap="UserSelectVO">
+        select username,photo,id,account_num,id from user_info where (account_num = #{key} or username = #{key}) and state != 0
+    </select>
+    <select id="selectById" resultMap="UserInfo">
+        select id,account_num,birthday,update_time,create_time,location,mail,password,photo,sex,state,username
+        from user_info where id = #{userId}
+    </select>
+    <select id="selectUserByIndex" resultMap="UserInfo">
+        select * from user_info order by create_time desc limit 8 offset #{index}
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from user_info;
+    </select>
+    <!--    <update id="updateUserInfo">-->
+<!--        update user_info set-->
+<!--        -->
+<!--    </update>-->
+</mapper>

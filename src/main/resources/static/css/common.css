@@ -1,0 +1,265 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+    
+    min-width: 750px;
+    min-height: 550px
+    
+}
+
+/* 页面背景 */
+.cover {
+    min-width: 750px;
+    min-height: 550px;
+    width: 100%;
+    height: 100%;
+    background-image: url(../image/background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    filter: blur(10px);
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: 1
+}
+/* 页面内容主体 */
+.content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 2
+}
+/* 弹窗页面 */
+.content .window_page{
+    position: absolute;
+    z-index:-1;
+    width: 100%;
+    height: 100%;
+
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+/* 弹窗 */
+.content .window_page .window{
+
+    width: 500px;
+    height: 400px;
+    
+    background-color: rgb(238, 238, 238);
+    box-shadow: 1px 1px 100px rgb(47, 50, 57),-1px -1px 100px rgb(238, 238, 238);
+}
+/* 弹窗操作行 */
+.content .window_page .window .option_row{
+    display: flex;
+    justify-content: right;
+    background-color: rgb(47, 50, 57);
+    color: aliceblue;
+
+}
+/* 弹窗关闭按钮 */
+.content .window_page .window .option_row div{
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+
+}
+/* 关闭弹窗按钮的悬浮 */
+.content .window_page .window .option_row div:hover{
+    background-color: rgb(254,84,56);
+}
+/* 小弹窗页面 */
+.content .small_window_page{
+    position: absolute;
+    z-index:-1;
+    width: 100%;
+    height: 100%;
+    
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+/* 弹窗 */
+.content .small_window_page .small_window{
+    
+    width: 400px;
+    height: 300px;
+    background-color: rgb(238, 238, 238);
+    box-shadow: 1px 1px 100px rgb(47, 50, 57),-1px -1px 100px rgb(238, 238, 238);    
+}
+/* 弹窗操作行 */
+.content .small_window_page .small_window .option_row{
+    display: flex;
+    justify-content: right;
+    background-color: rgb(47, 50, 57);
+    color: aliceblue;
+    
+}
+/* 弹窗关闭按钮 */
+.content .small_window_page .small_window .option_row div{
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+
+}
+/* 关闭弹窗按钮的悬浮 */
+.content .small_window_page .small_window .option_row div:hover{
+    background-color: rgb(254,84,56);
+}
+/* 导航栏 */
+.content .title {
+    position: absolute;
+    z-index: 3;
+    min-width: 750px;
+    min-height: 40px;
+    width: 100%;
+    display: flex;
+    background-color: rgba(128, 128,128,0.4);
+}
+/* 导航左半部分 */
+.content .title .space-left {
+    padding: 2px;
+    width: 50%;
+    min-height: 100%;
+    display: flex;
+    justify-content: left;
+}
+/* 导航右半部分 */
+.content .title .space-right{
+    width: 50%;
+    min-height: 100%;
+    display: flex;
+    justify-content: right;
+}
+/* logo标志 */
+.content .title .space-left .logo{
+    
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    margin: 5px;
+}
+/* 导航名称 */
+.content .title .title-name{
+    
+    line-height: 40px;
+    color: rgba(255,255,255, 0.5);
+}
+/* 注销标签 和 登录标签*/
+.content .title .logout,.content .title a{
+    margin-right:40px ;
+    line-height: 40px;
+    color: rgba(255,255,255, 0.5);
+    text-decoration: none;
+    cursor: pointer;
+}
+/* 注销和登录标签悬浮样式 */
+.content .title .logout:hover,.content .title a:hover{
+    color: rgba(176, 10, 10, 0.585);
+}
+
+/* 内容主体 */
+.content .main{
+    width: 100%;
+    min-height: 100%;
+
+    display: flex;
+    
+    justify-content: center;
+
+    align-items: center;
+}
+/* 登录框的样式 */
+.content .main .content-box{
+    padding-bottom: 20px;
+    margin: 10px;
+    min-width: 400px;
+    min-height: 300px;
+    width: 400px;
+    border-radius: 10px;
+    
+    background-color: rgba(255,255,255,0.75);
+}
+/* 登录文字标题 */
+.content .main .content-box .login-title{
+    text-align: center;
+    line-height: 50px;
+    font-size: large;
+    font-weight: bolder;
+    margin-top: 20px;
+}
+/* 每行输入框的父元素 */
+.content .main .content-box .row{
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+/* 输入框前的文字 */
+.content .main .content-box .row span {
+    font-weight: bold;
+    width: 100px;
+    height: 50px;
+    line-height: 50px;
+    
+}
+/* 正常输入框 */
+.content .main .content-box .row input{
+    padding: 5px;
+    border: none;
+    
+    border-radius: 5px;
+    height: 30px;
+    margin: 10px 0;
+    width: 170px;
+}
+/* 验证码输入框 */
+.content .main .content-box .row #verify{
+    width: 80px;
+}
+/* 验证码图片 */
+.content .main .content-box .row img{
+    width: 80px;
+    height: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* 登录按钮 */
+.content .main .content-box .submit{
+    width: 250px;
+    height: 35px;
+    border: none;
+    margin: 30px 75px 0 75px;
+    background-color: rgb(0,128,0);
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* 点击登录按钮 */
+.content .main .content-box .submit:active{
+    background-color: rgb(128,128,128);
+}
+/* 邮箱验证码按钮 */
+
+.content .main .content-box .row .mail_button{
+    width: 80px;
+    height: 30px;
+    margin-left: 10px;
+    font-size: x-small;
+    cursor: pointer;
+}
+/* 隐藏标签 */
+.hide{
+    display: none;
+}

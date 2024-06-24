@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.AdviceMapper">
+    <resultMap id="Advice" type="com.example.demo.enity.Advice">
+        <id property="id" column="id"></id>
+        <result property="category" column="category"></result>
+        <result property="sendTime" column="send_time"></result>
+        <result property="sendId" column="send_id"></result>
+        <result property="receiveId" column="receive_id"></result>
+        <result property="content" column="content"></result>
+        <result property="isRead" column="is_read"></result>
+        <result property="result" column="result"></result>
+        <result property="chatroomId" column="chatroom_id"></result>
+    </resultMap>
+    <resultMap id="AdviceVO" type="com.example.demo.VO.AdviceVO" extends="Advice">
+        <result property="headPath" column="photo"></result>
+        <result property="username" column="username"></result>
+        <result property="accountNum" column="account_num"></result>
+    </resultMap>
+    <resultMap id="ChatroomAdviceVO" type="com.example.demo.VO.ChatroomAdviceVO" extends="AdviceVO">
+        <result property="name" column="name"></result>
+    </resultMap>
+    <resultMap id="ReportVO" type="com.example.demo.VO.ReportVO" extends="Advice">
+        <result property="receiveName" column="receive_name"></result>
+        <result property="sendName" column="send_name"></result>
+    </resultMap>
+    <insert id="insertFriendAdvice">
+        insert into advice_info (send_id,receive_id,content,category) values (#{sendId},#{receiveId},#{content},#{category});
+    </insert>
+    <insert id="insertAddChatroomAdvice">
+        insert into advice_info (send_id,receive_id,content,category,chatroom_id) values (#{sendId},#{receiveId},#{content},#{category},#{chatroomId})
+    </insert>
+    <update id="updateAll">
+        update advice_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isRead!=null">
+                is_read = #{isRead},
+            </if>
+            <if test="result != null">
+                result = #{result},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <select id="selectAllFriendByReceiveId" resultMap="AdviceVO">
+        select a.id,category,send_time,send_id,receive_id,content,is_read,result,photo,username,account_num from (select * from advice_info where receive_id = #{receiveId} and category = 0 ) as a join user_info as u on send_id = u.id order by send_time desc
+    </select>
+    <select id="selectAllChatroomReqByReceiveId" resultMap="ChatroomAdviceVO">
+        select au.id,au.category,au.send_time,au.receive_id,au.content,au.is_read,au.result,au.photo,au.username,au.account_num,au.chatroom_id,c.name,send_id
+        from
+        (select a.id,category,send_time,send_id,receive_id,content,is_read,result,photo,username,account_num,chatroom_id
+        from
+        (select * from advice_info where receive_id = #{receiveId} and category in(1,2)) as a
+        join
+        user_info as u
+        on send_id = u.id) as au join chatroom_info as c on au.chatroom_id = c.session_id
+        order by send_time desc
+    </select>
+    <select id="selectAllReportByReceiveId" resultMap="AdviceVO">
+        select a.id,category,send_time,send_id,receive_id,content,is_read,result,photo,username,account_num from (select * from advice_info where send_id = #{sendId} and category = 3) as a join user_info as u on send_id = u.id order by send_time desc
+    </select>
+    <select id="selectAllWarnByReceiveId" resultMap="Advice">
+        select * from advice_info where receive_id= #{receive_id} and category = 4 order by send_time desc
+    </select>
+    <select id="selectById" resultMap="Advice">
+        select * from advice_info where id = #{id}
+    </select>
+    <select id="selectReportCount" resultType="java.lang.Integer">
+        select count(*) from Advice_info where category = 3
+    </select>
+    <select id="selectReportByIndex" resultMap="ReportVO">
+        select a2.id,send_id,receive_id,content,category,chatroom_id,send_time,result,is_read,send_name,u2.username as receive_name from
+        (select a.id,send_id,receive_id,content,category,chatroom_id,send_time,result,is_read,u1.username as send_name from
+        (select * from advice_info where category = 3 order by send_time desc limit 8 offset #{index}) as a
+        join
+        user_info as u1
+        on send_id = u1.id  ) as a2 join user_info as u2
+        on receive_id = u2.id
+    </select>
+    <select id="selectReportByKey" resultMap="ReportVO">
+        select a2.id,send_id,receive_id,content,category,chatroom_id,send_time,result,is_read,send_name,u2.username as receive_name from
+        (select a.id,send_id,receive_id,content,category,chatroom_id,send_time,result,is_read,u1.username as send_name from
+        (select * from advice_info where category = 3 order by send_time desc ) as a
+        join
+        user_info as u1
+        on send_id = u1.id  ) as a2 join user_info as u2
+        on receive_id = u2.id
+        where send_name = #{key} or u2.username = #{key} or send_id = #{key} or receive_id = #{key}
+    </select>
+
+</mapper>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script src="js/context_path.js"></script>
+    <script src="js/jquery.js"></script>
+    <title>管理员登录界面</title>
+</head>
+<body>
+    
+    <!-- 主体页面 -->
+    <div class="content">
+        <!-- 导航栏 -->
+        <div class="title">
+            
+            <div class="space-left">
+                <img src="./image/头像.png" alt="网络聊天室系统" class="logo">
+                <div class="title-name">网络聊天室系统</div>
+            </div>
+            <div class="space-right" >
+                <div class="logout hide">注销</div>
+            </div>
+            
+        </div>
+        <div class="main">
+            <div class="content-box">
+                <!-- 登录标题 -->
+                <div class="login-title">管理员登录</div>
+                <!-- 账号行 -->
+                <div class="row">
+                    <span>账号：</span>
+                    <input type="text" name="" id="account_num">
+                </div>
+                <!-- 密码行 -->
+                <div class="row">
+                    <span>密码：</span>
+                    <input type="password" name="" id="password">
+                </div>
+                <!-- 验证码行 -->
+                <div class="row">
+                    <span>验证码：</span>
+                    <input type="text" name="" id="verify">
+                    <img id="verify_picture" src="" alt="验证码" onclick="get_verify()">
+                </div>
+                <!-- 登录按钮 -->
+                <button class="submit" onclick="login()">登录</button>
+                
+            </div>
+        </div>
+    </div>
+    <!-- 做背景 -->
+    <div class="cover"></div>
+    <script>
+        
+
+        // 获取账号输入框
+        var account_num = jQuery("#account_num");
+        // 获取密码输入框
+        var password = jQuery("#password");
+        // 获取邮箱输入框
+        var verify = jQuery("#verify");
+        // 获取验证码图片
+        var img = jQuery("#verify_picture");
+        // 获取验证码函数
+        function get_verify(){
+            jQuery.ajax({
+                url:context_path+"/user/get_verify",
+                method:"get",
+                xhrFields: {
+                    responseType: 'blob' // 设置响应类型为 blob
+                },
+                success:function(res){
+                    var blob = res;
+                    // 给图片数据在浏览器创造url
+                    var imgURL = URL.createObjectURL(blob);
+                    // 将url赋值个img标签
+                    img.attr("src",imgURL);
+                }
+            });
+        }
+        get_verify();
+        var click_able = true;
+        // 登录函数
+        function login(){
+            if(click_able == false){
+                click_able = true;
+            }
+            click_able = false;
+            // 判断三个输入框的字符串是否有空字符串
+            if(account_num.val().trim() == ""){
+                alert("请输入账号！");
+                click_able = true;
+                return;
+            }else if(password.val().trim() == ""){
+                alert("请输入密码！");
+                click_able = true;
+                return;
+            }else if(verify.val().trim() == ""){
+                alert("请输入验证码！");
+                click_able = true;
+                return;
+            }
+            // 发送登录请求
+            jQuery.ajax({
+                    
+                method:"post",
+                url:context_path+"/manager/manager_login",
+                data:{
+                    accountNum:account_num.val(),
+                    password:password.val(),
+                    verify:verify.val()
+                },
+                success:function(res){
+                    code =res.code;
+                    if(code == 0){
+                        alert("参数有空字符串！");
+                        click_able = true;
+                        return;
+                    }else if(code == 1 || code == 3){
+                        alert("账号或密码错误！");
+                        click_able = true;
+                        return;
+                    }else if(code == 2){
+
+                        alert("该账号已被封禁！");
+                        click_able = true;
+                        return;
+                    }else if(code == 4){
+                        alert("验证码错误！");
+                        click_able = true;
+                        // 重新获取验证码
+                        get_verify();
+                        return;
+                    }else{
+                        alert("登录成功！");
+                        click_able = true;
+                        // 跳转到主页面
+                        location.href = context_path+"/manager.html"
+                    }
+                    
+                }
+            })
+        }
+        
+
+    </script>
+</body>
+</html>

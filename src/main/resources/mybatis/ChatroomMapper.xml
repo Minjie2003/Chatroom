@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.ChatroomMapper">
+    <resultMap id="Chatroom" type="com.example.demo.enity.Chatroom">
+        <id property="sessionId" column= "session_id"></id>
+        <result property="creatorId" column="creator_id"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="photo" column="photo"></result>
+        <result property="name" column="name"></result>
+        <result property="userNum" column="user_num"></result>
+    </resultMap>
+    <resultMap id="ChatroomVO" type="com.example.demo.VO.ChatroomVO" extends="Chatroom">
+        <result property="username" column="username"></result>
+        <result property="headPath" column="head_path"></result>
+        <result property="accountNum" column="account_num"></result>
+    </resultMap>
+    <insert id="insertChatroom">
+        insert into chatroom_info (session_id,creator_id,name) values(#{sessionId},#{creatorId},#{name})
+    </insert>
+    <update id="updateById">
+        update chatroom_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="photo != null">
+                photo = #{photo},
+            </if>
+            <if test="userNum != null">
+                user_num = #{userNum},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </trim>
+        where session_id = #{sessionId}
+    </update>
+    <select id="selectByNameAndSessionId" resultMap="Chatroom">
+        select photo,creator_id,session_id,name,user_num,is_deleted from chatroom_info join session_info on id = session_id
+        where (session_id = #{key} or name = #{key}) and is_deleted = 0
+    </select>
+    <select id="selectBySessionId" resultMap="ChatroomVO">
+        select c.session_id,c.creator_id,c.create_time,c.photo,c.name,c.user_num,u.username,u.photo as head_path,u.account_num from (select * from chatroom_info where session_id = #{sessionId} )as c join user_info as u on c.creator_id = u.id
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from chatroom_info
+    </select>
+    <select id="selectChatroomByIndex" resultMap="Chatroom">
+        select c.session_id,c.creator_id,c.create_time,c.photo,c.name,c.user_num from
+        (select c1.session_id,c1.creator_id,c1.create_time,c1.photo,c1.name,c1.user_num,s.is_deleted from chatroom_info as c1 join session_info as s on c1.session_id = s.id) as c where is_deleted = 0
+        order by create_time desc limit 8 offset #{index}
+    </select>
+</mapper>
