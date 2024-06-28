@@ -14,19 +14,19 @@
                           <lantern></lantern>
                       </div>
                   </div>
-                  <userlogin></userlogin>
+                  <userupdatepassword></userupdatepassword>
               </div>
           </div>
       </section>
   </template>
-  
+
   <script>
   import lantern from '@/components/Datashow/lantern.vue';
-  import userlogin from '@/components/Authentication/userlogin.vue';
+  import userupdatepassword from '@/components/Authentication/user_update_password.vue';
     export default {
-        name:"login",
+        name:"update_password",
         components:{
-            userlogin,
+            userupdatepassword,
             lantern
         }
     }

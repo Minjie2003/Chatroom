@@ -1,19 +1,32 @@
-// 导入 createRouter 和 createWebHashHistory 方法
-import vue from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
-  /*
-  export const constantRoutes = [
-      {
-        path: '/register',
-        component: @,
-        hidden: true,
-      },
-      {
-        path: '/login',
-        component: () => import('@/views/login/index'),
-        hidden: true
-      },
-  ]
-      */
-export default router
+// Import createRouter and createWebHashHistory methods
+import {createRouter, createWebHashHistory} from 'vue-router';
 
+const constantRoutes = [
+    {
+        path: '/',
+        name: 'home',
+        component: import('@/views/home/home.vue'),
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: () => import('@/views/register/register.vue'),
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('@/views/login/login.vue'),
+    },
+    {
+        path: '/update_password',
+        name: 'update_password',
+        component: () => import('@/views/update_password/update_password.vue'),
+    }
+];
+
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes: constantRoutes
+});
+
+export default router;
