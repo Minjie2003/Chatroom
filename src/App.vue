@@ -1,17 +1,34 @@
 <template>
-  <RouterLink to="/">Home</RouterLink>
-  <SideBar></SideBar>
-  <RouterView />
+  <div>
+    <h1>{{ $t('sidebar.home')}}</h1>
+    <button @click="toEnglish">English</button>
+    <button @click="toChinese">中文</button>
+    <button @click="toJapanese">日本語</button>
+
+    <RouterLink to="/">Home</RouterLink>
+    <Sidebar></Sidebar>
+    <RouterView/>
+  </div>
+
 </template>
 
 <script>
-import sideBar from "@/components/Reusabl/Sidebar.vue";
-import {defineComponent} from "vue";
-import SideBar from "@/components/Reusabl/Sidebar.vue";
+import Sidebar from "@/components/Reusabl/Sidebar.vue";
 
-export default defineComponent({
-  components: {SidebarToggle, SideBar}
-})
+export default {
+  components: {Sidebar},
+  methods: {
+    toEnglish () {
+      this.$i18n.locale = 'en'
+    },
+    toChinese () {
+      this.$i18n.locale = 'ch'
+    },
+    toJapanese () {
+      this.$i18n.locale = 'ja'
+    }
+  }
+}
 
 </script>
 

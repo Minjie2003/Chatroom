@@ -11,18 +11,12 @@
       @open="handleOpen"
       @close="handleClose"
   >
-    <el-menu-item>
-      <el-icon>
-        <HomeFilled/>
-      </el-icon>
-      <template #title>{{ $t('sidebar.home') }}</template>
-    </el-menu-item>
     <el-sub-menu index="1">
       <template #title>
         <el-icon>
           <User/>
         </el-icon>
-        <span>{{ $t('sidebar.profile') }}</span>
+        <span>Profile</span>
       </template>
       <el-menu-item-group>
         <template #title><span>Group One</span></template>
@@ -41,25 +35,25 @@
       <el-icon>
         <ChatLineRound/>
       </el-icon>
-      <template #title>{{ $t('sidebar.chat') }}</template>
+      <template #title>Chat</template>
     </el-menu-item>
     <el-menu-item index="3">
       <el-icon>
         <Star/>
       </el-icon>
-      <template #title>{{ $t('sidebar.friends') }}</template>
+      <template #title>Friends</template>
     </el-menu-item>
     <el-menu-item index="4">
       <el-icon>
         <More/>
       </el-icon>
-      <template #title>{{ $t('sidebar.about') }}</template>
+      <template #title>About</template>
     </el-menu-item>
     <el-menu-item index="5">
       <el-icon>
         <setting/>
       </el-icon>
-      <template #title>{{ $t('sidebar.setting') }}</template>
+      <template #title>Setting</template>
     </el-menu-item>
 
   </el-menu>
@@ -71,9 +65,8 @@ import {
   Document,
   Menu as IconMenu,
   Location,
-  Setting, User, ChatLineRound, More, Star, HomeFilled,
+  Setting, User, ChatLineRound, More, Star,
 } from '@element-plus/icons-vue'
-import Home from "@/views/home/home.vue";
 
 const isCollapse = ref(true)
 const handleOpen = (key: string, keyPath: string[]) => {
