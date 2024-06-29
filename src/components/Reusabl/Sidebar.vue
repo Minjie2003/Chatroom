@@ -73,7 +73,7 @@ import {
   Location,
   Setting, User, ChatLineRound, More, Star, HomeFilled,
 } from '@element-plus/icons-vue'
-import Home from "@/views/home/home.vue";
+import Home from "@/views/user/home.vue";
 
 const isCollapse = ref(true)
 const handleOpen = (key: string, keyPath: string[]) => {

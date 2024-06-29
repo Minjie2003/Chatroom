@@ -6,17 +6,14 @@
     <button @click="toJapanese">日本語</button>
 
     <RouterLink to="/">Home</RouterLink>
-    <Sidebar></Sidebar>
     <RouterView/>
   </div>
 
 </template>
 
 <script>
-import Sidebar from "@/components/Reusabl/Sidebar.vue";
 
 export default {
-  components: {Sidebar},
   methods: {
     toEnglish () {
       this.$i18n.locale = 'en'

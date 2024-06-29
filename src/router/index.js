@@ -5,22 +5,22 @@ const constantRoutes = [
     {
         path: '/',
         name: 'home',
-        component: import('@/views/home/home.vue'),
+        component: import('@/views/user/home.vue'),
     },
     {
         path: '/register',
         name: 'register',
-        component: () => import('@/views/register/register.vue'),
+        component: () => import('@/views/user/account/register.vue'),
     },
     {
         path: '/login',
         name: 'login',
-        component: () => import('@/views/login/login.vue'),
+        component: () => import('@/views/user/account/login.vue'),
     },
     {
         path: '/update_password',
         name: 'update_password',
-        component: () => import('@/views/update_password/update_password.vue'),
+        component: () => import('@/views/user/account/reset_pwd.vue'),
     }
 ];
 
