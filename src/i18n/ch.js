@@ -1,7 +1,7 @@
 export default {
     application: 'Chatroom',
     home_page: '主页',
-    welcome: '欢迎使用@:application！',
+    welcome: '欢迎使用@:application ！',
     language: {
         title: '语言',
         current: '中文',

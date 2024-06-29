@@ -5,19 +5,17 @@
   </el-radio-group>
 
   <el-menu
-      default-active="2"
+      default-active="1"
       class="el-menu-vertical-demo"
       :collapse="isCollapse"
-      @open="handleOpen"
-      @close="handleClose"
-  > 
-    <el-menu-item>
+  >
+    <el-menu-item index="1" @click="$router.push('/welcome')">
       <el-icon>
         <HomeFilled/>
       </el-icon>
       <template #title>{{ $t('sidebar.home') }}</template>
     </el-menu-item>
-    <el-sub-menu index="1">
+    <el-sub-menu index="2">
       <template #title>
         <el-icon>
           <User/>
@@ -37,25 +35,25 @@
         <el-menu-item index="1-4-1">item one</el-menu-item>
       </el-sub-menu>
     </el-sub-menu>
-    <el-menu-item index="2">
+    <el-menu-item index="3" @click="$router.push('/chat')">
       <el-icon>
         <ChatLineRound/>
       </el-icon>
       <template #title>{{ $t('sidebar.chat') }}</template>
     </el-menu-item>
-    <el-menu-item index="3">
+    <el-menu-item index="4" @click="$router.push('/friends')">
       <el-icon>
         <Star/>
       </el-icon>
       <template #title>{{ $t('sidebar.friends') }}</template>
     </el-menu-item>
-    <el-menu-item index="4">
+    <el-menu-item index="5" @click="$router.push('/about')">
       <el-icon>
         <More/>
       </el-icon>
       <template #title>{{ $t('sidebar.about') }}</template>
     </el-menu-item>
-    <el-menu-item index="5">
+    <el-menu-item index="6" @click="$router.push('/settings')">
       <el-icon>
         <setting/>
       </el-icon>
@@ -65,7 +63,7 @@
   </el-menu>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import {ref} from 'vue'
 import {
   Document,
@@ -73,15 +71,10 @@ import {
   Location,
   Setting, User, ChatLineRound, More, Star, HomeFilled,
 } from '@element-plus/icons-vue'
-import Home from "@/views/user/home.vue";
+import Home from "@/views/common/application.vue";
 
 const isCollapse = ref(true)
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+
 </script>
 
 <style>

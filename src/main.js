@@ -30,8 +30,8 @@ const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
-const i18n = createI18n({
-    locale: 'ja',
+export let i18n = createI18n({
+    locale: 'ch',
     fallbackLocale: 'en',
     messages: {
         en: en,

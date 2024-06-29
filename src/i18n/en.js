@@ -1,7 +1,7 @@
 export default {
     application: 'Chatroom',
     home_page: 'Home Page',
-    welcome: 'Welcome to @:application!',
+    welcome: 'Welcome to @:application !',
     language: {
         title: 'Language',
         current: 'English',

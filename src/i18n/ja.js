@@ -1,11 +1,11 @@
 export default {
     application: 'チャットルーム',
     home_page: 'ホームページ',
-    welcome: '@:applicationへようこそ！',
+    welcome: '@:application へようこそ！',
     language: {
         title: '言語',
         current: '日本語',
-        select: '@:language.titleを選択してください'
+        select: '@:language.title を選択し'
     },
     auth: {
         account: 'アカウント',
