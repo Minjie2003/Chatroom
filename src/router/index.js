@@ -10,17 +10,17 @@ const constantRoutes = [
     {
         path: '/register',
         name: 'register',
-        component: () => import('@/views/user/account/register.vue'),
+        component: () => import('@/views/user/auth/register.vue'),
     },
     {
         path: '/login',
         name: 'login',
-        component: () => import('@/views/user/account/login.vue'),
+        component: () => import('@/views/user/auth/login.vue'),
     },
     {
-        path: '/update_password',
-        name: 'update_password',
-        component: () => import('@/views/user/account/reset_pwd.vue'),
+        path: '/reset',
+        name: 'reset',
+        component: () => import('@/views/user/auth/reset.vue'),
     }
 ];
 

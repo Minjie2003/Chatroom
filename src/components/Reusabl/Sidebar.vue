@@ -10,7 +10,7 @@
       :collapse="isCollapse"
       @open="handleOpen"
       @close="handleClose"
-  >
+  > 
     <el-menu-item>
       <el-icon>
         <HomeFilled/>
