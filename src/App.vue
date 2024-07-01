@@ -1,12 +1,15 @@
 <template>
-  <application/>
+  <layout/>
 </template>
 
 <script>
-import application from "@/views/common/application.vue"
+import layout from "@/views/common/layout.vue"
 export default {
-  components: {application}
+  components: {layout}
 }
 </script>
 
+<style>
+
+</style>
 

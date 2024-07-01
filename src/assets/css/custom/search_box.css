@@ -1,0 +1,57 @@
+
+/* Custom Input Styling */
+.custom-input .el-input__inner {
+    border-radius: 20px 0 0 20px;
+    border: 2px solid #50b5ff;
+    padding: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.custom-input .el-input__inner:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+/* Custom Button Styling */
+.custom-button {
+    background-color: #50b5ff;
+    color: white;
+    border-radius: 0 20px 20px 0;
+    border: 2px solid #50b5ff;
+    border-left: none; /* To avoid double border */
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.custom-button:hover {
+    background-color: #007BFF;
+    border-color: #007BFF;
+    color: white;
+}
+
+.custom-button:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+/* Ensure the parent element aligns properly */
+.search-box {
+    display: flex;
+    align-items: center;
+}
+
+.el-input-group__append {
+    display: flex;
+}
+
+.el-input-group__append .el-button {
+    margin: 0;
+}
+
+/* Ensure the input group looks cohesive */
+.custom-input .el-input-group__append {
+    border: 2px solid #50b5ff;
+    border-left: none; /* To avoid double border */
+    border-radius: 0 20px 20px 0;
+}

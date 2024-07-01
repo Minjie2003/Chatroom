@@ -1,12 +1,7 @@
 <template>
-  <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
-    <el-radio-button :value="false">expand</el-radio-button>
-    <el-radio-button :value="true">collapse</el-radio-button>
-  </el-radio-group>
-
   <el-menu
       default-active="1"
-      class="el-menu-vertical-demo"
+      class="side-menu"
       :collapse="isCollapse"
   >
     <el-menu-item index="1" @click="$router.push('/welcome')">
@@ -67,22 +62,32 @@
       <template #title>{{ $t('sidebar.setting') }}</template>
     </el-menu-item>
 
+<!--    <el-menu-item index="7" @click="isCollapse=!isCollapse">
+      <el-icon v-if="isCollapse">
+        <TurnOff></TurnOff>
+      </el-icon>
+      <el-icon v-else>
+        <Open></Open>
+      </el-icon>
+      <template #title>Collapse/Expand</template>
+    </el-menu-item>-->
+
   </el-menu>
 </template>
 
 <script setup>
 import {ref} from 'vue'
 import {
-  Setting, User, ChatLineRound, More, Star, HomeFilled
+  Setting, User, ChatLineRound, More, Star, HomeFilled, TurnOff, Open, ChatDotRound
 } from '@element-plus/icons-vue'
 
-const isCollapse = ref(true)
+const isCollapse = ref(false)
 
 </script>
 
 <style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
+.side-menu{
   width: 200px;
-  min-height: 600px;
+  min-height: 100vh;
 }
 </style>

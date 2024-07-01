@@ -5,7 +5,7 @@ const constantRoutes = [
     {
         path: '/',
         name: 'application',
-        component: import('@/views/common/application.vue')
+        component: import('@/views/common/layout.vue')
     },
     {
         path: '/welcome',
