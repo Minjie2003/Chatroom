@@ -18,7 +18,7 @@ const constantRoutes = [
         component: import('@/views/user/home.vue'),
     },
     {
-        path: '/auth/login',
+        path: '/auth/register',
         name: 'register',
         component: () => import('@/views/user/auth/register.vue'),
     },
@@ -31,6 +31,11 @@ const constantRoutes = [
         path: '/auth/reset',
         name: 'reset',
         component: () => import('@/views/user/auth/reset.vue'),
+    },
+    {
+        path: '/auth/sign_off',
+        name: 'sign_off',
+        component: () => import('@/views/user/auth/sign_off.vue'),
     },
     {
         path: '/profile',

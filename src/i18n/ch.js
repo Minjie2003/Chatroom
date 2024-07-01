@@ -23,12 +23,14 @@ export default {
         gender: '性别',
         address: '地址',
         email: '邮箱',
-        telephone: '电话'
+        telephone: '电话',
+        signature: '签名'
     },
     sidebar: {
         home: '主页',
         profile: '资料',
         chat: '聊天',
+        list: '列表',
         groups: '群聊',
         friends: '好友',
         about: '关于',

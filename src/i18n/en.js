@@ -23,12 +23,14 @@ export default {
         gender: 'Gender',
         address: 'Address',
         email: 'Email',
-        telephone: 'Telephone'
+        telephone: 'Telephone',
+        signature: 'Signature'
     },
     sidebar: {
         home: 'Home',
         profile: 'Profile',
         chat: 'Chat',
+        list: 'List',
         groups: 'Groups',
         friends: 'Friends',
         about: 'About',

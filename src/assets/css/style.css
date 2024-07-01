@@ -2,7 +2,7 @@
 Template: SocialV - Responsive Bootstrap 4 Admin Dashboard Template
 Author: iqonicthemes.in
 NOTE: This file contains the styling for responsive Template.
-¸ü¶àÄ£°å£ºhttp://www.bootstrapmb.com/
+ï¿½ï¿½ï¿½ï¿½Ä£ï¿½å£ºhttp://www.bootstrapmb.com/
 */
 
 /*================================================
@@ -483,7 +483,7 @@ div#post-modal-data .modal .modal-dialog { max-width: 100%; margin: 0; }
 .like-block span { color: var(--iq-secondary); cursor: pointer; }
 .like-block span:hover { color: var(--iq-primary); }
 
-/*-------------- Media Header ---------------*/
+/*-------------- Media Header.vue ---------------*/
 .iq-card .iq-card-header.iq-header-media { padding: 20px; }
 
 /* ------------------ */

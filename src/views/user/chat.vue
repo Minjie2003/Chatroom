@@ -1,11 +1,8 @@
-<script setup>
-
-</script>
-
 <template>
-<p>Chat Page</p>
+  <chat-panel></chat-panel>
 </template>
 
-<style scoped>
+<script setup>
+import chatPanel from "@/components/user/chat/ChatPanel.vue";
+</script>
 
-</style>

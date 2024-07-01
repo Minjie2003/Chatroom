@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import ElementPlus from 'element-plus'
 import {createI18n} from "vue-i18n";
 import 'element-plus/dist/index.css'
@@ -21,6 +21,7 @@ import './assets/css/responsive.css'
 import en from "@/i18n/en.js";
 import ch from "@/i18n/ch.js";
 import ja from "@/i18n/ja.js";
+import {messages} from "@/i18n/config.js";
 
 // 动态加载 JS 文件
 // import { loadScripts } from './loadScripts.js'
@@ -33,11 +34,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 export let i18n = createI18n({
     locale: 'ch',
     fallbackLocale: 'en',
-    messages: {
-        en: en,
-        ch: ch,
-        ja: ja
-    }
+    messages: messages
 })
 
 

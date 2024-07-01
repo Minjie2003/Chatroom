@@ -15,45 +15,52 @@
       </el-icon>
       <template #title>{{ $t('sidebar.home') }}</template>
     </el-menu-item>
-    <el-sub-menu index="2">
+
+    <el-menu-item index="2" @click="$router.push('/profile')">
+      <el-icon>
+        <User/>
+      </el-icon>
       <template #title>
-        <el-icon>
-          <User/>
-        </el-icon>
-        <span>{{ $t('sidebar.profile') }}</span>
+        {{ $t('sidebar.profile') }}
       </template>
-      <el-menu-item-group>
-        <template #title><span>Group One</span></template>
-        <el-menu-item index="1-1">item one</el-menu-item>
-        <el-menu-item index="1-2">item two</el-menu-item>
-      </el-menu-item-group>
-      <el-menu-item-group title="Group Two">
-        <el-menu-item index="1-3">item three</el-menu-item>
-      </el-menu-item-group>
-      <el-sub-menu index="1-4">
-        <template #title><span>item four</span></template>
-        <el-menu-item index="1-4-1">item one</el-menu-item>
-      </el-sub-menu>
-    </el-sub-menu>
+    </el-menu-item>
+
     <el-menu-item index="3" @click="$router.push('/chat')">
       <el-icon>
         <ChatLineRound/>
       </el-icon>
       <template #title>{{ $t('sidebar.chat') }}</template>
     </el-menu-item>
-    <el-menu-item index="4" @click="$router.push('/friends')">
-      <el-icon>
-        <Star/>
-      </el-icon>
-      <template #title>{{ $t('sidebar.friends') }}</template>
-    </el-menu-item>
+
+    <el-sub-menu index="4">
+      <template #title>
+        <el-icon>
+          <Star/>
+        </el-icon>
+        <span>{{ $t('sidebar.list') }}</span>
+      </template>
+      <el-menu-item index="4-1" @click="$router.push('/list/friends')">
+        <el-icon>
+          <ChatLineRound/>
+        </el-icon>
+        <template #title>{{ $t('sidebar.friends') }}</template>
+      </el-menu-item>
+      <el-menu-item index="4-2" @click="$router.push('/list/groups')">
+        <el-icon>
+          <ChatDotRound/>
+        </el-icon>
+        <template #title>{{ $t('sidebar.groups') }}</template>
+      </el-menu-item>
+    </el-sub-menu>
+
     <el-menu-item index="5" @click="$router.push('/about')">
       <el-icon>
         <More/>
       </el-icon>
       <template #title>{{ $t('sidebar.about') }}</template>
     </el-menu-item>
-    <el-menu-item index="6" @click="$router.push('/settings')">
+
+    <el-menu-item index="6" @click="$router.push('/setting')">
       <el-icon>
         <setting/>
       </el-icon>
@@ -66,12 +73,8 @@
 <script setup>
 import {ref} from 'vue'
 import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting, User, ChatLineRound, More, Star, HomeFilled,
+  Setting, User, ChatLineRound, More, Star, HomeFilled
 } from '@element-plus/icons-vue'
-import Home from "@/views/common/application.vue";
 
 const isCollapse = ref(true)
 
@@ -80,6 +83,6 @@ const isCollapse = ref(true)
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-  min-height: 400px;
+  min-height: 600px;
 }
 </style>

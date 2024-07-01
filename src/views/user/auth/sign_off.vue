@@ -1,11 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
-
+  <h1>Sign Off</h1>
 </template>
-
-<style scoped>
-
-</style>

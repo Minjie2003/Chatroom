@@ -32,9 +32,9 @@
 
 <script>
 
-import Sidebar from "@/components/Reusabl/Sidebar.vue";
+import Sidebar from "@/components/common/navigation/Sidebar.vue";
 import {i18n} from "@/main.js";
-import supported from "@/i18n/supported.js";
+import supported from "@/i18n/config.js";
 export default {
   components: {Sidebar},
   data() {
@@ -50,3 +50,26 @@ export default {
   }
 }
 </script>
+
+<style>
+.application {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+
+}
+
+.application::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-blend-mode: difference;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+</style>

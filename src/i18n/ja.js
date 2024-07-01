@@ -23,11 +23,13 @@ export default {
         gender: '性別',
         address: 'アドレス',
         email: 'メール',
-        telephone: '電話番号'
+        telephone: '電話番号',
+        signature: 'シグネチャー'
     },
     sidebar: {
         home: 'ホーム',
         profile: 'プロフィール',
+        list: 'リスト',
         chat: 'チャット',
         groups: 'グループ',
         friends: '友達',
