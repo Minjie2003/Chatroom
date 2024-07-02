@@ -1,26 +1,66 @@
 <template>
   <el-card class="chat-panel" ref="chatPanel">
-    <div class="chat-header" @mousedown="startDrag">
-      <h2>Chat</h2>
-    </div>
-    <div class="chat-messages" ref="chatMessages">
-      <div v-for="(message, index) in messages" :key="index" class="message">
-        <div :class="['message-content', message.sender === 'me' ? 'my-message' : 'other-message']">
-          <el-avatar :src="message.avatar" />
-          <div class="text">{{ message.text }}</div>
-        </div>
-      </div>
-    </div>
-    <el-input
-        v-model="newMessage"
-        placeholder="Type a message..."
-        @keyup.enter="sendMessage"
-        class="chat-input"
-    >
-      <template #append>
-        <el-button @click="sendMessage">Send</el-button>
-      </template>
-    </el-input>
+    <el-row justify="center">
+      <span>
+          <el-text class="session-title" size="large">
+            {{ session.name }}
+          </el-text>
+      </span>
+    </el-row>
+    <el-row>
+      <el-card class="chat-box">
+        <el-scrollbar style="overflow: visible" height="400px">
+          <div v-for="msg in messages">
+            <el-row
+                v-if="msg.sender==='other'"
+                justify="center">
+              <el-col
+                  :span="2">
+                <el-avatar
+                    class="message-avatar"
+                    size="80%"
+                    :src="msg.avatar">
+                </el-avatar>
+              </el-col>
+
+              <el-col :span="18">
+                <el-row>
+                  <el-text>{{ msg.sender }}</el-text>
+                </el-row>
+                <el-row>
+                  <el-text class="other-message">
+                    {{ msg.text }}
+                  </el-text>
+                </el-row>
+              </el-col>
+            </el-row>
+
+            <el-row v-else justify="center">
+              <el-col :span="18">
+                <el-row justify="end">
+                  <el-text>{{ msg.sender }}</el-text>
+                </el-row>
+                <el-row justify="end">
+                  <el-text class="my-message">
+                    {{ msg.text }}
+                  </el-text>
+                </el-row>
+              </el-col>
+
+              <el-col
+                  :span="2">
+                <el-avatar
+                    class="message-avatar"
+                    size="80%"
+                    :src="msg.avatar">
+                </el-avatar>
+              </el-col>
+            </el-row>
+
+          </div>
+        </el-scrollbar>
+      </el-card>
+    </el-row>
   </el-card>
 </template>
 
@@ -28,57 +68,30 @@
 export default {
   data() {
     return {
+      session: {
+        name: 'Session Name'
+      },
       messages: [
-        { sender: 'me', text: 'Hello!', avatar: 'path/to/my/avatar.jpg' },
-        { sender: 'other', text: 'Hi there!', avatar: 'path/to/other/avatar.jpg' }
+        {sender: 'me', text: 'Hello! ', avatar: 'src/assets/images/avatar-purple.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
+        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
       ],
-      newMessage: '',
-      isDragging: false,
-      dragStartX: 0,
-      dragStartY: 0,
-      panelStartX: 0,
-      panelStartY: 0
     };
   },
   methods: {
     sendMessage() {
-      if (this.newMessage.trim() !== '') {
-        this.messages.push({ sender: 'me', text: this.newMessage, avatar: 'path/to/my/avatar.jpg' });
-        this.newMessage = '';
-        this.scrollToBottom();
-      }
-    },
-    scrollToBottom() {
-      this.$nextTick(() => {
-        const chatMessages = this.$refs.chatMessages;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      });
-    },
-    startDrag(event) {
-      this.isDragging = true;
-      this.dragStartX = event.clientX;
-      this.dragStartY = event.clientY;
-      const panelRect = this.$refs.chatPanel.getBoundingClientRect();
-      this.panelStartX = panelRect.left;
-      this.panelStartY = panelRect.top;
-      document.addEventListener('mousemove', this.onDrag);
-      document.addEventListener('mouseup', this.stopDrag);
-    },
-    onDrag(event) {
-      if (this.isDragging) {
-        const deltaX = event.clientX - this.dragStartX;
-        const deltaY = event.clientY - this.dragStartY;
-        this.$refs.chatPanel.style.transform = `translate(${this.panelStartX + deltaX}px, ${this.panelStartY + deltaY}px)`;
-      }
-    },
-    stopDrag() {
-      this.isDragging = false;
-      document.removeEventListener('mousemove', this.onDrag);
-      document.removeEventListener('mouseup', this.stopDrag);
     }
-  },
-  mounted() {
-    this.scrollToBottom();
   }
 };
 </script>
@@ -87,11 +100,10 @@ export default {
 .chat-panel {
   display: flex;
   flex-direction: column;
-  height: 500px;
-  width: 400px;
+  height: 400px;
+  width: 50vw;
   position: absolute;
   background-color: transparent;
-  cursor: move; /* Indicate draggable area */
 }
 
 .chat-panel::before {
@@ -107,54 +119,41 @@ export default {
   z-index: -1;
 }
 
-.chat-header {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  text-align: center;
-  z-index: 1;
-  cursor: move; /* Indicate draggable area */
+.session-title {
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-bottom: 1px solid #eaeaea;
-  z-index: 1;
+.chat-box {
+  width: 90vw;
+  height: 480px;
+  background-color: #eee2;
+  border-color: transparent;
 }
 
-.message {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+.message-avatar {
+  border: 1px solid #09f9;
 }
 
-.message-content {
-  display: flex;
-  align-items: center;
+.message-avatar:hover {
+  box-shadow: 0 0 5px #09f8;
 }
 
-.my-message .text {
-  background-color: #dcf8c6;
-  margin-left: 10px;
+.other-message {
+  background-color: rgba(133, 198, 243, 0.77);
+  border-radius: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-bottom: 0.5em;
+  border: 1px solid #fff6;
 }
 
-.other-message .text {
-  background-color: #fff;
-  margin-right: 10px;
-}
-
-.text {
-  padding: 10px;
-  border-radius: 5px;
-  max-width: 70%;
-}
-
-.chat-input {
-  padding: 10px;
-  border-top: 1px solid #eaeaea;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 1;
+.my-message {
+  background-color: rgba(133, 243, 164, 0.77);
+  border-radius: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-bottom: 0.5em;
+  border: 1px solid #fff6;
 }
 </style>

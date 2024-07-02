@@ -1,12 +1,12 @@
 <template>
   <div class="header-card">
-    <el-row class="header-row">
+    <el-row class="header-row" justify="space-between">
 
-      <el-col :span="6">
+      <el-col class="logo-display" :span="6">
         <logo app_logo="src/assets/images/chatroom_logo.png" app_name="Chatroom"></logo>
       </el-col>
 
-      <el-col :span="10">
+      <el-col :span="10" style="display:flex; justify-content: center">
         <search-box class="header-search-box"></search-box>
       </el-col>
 
@@ -14,51 +14,32 @@
         <mini-profile></mini-profile>
       </el-col>
 
-      <el-col class="header-tooltips" :span="4">
-        <el-tooltip
-            class="box-item"
-            effect="light"
-            content="好友添加 "
-            placement="bottom"
-            :visible="tooltips_visible"
-        >
-          <el-icon color="#50b5ff" size="20" @click="showUserApply = !showUserApply">
-            <Bell/>
-          </el-icon>
-        </el-tooltip>
+      <el-col class="header-icons" :span="4">
+
+        <Notification></Notification>
 
         <el-tooltip
             class="box-item"
             effect="light"
             content="查看举报/警告"
             placement="bottom"
-            :visible="tooltips_visible"
         >
-          <el-icon :size="20" color="#50b5ff">
+          <el-icon class="interactive-icon" :size="icon_size" color="#50b5ff">
             <Warning/>
           </el-icon>
         </el-tooltip>
 
-        <el-tooltip
-            class="box-item"
-            effect="light"
-            content="切换语言"
-            placement="bottom"
-            :visible="tooltips_visible"
-        >
-          <el-icon :size="20" color="#50b5ff">
-            <Guide/>
-          </el-icon>
-        </el-tooltip>
+        <language-switch></language-switch>
 
         <el-tooltip
             class="box-item"
             effect="light"
             content="退出登录"
             placement="bottom"
-            :visible="tooltips_visible"
         >
-          <el-icon :size="20" color="#50b5ff">
+          <el-icon
+              class="interactive-icon"
+              :size="icon_size" color="#50b5ff">
             <Switch/>
           </el-icon>
         </el-tooltip>
@@ -73,6 +54,8 @@ import {Bell, Guide, Search, Switch} from '@element-plus/icons-vue'
 import MiniProfile from "@/components/common/navigation/header/MiniProfile.vue";
 import SearchBox from "@/components/common/navigation/header/SearchBox.vue";
 import Logo from "@/components/common/navigation/header/Logo.vue";
+import LanguageSwitch from "@/components/common/icons/LanguageSwitch.vue";
+import Notification from "@/components/common/icons/Notification.vue";
 
 export default {
   name: "Header",
@@ -82,17 +65,18 @@ export default {
 
       search_input: '',
       search_icon: Search,
+      icon_size: 25,
 
       avatar_url: 'src/assets/images/avatar.png',
       userinfo: {
         name: 'Tommy',
         id: 'tommy345'
-      },
-
-      tooltips_visible: false,
+      }
     }
   },
   components: {
+    Notification,
+    LanguageSwitch,
     Logo,
     SearchBox,
     MiniProfile,
@@ -105,23 +89,19 @@ export default {
 </script>
 
 <style>
-
 .header-card {
   width: 100vw;
   height: 80px;
   align-content: center;
   border-bottom: solid 1px lightgray;
   background-color: white;
+  opacity: 0.8;
 }
 
 .header-row {
-  display: flex;
-  flex-flow: row nowrap;
   align-items: center;
-  justify-content: space-between;
-  margin: 0;
-  padding-left: 3vw;
-  padding-right: 3vw;
+  padding-left: 4vw;
+  padding-right: 4vw;
 }
 
 .logo-display {
@@ -133,18 +113,13 @@ export default {
 }
 
 .header-search-box {
+  flex-basis: 300px;
+  min-width: 100px;
+  min-height: 40px;
   align-self: center;
 }
 
-.header-mini-profile {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 1vw;
-}
-
-.header-tooltips {
+.header-icons {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
@@ -152,5 +127,22 @@ export default {
   gap: 2vw;
 }
 
+/* add interactive effect for icons*/
+.interactive-icon {
+  transition: transform 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.interactive-icon:hover {
+  transform: scale(1.3);
+  color: #007bff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.interactive-icon:active {
+  transform: scale(1.1);
+  color: #ff4500;
+}
 </style>
 

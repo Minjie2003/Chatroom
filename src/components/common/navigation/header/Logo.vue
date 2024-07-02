@@ -1,5 +1,5 @@
 <template>
-  <div class="logo-display" :span="6">
+  <div class="logo-display">
     <el-image
         class="custom-logo"
         :src="app_logo"
@@ -9,7 +9,7 @@
         class="app-name"
         size="large"
     >
-      Chatroom
+      {{ app_name }}
     </el-text>
   </div>
 </template>
@@ -36,15 +36,8 @@ export default {
   align-items: center;
   gap: 10px; /* Space between logo and text */
   padding: 10px;
-  border: 2px solid #50b5ff;
   border-radius: 10px;
-  background-color: #f9f9f9;
   transition: all 0.3s ease;
-}
-
-.logo-display:hover {
-  border-color: #007BFF;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
 
 .custom-logo {
@@ -61,7 +54,7 @@ export default {
 .app-name {
   font-size: 18px;
   font-weight: bold;
-  color: #333;
+  color: #555;
   transition: color 0.3s ease;
 }
 

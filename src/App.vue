@@ -10,6 +10,8 @@ export default {
 </script>
 
 <style>
-
+:root {
+  overflow: hidden;
+}
 </style>
 

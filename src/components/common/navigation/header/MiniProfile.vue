@@ -17,7 +17,7 @@ export default {
       userinfo: {
         name: 'Tommy',
         id: 'tommylikeschatting',
-        avatar_url: 'src/assets/images/avatar.png'
+        avatar_url: 'src/assets/images/avatar-purple.png'
       }
     }
   }
@@ -32,15 +32,8 @@ export default {
   align-items: center;
   gap: 10px;
   padding: 10px;
-  border: 2px solid #50b5ff;
   border-radius: 10px;
-  background-color: #f9f9f9;
   transition: all 0.3s ease;
-}
-
-.profile-container:hover {
-  border-color: #007BFF;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
 
 /* Avatar styling */
@@ -58,7 +51,7 @@ export default {
 /* User information styling */
 .user-info {
   display: flex;
-  flex-direction: column;
+  flex-flow: column;
 }
 
 .user-name {

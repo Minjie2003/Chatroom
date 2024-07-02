@@ -5,17 +5,17 @@ const constantRoutes = [
     {
         path: '/',
         name: 'application',
-        component: import('@/views/common/layout.vue')
+        component: () => import('@/views/common/layout.vue')
     },
     {
         path: '/welcome',
         name: 'welcome',
-        component: import('@/views/common/welcome.vue')
+        component: () => import('@/views/common/welcome.vue')
     },
     {
         path: '/home',
         name: 'home',
-        component: import('@/views/user/home.vue'),
+        component: () => import('@/views/user/home.vue'),
     },
     {
         path: '/auth/register',

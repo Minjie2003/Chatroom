@@ -14,7 +14,7 @@
           </el-aside>
         </el-affix>
 
-        <el-main>
+        <el-main style="padding: 0; margin: 0;" >
           <RouterView></RouterView>
         </el-main>
       </el-container>
@@ -26,8 +26,6 @@
 
 import Sidebar from "@/components/common/navigation/Sidebar.vue";
 import Header from "@/components/common/navigation/header/Header.vue";
-import HeaderTest from "@/components/common/navigation/HeaderTest.vue";
-
 export default {
   data() {
     return {
@@ -36,7 +34,7 @@ export default {
       sidebar_offset: 80,
     }
   },
-  components: {HeaderTest, Header, Sidebar}
+  components: {Header, Sidebar}
 }
 </script>
 

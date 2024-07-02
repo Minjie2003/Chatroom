@@ -3,13 +3,13 @@
     <div class="background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <el-image
           class="avatar"
-          :src="avatar"
+          :src="avatar_url"
           :alt="$t('profile.avatar')"
           fit="cover"
       ></el-image>
     </div>
     <div class="userinfo">
-      <h2>{{ userName }}</h2>
+      <h2>{{ userInfo.name }}</h2>
       <el-descriptions>
         <el-descriptions-item :label="$t('profile.gender')">{{ userInfo.gender }}</el-descriptions-item>
         <el-descriptions-item :label="$t('profile.email')">{{ userInfo.email }}</el-descriptions-item>
@@ -20,7 +20,7 @@
     <div class="additional-info">
       <el-card>
         <h3>{{ $t('profile.signature') }}</h3>
-        <p>{{ notes }}</p>
+        <p>{{ userInfo.signature }}</p>
       </el-card>
     </div>
   </el-card>
@@ -30,16 +30,17 @@
 export default {
   data() {
     return {
-      backgroundImage: 'src/assets/images/background.jpg',
-      avatar: 'src/assets/images/avatar.png',
-      userName: 'John Doe',
+      backgroundImage: 'src/assets/images/lake.png',
+      avatar_url: 'src/assets/images/avatar-yellow.png',
       userInfo: {
+        name: 'John Doe',
+        id: 'johndoe001',
         gender: 'Male',
         email: 'john.doe@example.com',
         address: 'Sichuan, China',
-        telephone: '333444455555'
+        telephone: '333444455555',
+        signature: 'This is a sample note.',
       },
-      notes: 'This is a sample note.',
     };
   }
 };
@@ -48,13 +49,13 @@ export default {
 <style scoped>
 .profile {
   text-align: center;
-  padding: 20px;
+  padding: 20px 50px;
 }
 
 .background {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 300px;
   background-size: cover;
   background-position: center;
   margin-bottom: 5px;
@@ -68,7 +69,7 @@ export default {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  border: 3px solid white;
+  border: 3px solid #fffefe;
 }
 
 .userinfo {
