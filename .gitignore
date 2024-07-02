@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.vite/
+.idea/
+node_modules
+src/assets/images/ignore/*
