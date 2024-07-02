@@ -22,7 +22,7 @@
 
     <el-menu-item index="3" @click="$router.push('/chat')">
       <el-icon>
-        <ChatLineRound/>
+        <Message/>
       </el-icon>
       <template #title>{{ $t('sidebar.chat') }}</template>
     </el-menu-item>
@@ -78,7 +78,7 @@
 <script setup>
 import {ref} from 'vue'
 import {
-  Setting, User, ChatLineRound, More, Star, HomeFilled, TurnOff, Open, ChatDotRound
+  Setting, User, ChatLineRound, More, Star, HomeFilled, TurnOff, Open, ChatDotRound, Message
 } from '@element-plus/icons-vue'
 
 const isCollapse = ref(false)

@@ -5,7 +5,7 @@
           class="box-item"
           effect="light"
           content="切换语言"
-          placement="left-end"
+          placement="left"
       >
       <el-icon class="interactive-icon" :size="25" color="#50b5ff">
         <Guide/>

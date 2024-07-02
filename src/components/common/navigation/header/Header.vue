@@ -11,38 +11,20 @@
       </el-col>
 
       <el-col class="header-mini-profile" :span="4">
-        <mini-profile></mini-profile>
+        <el-dropdown>
+          <mini-profile></mini-profile>
+          <template #dropdown>
+            <profile class="dropdown-profile"></profile>
+          </template>
+        </el-dropdown>
+
       </el-col>
 
       <el-col class="header-icons" :span="4">
-
+        <invitation-message></invitation-message>
         <Notification></Notification>
-
-        <el-tooltip
-            class="box-item"
-            effect="light"
-            content="查看举报/警告"
-            placement="bottom"
-        >
-          <el-icon class="interactive-icon" :size="icon_size" color="#50b5ff">
-            <Warning/>
-          </el-icon>
-        </el-tooltip>
-
         <language-switch></language-switch>
-
-        <el-tooltip
-            class="box-item"
-            effect="light"
-            content="退出登录"
-            placement="bottom"
-        >
-          <el-icon
-              class="interactive-icon"
-              :size="icon_size" color="#50b5ff">
-            <Switch/>
-          </el-icon>
-        </el-tooltip>
+        <account-switch></account-switch>
       </el-col>
 
     </el-row>
@@ -50,12 +32,16 @@
 </template>
 
 <script>
-import {Bell, Guide, Search, Switch} from '@element-plus/icons-vue'
 import MiniProfile from "@/components/common/navigation/header/MiniProfile.vue";
 import SearchBox from "@/components/common/navigation/header/SearchBox.vue";
 import Logo from "@/components/common/navigation/header/Logo.vue";
-import LanguageSwitch from "@/components/common/icons/LanguageSwitch.vue";
+import InvitationMessage from "@/components/common/icons/InvitationMessage.vue";
 import Notification from "@/components/common/icons/Notification.vue";
+import LanguageSwitch from "@/components/common/icons/LanguageSwitch.vue";
+import AccountSwitch from "@/components/common/icons/AccountSwitch.vue";
+
+import {Search} from "@element-plus/icons-vue";
+import Profile from "@/components/user/Profile.vue";
 
 export default {
   name: "Header",
@@ -75,14 +61,14 @@ export default {
     }
   },
   components: {
+    Profile,
+    InvitationMessage,
+    AccountSwitch,
     Notification,
     LanguageSwitch,
     Logo,
     SearchBox,
     MiniProfile,
-    Bell,
-    Guide,
-    Switch,
     Search
   }
 }
@@ -117,6 +103,11 @@ export default {
   min-width: 100px;
   min-height: 40px;
   align-self: center;
+}
+
+.dropdown-profile {
+  width: 600px;
+  height: 600px;
 }
 
 .header-icons {
