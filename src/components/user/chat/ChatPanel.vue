@@ -18,7 +18,7 @@
                   :span="2">
                 <el-avatar
                     class="message-avatar"
-                    size="80%"
+                    size="small"
                     :src="msg.avatar">
                 </el-avatar>
               </el-col>
@@ -51,7 +51,7 @@
                   :span="2">
                 <el-avatar
                     class="message-avatar"
-                    size="80%"
+                    size="small"
                     :src="msg.avatar">
                 </el-avatar>
               </el-col>

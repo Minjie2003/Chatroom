@@ -1,7 +1,119 @@
 <template>
-  <Notification></Notification>
+  <el-container>
+    <el-header>
+      <h1>Settings</h1>
+    </el-header>
+    <el-main>
+      <el-tabs v-model="activeTab">
+        <!-- My Account Tab -->
+        <el-tab-pane label="My Account" name="account">
+          <el-card>
+            <el-row>
+              <el-col :span="8">
+                <img src="https://via.placeholder.com/150" alt="Profile Picture" />
+              </el-col>
+              <el-col :span="16">
+                <h2>{{ user.name }}</h2>
+                <p>Email: {{ user.email }}</p>
+                <el-button type="primary" @click="editAccount">Edit</el-button>
+              </el-col>
+            </el-row>
+          </el-card>
+        </el-tab-pane>
+
+        <!-- Theme and Background Settings Tab -->
+        <el-tab-pane label="Theme & Background" name="theme">
+          <el-form>
+            <el-form-item label="Theme Color">
+              <el-color-picker v-model="themeColor"></el-color-picker>
+            </el-form-item>
+            <el-form-item label="Background Image">
+              <el-upload
+                  action="#"
+                  list-type="picture-card"
+                  :on-preview="handlePictureCardPreview"
+                  :on-remove="handleRemove"
+              >
+                <i class="el-icon-plus"></i>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="" />
+              </el-dialog>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+
+        <!-- Language Settings Tab -->
+        <el-tab-pane label="Language" name="language">
+          <el-radio-group v-model="language">
+            <el-radio-button label="English"></el-radio-button>
+            <el-radio-button label="Spanish"></el-radio-button>
+            <el-radio-button label="French"></el-radio-button>
+            <!-- Add more languages as needed -->
+          </el-radio-group>
+        </el-tab-pane>
+
+        <!-- Logout Tab -->
+        <el-tab-pane label="Logout" name="logout">
+          <el-button type="danger" @click="logout">Logout</el-button>
+        </el-tab-pane>
+      </el-tabs>
+    </el-main>
+  </el-container>
 </template>
 
-<script setup>
-import notification from "@/components/common/icons/InvitationMessage.vue";
+<script>
+export default {
+  data() {
+    return {
+      activeTab: 'account',
+      user: {
+        name: 'John Doe',
+        email: 'john.doe@example.com'
+      },
+      themeColor: '#409EFF',
+      language: 'English',
+      dialogImageUrl: '',
+      dialogVisible: false,
+    };
+  },
+  methods: {
+    editAccount() {
+      // Implement account editing logic here
+      console.log('Edit Account');
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    logout() {
+      // Implement logout logic here
+      console.log('Logout');
+    }
+  }
+};
 </script>
+
+<style scoped>
+h1 {
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+.el-card {
+  margin: 20px 0;
+}
+
+.el-row {
+  align-items: center;
+}
+
+.el-col img {
+  width: 100%;
+  border-radius: 50%;
+}
+</style>
