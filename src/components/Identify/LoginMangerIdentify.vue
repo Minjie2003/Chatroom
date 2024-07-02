@@ -48,7 +48,7 @@
       </el-card>
     </div>
   </template>
-  
+
   <script setup>
   import { reactive } from 'vue';
   import CaptchaInput from './CaptchaInput.vue'
@@ -59,7 +59,7 @@
     username: '',
     password: '',
     captcha: ''
-  }); 
+  });
 
   //验证基础的字段是否为空
   const isNull = () => {
@@ -99,7 +99,7 @@
         console.error(err); // 打印错误信息
       });
   };
-  
+
   const hoverLink = (linkName, isHover) => {
     const link = document.querySelector(`.${linkName}`);
     if (isHover) {
@@ -111,42 +111,42 @@
     }
   };
   </script>
-  
+
   <style scoped>
-  
+
   .login-card {
     width: 400px;
     padding: 20px;
   }
-  
+
   .login-title {
     text-align: center;
     margin-bottom: 20px;
   }
-  
+
   .login-form {
     max-width: 300px;
     margin: 0 auto;
   }
-  
+
   /* 栅格布局调整 */
   .el-row {
     display: flex;
     justify-content: space-between;
   }
-  
+
   .el-col {
     margin-bottom: 10px;
   }
-  
+
   .divider {
     margin: 0 5px;
   }
-  
+
   .link {
     cursor: pointer;
   }
-  
+
   .link:hover {
     color: #1890ff; /* 悬浮时的颜色 */
     text-decoration: underline; /* 悬浮时的下划线 */
@@ -154,9 +154,8 @@
   .left-content {
     text-align: left;
   }
-  
+
   .right-content {
     text-align: right;
   }
   </style>
-  

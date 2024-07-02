@@ -2,6 +2,7 @@
   <div class="background" :style="{ backgroundImage: `url(${imageUrl})` }">
     <div class="container">
       <LoginIdentify></LoginIdentify>
+      <el-button @click="this.$router.push('/home')">GOTO HOME</el-button>
     </div>
   </div>
 </template>

@@ -44,7 +44,7 @@
             </el-col>
             <el-col :span="6">
               <div class="right-content">
-                <el-button type="primary" @click="handleSubmit">登录</el-button>
+                <el-button type="primary" @click="handleSubmit">{{ $t('auth.login')}}</el-button>
               </div>
             </el-col>
           </el-row>
@@ -82,6 +82,8 @@
     return true;
 };
   const handleSubmit = () => {
+    this.$router.push('/homepage')
+    /*
     const formData = new FormData();
     formData.append('accountNum', loginForm.username.trim());
     formData.append('password', loginForm.password.trim());
@@ -101,7 +103,7 @@
       })
       .catch(err => {
         console.error(err); // 打印错误信息
-      });
+      });*/
   };
 
   const hoverLink = (linkName, isHover) => {

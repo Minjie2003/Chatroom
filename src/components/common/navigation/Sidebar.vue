@@ -4,7 +4,7 @@
       class="side-menu"
       :collapse="isCollapse"
   >
-    <el-menu-item index="1" @click="$router.push('/welcome')">
+    <el-menu-item index="1" @click="$router.push('/home')">
       <el-icon>
         <HomeFilled/>
       </el-icon>

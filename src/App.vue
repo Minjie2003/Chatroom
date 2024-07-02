@@ -1,13 +1,8 @@
 <template>
-  <layout/>
+  <user-layout :hasLoggedIn="hasLoggedIn">
+    <router-view></router-view>
+  </user-layout>
 </template>
-
-<script>
-import layout from "@/views/common/layout.vue"
-export default {
-  components: {layout}
-}
-</script>
 
 <style>
 :root {
@@ -15,3 +10,8 @@ export default {
 }
 </style>
 
+<script setup>
+import userLayout from "@/components/user/UserLayout.vue";
+import {ref} from "vue";
+const hasLoggedIn = ref('false')
+</script>

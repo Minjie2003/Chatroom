@@ -4,11 +4,6 @@ import {createRouter, createWebHashHistory} from 'vue-router';
 const constantRoutes = [
     {
         path: '/',
-        name: 'application',
-        component: () => import('@/views/common/layout.vue')
-    },
-    {
-        path: '/welcome',
         name: 'welcome',
         component: () => import('@/views/common/welcome.vue')
     },
