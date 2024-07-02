@@ -4,20 +4,20 @@
         <div class="home-page">
           <h1 style="color:white">Welcome ChatRoom</h1>
           <div class="links">
-            <router-link to="/login" class="button">登录</router-link>
-            <router-link to="/register" class="button">注册</router-link>
-            <router-link to="/mlogin" class="button">管理员登录</router-link>
+            <router-link to="/auth/login" class="button">登录</router-link>
+            <router-link to="/auth/register" class="button">注册</router-link>
+            <router-link to="/auth/mlogin" class="button">管理员登录</router-link>
           </div>
         </div>
       </div>
     </div>
   </template>
-  
+
   <script setup>
   import imageUrl from "@/assets/images/homepage.jpg";
   import TypeCh from '@/components/Identify/TypeCh.vue'
   </script>
-  
+
   <style scoped>
   .background {
     position: fixed;
@@ -28,26 +28,26 @@
     background-size: cover;
     background-position: center;
   }
-  
+
   .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
-  
+
   .home-page {
     text-align: center;
     margin-top: 50px;
   }
-  
+
   .links {
     display: flex;
     justify-content: center; /* 让按钮水平居中 */
     gap: 10px;
     margin-top: 20px;
   }
-  
+
   .button {
     padding: 10px 20px;
     background-color: #007bff;
@@ -57,9 +57,8 @@
     transition: background-color 0.3s;
     margin-right: 20px;
   }
-  
+
   .button:hover {
     background-color: #0056b3;
   }
   </style>
-  

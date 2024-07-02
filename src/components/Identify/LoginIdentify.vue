@@ -33,11 +33,11 @@
           <el-row>
             <el-col :span="18">
               <div class="left-content">
-                <router-link to="/forgot-password" class="link" @mouseover="hoverLink('forgotPassword', true)" @mouseleave="hoverLink('forgotPassword', false)">
+                <router-link to="/auth/reset" class="link" @mouseover="hoverLink('forgotPassword', true)" @mouseleave="hoverLink('forgotPassword', false)">
                   忘记密码?
                 </router-link>
                 <span class="divider">|</span>
-                <router-link to="/register" class="link" @mouseover="hoverLink('register', true)" @mouseleave="hoverLink('register', false)">
+                <router-link to="/auth/register" class="link" @mouseover="hoverLink('register', true)" @mouseleave="hoverLink('register', false)">
                   马上注册
                 </router-link>
               </div>
@@ -52,7 +52,7 @@
       </el-card>
     </div>
   </template>
-  
+
   <script setup>
   import { reactive } from 'vue';
   import CaptchaInput from './CaptchaInput.vue'
@@ -63,7 +63,7 @@
     username: '',
     password: '',
     captcha: ''
-  }); 
+  });
 
   //验证基础的字段是否为空
   const isNull = () => {
@@ -91,7 +91,7 @@
       return; // 如果有字段为空，则直接返回，不执行后续逻辑
     }
 
-    axios.post("/api/user/login", formData,{
+    axios.post("/my_chatroom/user/login", formData,{
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -103,7 +103,7 @@
         console.error(err); // 打印错误信息
       });
   };
-  
+
   const hoverLink = (linkName, isHover) => {
     const link = document.querySelector(`.${linkName}`);
     if (isHover) {
@@ -115,52 +115,51 @@
     }
   };
   </script>
-  
+
   <style scoped>
-  
+
   .login-card {
     width: 400px;
     padding: 20px;
   }
-  
+
   .login-title {
     text-align: center;
     margin-bottom: 20px;
   }
-  
+
   .login-form {
     max-width: 300px;
     margin: 0 auto;
   }
-  
+
   /* 栅格布局调整 */
   .el-row {
     display: flex;
     justify-content: space-between;
   }
-  
+
   .el-col {
     margin-bottom: 10px;
   }
-  
+
   .divider {
     margin: 0 5px;
   }
-  
+
   .link {
     cursor: pointer;
   }
-  
+
   .link:hover {
-    color: #1890ff; /* 悬浮时的颜色 */
+    color: #e3ba4c; /* 悬浮时的颜色 */
     text-decoration: underline; /* 悬浮时的下划线 */
   }
   .left-content {
     text-align: left;
   }
-  
+
   .right-content {
     text-align: right;
   }
   </style>
-  
