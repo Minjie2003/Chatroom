@@ -13,7 +13,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  Server: {
+  server: { // 请注意这里是 server 而不是 Server
     // 设置为0.0.0.0则所有的地址均能访问
     host: '0.0.0.0',
     port: 5173,
@@ -24,11 +24,6 @@ export default defineConfig({
       '/my_chatroom': {
         target: 'http://localhost:8080', // 注意！此处为后端提供的真实接口
         changeOrigin: true, // 允许跨域
-        pathRewrite: {
-          // 如果接口中是没有api的，那就直接置空，'^/api': ''，
-          // 如果接口中有api，那就得写成{'^/api':'/api'}
-          '^/my_chatroom': '/'
-        }
       }
     }
   }

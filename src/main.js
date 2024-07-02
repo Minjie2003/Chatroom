@@ -9,7 +9,6 @@ import store from './store'
 import router from "./router"
 import axios from 'axios'
 //import { createRouter } from 'vue-router'
-axios.defaults.baseURL = "https://localhost:8080/my_chatroom"
 
 // 引入全局 CSS 文件
 import './assets/css/bootstrap.min.css'
