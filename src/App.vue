@@ -1,7 +1,17 @@
 <template>
-    <router-view></router-view>
+  <layout/>
 </template>
 
-
-<script setup>
+<script>
+import layout from "@/views/common/layout.vue"
+export default {
+  components: {layout}
+}
 </script>
+
+<style>
+:root {
+  overflow: hidden;
+}
+</style>
+

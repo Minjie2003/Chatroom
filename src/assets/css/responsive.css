@@ -38,7 +38,7 @@ NOTE: This file contains the styling for responsive Template.
 	}
 	@media(max-width:1699px) {
 		.email-form .select2-container { width: 100% !important; }
-		.iq-search-bar .searchbox { width: 350px; }
+		.iq-search-bar .search-box { width: 350px; }
 	}
 	@media(min-width:1300px) { }
 	@media(max-width:1399px) {
@@ -67,7 +67,7 @@ NOTE: This file contains the styling for responsive Template.
 		.iq-menu-horizontal ul.iq-menu.d-flex { display: block !important; background: var(--iq-white); }
 		.iq-menu-horizontal .iq-sidebar-menu .iq-menu li a { padding: 15px 20px 15px 30px; }
 		.iq-menu-horizontal .iq-sidebar-menu .iq-menu li ul { position: static; box-shadow: none; }
-		.iq-search-bar .searchbox { width: 100%; }
+		.iq-search-bar .search-box { width: 100%; }
 		.without-right-sidebar .iq-footer {width: 100%;}
 	}
 	@media(max-width:1199px) {
