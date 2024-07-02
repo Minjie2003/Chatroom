@@ -13,7 +13,6 @@ function refreshCaptcha() {
     })
     .then(response => {
       captchaSrc.value = URL.createObjectURL(response.data); // 使用this.captchaSrc访问Vue组件中的数据
-      console.log(response.headers['set-cookie'])
     })
     .catch(error => {
       console.error('Failed to refresh captcha:', error); // 输出更详细的错误信息

@@ -1,18 +1,20 @@
 <template>
-  <div class="background" :style="{ backgroundImage: `url(${imageUrl})` }">
+  <div class="background" :style="{ backgroundImage: `url(${welcome})` }">
     <div class="container">
       <div class="home-page">
         <h1 style="color:white">Welcome ChatRoom</h1>
         <div class="links">
           <router-link to="/auth/login" class="button">登录</router-link>
           <router-link to="/auth/register" class="button">注册</router-link>
-          <router-link to="/auth/mlogin" class="button">管理员登录</router-link>
+          <router-link to="/admin/login" class="button">管理员登录</router-link>
         </div>
       </div>
     </div>
   </div>
 </template>
-
+<script setup>
+import welcome from "@/assets/images/welcome.jpg"
+</script>
 <style scoped>
 .background {
   position: fixed;

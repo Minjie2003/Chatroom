@@ -8,13 +8,7 @@ import App from './App.vue'
 import store from './store'
 import router from "./router"
 import axios from 'axios'
-//import { createRouter } from 'vue-router'
-
-// 引入全局 CSS 文件
-import './assets/css/bootstrap.min.css'
-import './assets/css/typography.css'
-import './assets/css/style.css'
-import './assets/css/responsive.css'
+//import { createRouter } from 'vue-router
 
 // import translations
 import en from "@/i18n/en.js";

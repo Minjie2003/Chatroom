@@ -20,7 +20,12 @@ const constantRoutes = [
     {
         path: '/auth/login',
         name: 'login',
-        component: () => import('@/views/user/auth/login.vue'),
+        component: () => import('@/views/user/auth/LoginTest.vue'),
+    },
+    {
+        path: '/admin/login',
+        name: 'MLogin',
+        component: () => import('@/views/admin/login.vue'),
     },
     {
         path: '/auth/reset',

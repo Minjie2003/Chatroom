@@ -1,14 +1,14 @@
 <template>
-  <div class="background" :style="{ backgroundImage: `url(${imageUrl})` }">
+  <div class="background" :style="{ backgroundImage: `url(${welcome})` }">
     <div class="container">
       <LoginIdentify></LoginIdentify>
-      <el-button @click="this.$router.push('/home')">GOTO HOME</el-button>
     </div>
   </div>
 </template>
 
 <script setup>
 import LoginIdentify from '@/components/Identify/LoginIdentify.vue'
+import welcome from "@/assets/images/welcome.jpg"
 </script>
 
 <style scoped>

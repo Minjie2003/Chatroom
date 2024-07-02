@@ -1,14 +1,14 @@
 <template>
-  <div class="background" :style="{ backgroundImage: `url(${imageUrl})` }">
+  <div class="background" :style="{ backgroundImage: `url(${welcome})` }">
     <div class="container">
-      <LoginManagerIdentify></LoginManagerIdentify>
+      <LoginMangerIdentify></LoginMangerIdentify>
     </div>
   </div>
 </template>
 
 <script setup>
-import imageUrl from "@/assets/images/homepage.jpg";
-import LoginManagerIdentify from '@/components/Identify/LoginMangerIdentify.vue'
+import LoginMangerIdentify from '@/components/Identify/LoginMangerIdentify.vue'
+import welcome from "@/assets/images/welcome.jpg"
 </script>
 
 <style scoped>
@@ -31,3 +31,4 @@ import LoginManagerIdentify from '@/components/Identify/LoginMangerIdentify.vue'
 
 
 </style>
+

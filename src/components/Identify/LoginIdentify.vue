@@ -82,8 +82,6 @@
     return true;
 };
   const handleSubmit = () => {
-    this.$router.push('/homepage')
-    /*
     const formData = new FormData();
     formData.append('accountNum', loginForm.username.trim());
     formData.append('password', loginForm.password.trim());
@@ -99,11 +97,20 @@
       }
     })
       .then(res => {
-        console.log(res.data.code); // 打印响应数据中的 code 字段
+        let tem = res.data.code
+        if(tem === 1 || tem === 3){
+          ElMessage.error('账号或密码错误');
+        }else if(tem === 2){
+          ElMessage.error('该账号已被封禁');
+        }else if(tem === 4){
+          ElMessage.error('验证码错误')
+        }else if(tem === 200){
+          console.log('登录成功');
+        }
       })
       .catch(err => {
         console.error(err); // 打印错误信息
-      });*/
+      });
   };
 
   const hoverLink = (linkName, isHover) => {

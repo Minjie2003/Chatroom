@@ -1,7 +1,5 @@
 <template>
-  <user-layout :hasLoggedIn="hasLoggedIn">
     <router-view></router-view>
-  </user-layout>
 </template>
 
 <style>
