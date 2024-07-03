@@ -1,5 +1,5 @@
 <template>
-    <router-view></router-view>
+      <router-view></router-view>
 </template>
 
 <style>
@@ -10,6 +10,4 @@
 
 <script setup>
 
-import {ref} from "vue";
-const hasLoggedIn = ref('false')
 </script>

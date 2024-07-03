@@ -27,26 +27,12 @@
       <template #title>{{ $t('sidebar.chat') }}</template>
     </el-menu-item>
 
-    <el-sub-menu index="4">
-      <template #title>
-        <el-icon>
-          <Star/>
-        </el-icon>
-        <span>{{ $t('sidebar.list') }}</span>
-      </template>
-      <el-menu-item index="4-1" @click="$router.push('/list/friends')">
-        <el-icon>
-          <ChatLineRound/>
-        </el-icon>
-        <template #title>{{ $t('sidebar.friends') }}</template>
-      </el-menu-item>
-      <el-menu-item index="4-2" @click="$router.push('/list/groups')">
-        <el-icon>
-          <ChatDotRound/>
-        </el-icon>
-        <template #title>{{ $t('sidebar.groups') }}</template>
-      </el-menu-item>
-    </el-sub-menu>
+    <el-menu-item index="4" @click="$router.push('/list')">
+      <el-icon>
+        <Star/>
+      </el-icon>
+      <template #title>{{ $t('sidebar.list') }}</template>
+    </el-menu-item>
 
     <el-menu-item index="5" @click="$router.push('/about')">
       <el-icon>

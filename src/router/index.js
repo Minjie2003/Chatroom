@@ -46,16 +46,10 @@ const constantRoutes = [
         path: '/chat',
         name: 'chat',
         component: () => import('@/views/user/chat.vue')
-    },
-    {
-        path: '/list/friends',
-        name: 'friends',
-        component: () => import('@/views/user/list/friends.vue')
-    },
-    {
-        path: '/list/groups',
-        name: 'groups',
-        component: () => import('@/views/user/list/groups.vue')
+    },{
+        path: '/list',
+        name: 'list',
+        component: () => import('@/views/user/list.vue')
     },
     {
         path: '/setting',
@@ -71,6 +65,11 @@ const constantRoutes = [
         path: '/admin',
         name: 'admin',
         component: () => import('@/views/admin/home.vue')
+    },
+    {
+        path: '/test2',
+        name: 'test2',
+        component: () => import('@/components/ContextMenuTest.vue')
     }
 ];
 

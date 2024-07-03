@@ -1,5 +1,5 @@
 <template>
-  <user-layout has-logged-in="true">
+  <user-layout>
     <ChatLayout></ChatLayout>
   </user-layout>
 </template>

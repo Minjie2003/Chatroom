@@ -1,7 +1,7 @@
 <template>
   <div class="main-layout">
     <el-container style="padding: 0;margin: 0;">
-      <el-header :height="header_height" style="padding: 0;" v-if="hasLoggedIn">
+      <el-header :height="header_height" style="padding: 0;">
         <el-affix position="top" :offset="0">
           <Header></Header>
         </el-affix>
@@ -9,7 +9,7 @@
 
       <el-container>
         <el-affix position="top" :offset="sidebar_offset">
-          <el-aside :width="sidebar_width" v-if="hasLoggedIn">
+          <el-aside :width="sidebar_width">
             <Sidebar></Sidebar>
           </el-aside>
         </el-affix>
@@ -28,12 +28,6 @@ import Sidebar from "@/components/common/navigation/Sidebar.vue";
 import Header from "@/components/common/navigation/header/Header.vue";
 export default {
   name: 'UserLayout',
-  props: {
-    hasLoggedIn: {
-      type: Boolean,
-      required: true
-    }
-  },
   data() {
     return {
       header_height: "80px",

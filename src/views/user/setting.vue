@@ -1,5 +1,5 @@
 <template>
-  <user-layout has-logged-in="true">
+  <user-layout>
     <el-container>
       <el-header>
         <h1>Settings</h1>

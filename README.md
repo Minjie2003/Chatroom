@@ -10,7 +10,7 @@ __C__ 首字母小写驼峰
 2. `*.vue`:
    - `/views`:  __A__  `profile.vue`.
    - `/components`：__B__  `Profile.vue`.
-3. `*.js`: __A__  `index.js`.
+3. `*.js`: __A__  `store.js`.
 
 #### 1.使用到的额外依赖项及其版本（详见package.json）
 

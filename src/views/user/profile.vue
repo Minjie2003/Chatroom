@@ -1,5 +1,5 @@
 <template>
-  <user-layout has-logged-in="true">
+  <user-layout>
     <profile></profile>
   </user-layout>
 </template>

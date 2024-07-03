@@ -12,7 +12,11 @@
 
       <el-col class="header-mini-profile" :span="4">
         <el-dropdown>
-          <mini-profile></mini-profile>
+          <mini-profile
+            :avatar_url="user.avatar_url"
+            :name="user.name"
+            :id="user.id"
+          ></mini-profile>
           <template #dropdown>
             <profile class="dropdown-profile"></profile>
           </template>
@@ -33,7 +37,7 @@
 
 <script>
 import MiniProfile from "@/components/common/navigation/header/MiniProfile.vue";
-import SearchBox from "@/components/common/navigation/header/SearchBox.vue";
+import SearchBox from "@/components/common/navigation/SearchBox.vue";
 import Logo from "@/components/common/navigation/header/Logo.vue";
 import InvitationMessage from "@/components/common/icons/InvitationMessage.vue";
 import Notification from "@/components/common/icons/Notification.vue";
@@ -53,10 +57,11 @@ export default {
       search_icon: Search,
       icon_size: 25,
 
-      avatar_url: 'src/assets/images/avatar.png',
-      userinfo: {
+
+      user: {
         name: 'Tommy',
-        id: 'tommy345'
+        id: 'tommy345',
+        avatar_url: 'src/assets/images/avatar-yellow.png',
       }
     }
   },

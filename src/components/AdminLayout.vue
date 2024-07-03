@@ -117,7 +117,7 @@
 </template>
 <script setup>
 import {ref} from 'vue'
-import store from '@/store/index.js'
+import store from '@/store/store.js'
 import MiniProfile from "@/components/common/navigation/header/MiniProfile.vue";
 
 /* Tabs*/

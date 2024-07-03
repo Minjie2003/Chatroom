@@ -22,5 +22,15 @@ export default {
     sender: 'Tom',
     other: 'Alice',
     description: 'Illegal Speech'
-  }]
+  }],
+
+  categories: [
+    {
+      name: 'friends', id: '1'
+    },{
+      name: 'groups', id: '2'
+    },
+
+  ]
 }
+
