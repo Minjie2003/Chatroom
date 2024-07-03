@@ -1,5 +1,5 @@
 <template>
-  <user-layout has-logged-in="true">
+  <user-layout has-logged-in=true>
     <div class="about">
       <h1>About This Project</h1>
       <p>

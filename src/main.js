@@ -5,7 +5,6 @@ import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import App from './App.vue'
-import store from './store/store.js'
 import router from "./router"
 import axios from 'axios'
 

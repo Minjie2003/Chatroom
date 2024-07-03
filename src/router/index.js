@@ -70,6 +70,11 @@ const constantRoutes = [
         path: '/test2',
         name: 'test2',
         component: () => import('@/components/ContextMenuTest.vue')
+    },
+    {
+        path: '/test',
+        name: 'test',
+        component:() => import('@/components/Identify/Test.vue')
     }
 ];
 

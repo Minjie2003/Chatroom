@@ -59,6 +59,7 @@
   import { ElMessage } from 'element-plus'
   import axios from 'axios';
   import { useRouter } from 'vue-router' 
+  import store from "@/store/store.js"
 
   const loginForm = reactive({
     username: '',
@@ -108,6 +109,7 @@
           ElMessage.error('验证码错误');
         }else if(tem === 200){
           ElMessage.success('登录成功');
+          Object.assign(store.myinfos,res.data.data)
           router.push("/home")
         }
       })

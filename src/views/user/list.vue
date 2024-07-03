@@ -35,7 +35,7 @@
       </el-aside>
       <el-main class="list-display">
         <el-card class="item-card selectable"
-                 v-for="item in items">
+                 v-for="item in items" :key="item.id">
           <el-row justify="space-around">
             <el-col span="8">
               <mini-profile :id="item.id" :name="item.name" :avatar_url="item.avatar_url"></mini-profile>

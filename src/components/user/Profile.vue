@@ -8,13 +8,26 @@
           fit="cover"
       ></el-image>
     </div>
+    <!-- accountNum: "Minjie2003",
+            birthday: "2024-07-03",
+            createTime: "2024-07-03T18:03:39",
+            id: 16,
+            location: "中国",
+            mail: "1276679294@qq.com",
+            password: "123",
+            photo: "head/默认头像.png",
+            sex: "男",
+            state: 2,
+            updateTime: null,
+            username: "新用户" -->
     <div class="userinfo">
-      <h2>{{ userInfo.name }}</h2>
+      <h2>{{ store.myinfos.username }}</h2>
       <el-descriptions>
-        <el-descriptions-item :label="$t('profile.gender')">{{ userInfo.gender }}</el-descriptions-item>
-        <el-descriptions-item :label="$t('profile.email')">{{ userInfo.email }}</el-descriptions-item>
-        <el-descriptions-item :label="$t('profile.address')">{{ userInfo.address }}</el-descriptions-item>
-        <el-descriptions-item :label="$t('profile.telephone')">{{ userInfo.telephone }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('profile.gender')">{{ store.myinfos.sex }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('profile.email')">{{ store.myinfos.mail }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('profile.address')">{{ store.myinfos.location }}</el-descriptions-item>
+        <el-descriptions-item label="生日">{{ store.myinfos.birthday }}</el-descriptions-item>
+        <el-descriptions-item label="注册时间">{{ store.myinfos.createTime || 'NULL' }}</el-descriptions-item>
       </el-descriptions>
     </div>
     <div class="additional-info">
@@ -26,25 +39,25 @@
   </el-card>
 </template>
 
-<script>
 
-export default {
-  data() {
-    return {
-      backgroundImage: 'src/assets/images/lake.png',
-      avatar_url: 'src/assets/images/avatar-yellow.png',
-      userInfo: {
-        name: 'John Doe',
-        id: 'johndoe001',
-        gender: 'Male',
-        email: 'john.doe@example.com',
-        address: 'Sichuan, China',
-        telephone: '333444455555',
-        signature: 'This is a sample note.',
-      },
-    };
-  }
-};
+
+<script setup>
+import { reactive } from 'vue';
+import store from '@/store/store.js'
+
+const backgroundImage = 'src/assets/images/lake.png';
+const avatar_url = 'src/assets/images/avatar-yellow.png';
+
+const userInfo = reactive({
+  name: 'John Doe',
+  id: 'johndoe001',
+  gender: 'Male',
+  email: 'john.doe@example.com',
+  address: 'Sichuan, China',
+  telephone: '333444455555',
+  signature: 'This is a sample note.',
+});
+
 </script>
 
 <style scoped>

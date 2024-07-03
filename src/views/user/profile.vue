@@ -1,5 +1,5 @@
 <template>
-  <user-layout>
+  <user-layout >
     <profile></profile>
   </user-layout>
 </template>

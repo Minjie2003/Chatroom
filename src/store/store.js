@@ -1,4 +1,7 @@
-export default {
+// store.js
+import { reactive } from 'vue';
+
+const store = reactive({
   users: [{
     name: 'Tom',
     id: 'tomlikeschatting',
@@ -23,6 +26,21 @@ export default {
     other: 'Alice',
     description: 'Illegal Speech'
   }],
+  //this param is the user infos after you've login
+  myinfos:{
+    accountNum: "123",
+    birthday: "",
+    createTime: "",
+    id: null,
+    location: "",
+    mail: "",
+    password: "",
+    photo: "",
+    sex: "",
+    state: null,
+    updateTime: null,
+    username: ""
+  },
 
   categories: [
     {
@@ -32,5 +50,5 @@ export default {
     },
 
   ]
-}
-
+})
+export default store;

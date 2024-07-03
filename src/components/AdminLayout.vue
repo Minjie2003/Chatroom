@@ -7,7 +7,7 @@
       <el-row
           v-for="user in users"
           class="user-edit"
-          justify="space-evenly">
+          justify="space-evenly" :key="user">
         <el-col span="4">
           <mini-profile :avatar_url="user.avatar_url"
                         :name="user.name"
@@ -48,7 +48,7 @@
       <el-row
           v-for="group in groups"
           class="group-edit"
-          justify="space-evenly">
+          justify="space-evenly" :key="group">
         <el-col span="4">
           <mini-profile :avatar_url="group.avatar_url"
                         :name="group.name"
@@ -81,7 +81,7 @@
       <el-row
           v-for="report in reports"
           class="report-edit"
-          justify="space-evenly">
+          justify="space-evenly" :key="report">
         <el-col span="4">
           <mini-profile :avatar_url="report.avatar_url"
                         :name="report.name"
