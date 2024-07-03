@@ -1,48 +1,50 @@
 <template>
-  <div class="list-manage">
-    <el-row>
-      <el-col :span="12">
-        <h2>Friend List</h2>
-        <el-card v-for="(friend, index) in friends" :key="index" class="friend-card">
-          <span>{{ friend }}</span>
-          <el-button type="danger" @click="removeFriend(index)">Remove</el-button>
-        </el-card>
-        <el-input v-model="newFriend" placeholder="Add a new friend" @keyup.enter="addFriend"></el-input>
-        <el-button type="primary" @click="addFriend">Add Friend</el-button>
-      </el-col>
-      <el-col :span="12">
-        <h2>Group List</h2>
-        <el-card v-for="(group, index) in groups" :key="index" class="group-card">
-          <span>{{ group }}</span>
-          <el-button type="danger" @click="removeGroup(index)">Remove</el-button>
-        </el-card>
-        <el-input v-model="newGroup" placeholder="Add a new group" @keyup.enter="addGroup"></el-input>
-        <el-button type="primary" @click="addGroup">Add Group</el-button>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="24">
-        <h2>Custom Lists</h2>
-        <el-input v-model="newListName" placeholder="Create a new list" @keyup.enter="addList"></el-input>
-        <el-button type="primary" @click="addList">Create List</el-button>
-        <div v-for="(list, index) in customLists" :key="index" class="custom-list">
-          <h3>{{ list.name }}</h3>
-          <el-card v-for="(item, itemIndex) in list.items" :key="itemIndex" class="custom-item">
-            <span>{{ item }}</span>
-            <el-button type="danger" @click="removeCustomItem(index, itemIndex)">Remove</el-button>
+  <user-layout has-logged-in="true">
+    <div class="list-manage">
+      <el-row>
+        <el-col :span="12">
+          <h2>Friend List</h2>
+          <el-card v-for="(friend, index) in friends" :key="index" class="friend-card">
+            <span>{{ friend }}</span>
+            <el-button type="danger" @click="removeFriend(index)">Remove</el-button>
           </el-card>
-          <el-input v-model="newCustomItem[index]" placeholder="Add a new item" @keyup.enter="addCustomItem(index)"></el-input>
-          <el-button type="primary" @click="addCustomItem(index)">Add Item</el-button>
-        </div>
-      </el-col>
-    </el-row>
-  </div>
+          <el-input v-model="newFriend" placeholder="Add a new friend" @keyup.enter="addFriend"></el-input>
+          <el-button type="primary" @click="addFriend">Add Friend</el-button>
+        </el-col>
+        <el-col :span="12">
+          <h2>Group List</h2>
+          <el-card v-for="(group, index) in groups" :key="index" class="group-card">
+            <span>{{ group }}</span>
+            <el-button type="danger" @click="removeGroup(index)">Remove</el-button>
+          </el-card>
+          <el-input v-model="newGroup" placeholder="Add a new group" @keyup.enter="addGroup"></el-input>
+          <el-button type="primary" @click="addGroup">Add Group</el-button>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <h2>Custom Lists</h2>
+          <el-input v-model="newListName" placeholder="Create a new list" @keyup.enter="addList"></el-input>
+          <el-button type="primary" @click="addList">Create List</el-button>
+          <div v-for="(list, index) in customLists" :key="index" class="custom-list">
+            <h3>{{ list.name }}</h3>
+            <el-card v-for="(item, itemIndex) in list.items" :key="itemIndex" class="custom-item">
+              <span>{{ item }}</span>
+              <el-button type="danger" @click="removeCustomItem(index, itemIndex)">Remove</el-button>
+            </el-card>
+            <el-input v-model="newCustomItem[index]" placeholder="Add a new item" @keyup.enter="addCustomItem(index)"></el-input>
+            <el-button type="primary" @click="addCustomItem(index)">Add Item</el-button>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+  </user-layout>
 </template>
 
 <script>
 import { ref } from 'vue';
 import { ElRow, ElCol, ElCard, ElInput, ElButton } from 'element-plus';
-
+import UserLayout from "@/components/user/UserLayout.vue";
 export default {
   name: 'ListManage',
   components: {
@@ -50,7 +52,8 @@ export default {
     ElCol,
     ElCard,
     ElInput,
-    ElButton
+    ElButton,
+    UserLayout
   },
   setup() {
     const friends = ref(['Alice', 'Bob', 'Charlie']);

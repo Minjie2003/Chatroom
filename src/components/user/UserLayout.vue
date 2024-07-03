@@ -26,11 +26,12 @@
 
 import Sidebar from "@/components/common/navigation/Sidebar.vue";
 import Header from "@/components/common/navigation/header/Header.vue";
-import {boolean} from "mockjs/src/mock/random/basic.js";
 export default {
+  name: 'UserLayout',
   props: {
     hasLoggedIn: {
-      type: boolean,
+      type: Boolean,
+      required: true
     }
   },
   data() {
