@@ -1,13 +1,13 @@
 <template>
   <div class="background" :style="{ backgroundImage: `url(${welcome})` }">
     <div class="container">
-      <LoginMangerIdentify></LoginMangerIdentify>
+      <LoginManagerIdentify></LoginManagerIdentify>
     </div>
   </div>
 </template>
 
 <script setup>
-import LoginMangerIdentify from '@/components/Identify/LoginMangerIdentify.vue'
+import LoginManagerIdentify from '@/components/Identify/LoginManagerIdentify.vue'
 import welcome from "@/assets/images/welcome.jpg"
 </script>
 

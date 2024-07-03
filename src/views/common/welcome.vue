@@ -4,8 +4,8 @@
       <div class="home-page">
         <h1 style="color:white">Welcome ChatRoom</h1>
         <div class="links">
-          <router-link to="/auth/login" class="button">登录</router-link>
           <router-link to="/auth/register" class="button">注册</router-link>
+          <router-link to="/auth/login" class="button">用户登录</router-link>
           <router-link to="/admin/login" class="button">管理员登录</router-link>
         </div>
       </div>
