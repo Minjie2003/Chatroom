@@ -66,6 +66,11 @@ const constantRoutes = [
         path: '/about',
         name: 'about',
         component: () => import('@/views/common/about.vue')
+    },
+    {
+        path: '/admin',
+        name: 'admin',
+        component: () => import('@/views/admin/home.vue')
     }
 ];
 

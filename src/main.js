@@ -8,17 +8,9 @@ import App from './App.vue'
 import store from './store'
 import router from "./router"
 import axios from 'axios'
-//import { createRouter } from 'vue-router
 
-// import translations
-import en from "@/i18n/en.js";
-import ch from "@/i18n/ch.js";
-import ja from "@/i18n/ja.js";
 import {messages} from "@/i18n/config.js";
 
-// 动态加载 JS 文件
-// import { loadScripts } from './loadScripts.js'
-// loadScripts()
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

@@ -1,29 +1,33 @@
 <template>
   <div class="profile-container">
     <div class="avatar-wrapper">
-      <el-avatar :size="50" :src="userinfo.avatar_url" class="custom-avatar"/>
+      <el-avatar :size="50" :src="avatar_url" class="custom-avatar"/>
     </div>
     <div class="user-info">
-      <span class="user-name">{{ userinfo.name }}</span>
-      <span class="user-id">@{{ userinfo.id }}</span>
+      <span class="user-name">{{ name }}</span>
+      <span class="user-id">@{{ id }}</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return  {
-      userinfo: {
-        name: 'Tommy',
-        id: 'tommylikeschatting',
-        avatar_url: 'src/assets/images/avatar-purple.png'
-      }
+  props: {
+    avatar_url: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: String,
+      required: true
     }
   }
 }
 </script>
-
 
 <style scoped>
 /* Container for the profile section */
@@ -74,5 +78,4 @@ export default {
 .profile-container:hover .user-id {
   color: #50b5ff;
 }
-
 </style>

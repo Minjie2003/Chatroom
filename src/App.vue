@@ -1,5 +1,7 @@
 <template>
-    <router-view></router-view>
+    <user-layout has-logged-in="true">
+      <router-view></router-view>
+    </user-layout>
 </template>
 
 <style>
@@ -9,7 +11,9 @@
 </style>
 
 <script setup>
-import userLayout from "@/components/user/UserLayout.vue";
+
 import {ref} from "vue";
+import Layout from "@/components/component/layout.vue";
+import UserLayout from "@/components/user/UserLayout.vue";
 const hasLoggedIn = ref('false')
 </script>
