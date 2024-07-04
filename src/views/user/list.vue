@@ -42,7 +42,7 @@
                  v-for="item in items" :key="item.id">
           <el-row justify="space-around">
             <el-col span="8">
-              <mini-profile :id="item.id" :name="item.name" :avatar_url="item.avatar_url"></mini-profile>
+              <mini-profile :user_id="item.id" :name="item.name" :avatar_url="item.avatar_url"></mini-profile>
             </el-col>
 
             <el-col span="8" class="edit-buttons">

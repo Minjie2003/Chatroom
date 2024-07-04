@@ -6,10 +6,14 @@
           effect="light"
           content="切换账号"
           placement="left"
+          :visible="tip_visible"
       >
       <el-icon
           class="effected-icon"
-          :size="25" color="#50b5ff">
+          :size="25" color="#50b5ff"
+          @mouseenter="tip_visible=true"
+          @mouseleave="tip_visible=false"
+      >
         <SwitchButton/>
       </el-icon>
     </el-tooltip>
@@ -36,6 +40,10 @@
 <script setup>
 
 import {Switch, SwitchButton} from "@element-plus/icons-vue";
+import {ref} from "vue";
+
+const tip_visible = ref(false)
+
 </script>
 
 

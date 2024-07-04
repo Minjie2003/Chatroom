@@ -6,10 +6,14 @@
           effect="light"
           content="邀请通知"
           placement="left-start"
+          :visible="tip_visible"
       >
         <el-icon
             class="effected-icon"
-            color="#50b5ff" :size="25">
+            color="#50b5ff" :size="25"
+            @mouseenter="tip_visible = true"
+            @mouseleave="tip_visible = false"
+        >
           <Message/>
         </el-icon>
       </el-tooltip>
@@ -25,7 +29,7 @@
                 <mini-profile class="notify-profile"></mini-profile>
               </el-col>
               <el-col :span="12" style="padding-top: 3em;">
-                <el-text multiple>{{notify.remark}}</el-text>
+                <el-text multiple>{{ notify.remark }}</el-text>
               </el-col>
               <el-col :span="4" style="align-self: center">
                 <el-button type="primary">Yes</el-button>
@@ -46,8 +50,9 @@ import MiniProfile from "@/components/icons/MiniProfile.vue";
 
 export default {
   components: {Message, MiniProfile, Bell},
-  data () {
+  data() {
     return {
+      tip_visible: false,
       invitations: [
         {
           type: 'friend application',

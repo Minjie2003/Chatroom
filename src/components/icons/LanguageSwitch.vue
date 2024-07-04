@@ -6,8 +6,12 @@
           effect="light"
           content="切换语言"
           placement="left"
+          :visible="tip_visible"
       >
-      <el-icon class="effected-icon" :size="25" color="#50b5ff">
+      <el-icon class="effected-icon" :size="25" color="#50b5ff"
+          @mouseenter="tip_visible=true"
+               @mouseleave="tip_visible=false"
+      >
         <Guide/>
       </el-icon>
     </el-tooltip>
@@ -29,6 +33,7 @@ export default {
   components: {Guide},
   data() {
     return {
+      tip_visible: false,
       name: 'LanguageSwitch',
       locale: 'ch',
       languages: supported.languages,

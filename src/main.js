@@ -9,16 +9,17 @@ import router from "./router"
 import axios from 'axios'
 
 import {messages} from "@/i18n/config.js";
+import global_default from "@element-plus/icons-vue/global";
 
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
+  app.component(key, component)
 }
 export let i18n = createI18n({
-    locale: 'ch',
-    fallbackLocale: 'en',
-    messages: messages
+  locale: 'ch',
+  fallbackLocale: 'en',
+  messages: messages
 })
 
 app.config.globalProperties.$http = axios
@@ -27,5 +28,8 @@ app.use(ElementPlus)
 app.use(router)
 app.use(i18n)
 
-app.mount("#app")
+app.mount("#app");
+
+
+
 

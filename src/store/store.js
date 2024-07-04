@@ -4,21 +4,21 @@ import myinfos from './modules/myinfos';
 import flag from './modules/flag';
 
 const store = createStore({
-  modules: {
-    myinfos,
-    flag
-  },
   plugins: [
     createPersistedState({
-      storage: window.sessionStorage,
+      storage: window.sessionStorage, // 输出错误日志以便调试
+      logErrors: true,
       reducer(val) {
         return {
           myinfos: val.myinfos // 保留 myinfos 模块的状态
         };
-      },
-      logErrors: true // 输出错误日志以便调试
+      }
     })
-  ]
+  ],
+  modules: {
+    myinfos,
+    flag
+  }
 });
 
 export default store;

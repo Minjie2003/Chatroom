@@ -35,7 +35,7 @@ import {ref} from 'vue'
 import {VueDraggable} from 'vue-draggable-plus'
 import {ElMessage, useCursor} from "element-plus";
 
-const list = ref([
+const conversations = ref([
   {
     name: 'Joao',
     id: 1

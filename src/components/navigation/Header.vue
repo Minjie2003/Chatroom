@@ -8,9 +8,9 @@
     <div class="header-mini-profile-container">
       <el-dropdown>
         <mini-profile
-            :avatar_url="store.myinfos.photo || user.avatar_url"
-            :name="store.myinfos.username || 'unnamed'"
-            :id="store.myinfos.id || 'null'"
+            :avatar_url="photo_url || user_demo.avatar_url"
+            :name="myinfos.username || user_demo.name"
+            :user_id="myinfos.id || user_demo.id"
         ></mini-profile>
         <template #dropdown>
           <profile class="dropdown-profile"></profile>
@@ -39,27 +39,35 @@ import AccountSwitch from "@/components/icons/AccountSwitch.vue";
 
 import {Search} from "@element-plus/icons-vue";
 import Profile from "@/components/Profile.vue";
-import store from "@/store/store.js"
+import {useStore} from "vuex";
+import {useRouter} from "vue-router";
+import {computed} from "vue";
 
 export default {
   name: "Header",
-  computed: {
-    store() {
-      return store
+
+  //... 操作符用于将 mapState 返回的对象展开到当前组件的 computed 计算属性中,myinfos：模块名
+  setup(){
+    const store = useStore()
+    const router = useRouter()  //创建一个router实例
+
+    const myinfos = computed(() => store.state.myinfos);
+    const photo_url = '/my_chatroom/'+ myinfos.value.photo
+
+    return {
+      myinfos, photo_url
     }
   },
+
   data() {
     return {
       header_app_logo: 'src/assets/images/chatroom_logo.png',
-
       search_input: '',
       search_icon: Search,
       icon_size: 25,
-
-
-      user: {
-        name: 'Tommy',
-        id: 'tommy345',
+      user_demo: {
+        name: 'Default',
+        id: 'NULL',
         avatar_url: 'src/assets/images/avatar-yellow.png',
       }
     }

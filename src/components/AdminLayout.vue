@@ -11,7 +11,7 @@
         <el-col span="4">
           <mini-profile :avatar_url="user.avatar_url"
                         :name="user.name"
-                        :id="user.id"
+                        :user_id="user.id"
           ></mini-profile>
         </el-col>
 
@@ -52,7 +52,7 @@
         <el-col span="4">
           <mini-profile :avatar_url="group.avatar_url"
                         :name="group.name"
-                        :id="group.id"
+                        :user_id="group.id"
           ></mini-profile>
         </el-col>
 
@@ -85,7 +85,7 @@
         <el-col span="4">
           <mini-profile :avatar_url="report.avatar_url"
                         :name="report.name"
-                        :id="report.id"
+                        :user_id="report.id"
           ></mini-profile>
         </el-col>
 
