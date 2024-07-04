@@ -59,8 +59,9 @@
   import { ElMessage } from 'element-plus'
   import axios from 'axios';
   import { useRouter } from 'vue-router' 
-  import store from "@/store/store.js"
+  import {useStore} from 'vuex'
 
+  const store = useStore()
   const loginForm = reactive({
     username: '',
     password: '',
@@ -109,7 +110,8 @@
           ElMessage.error('验证码错误');
         }else if(tem === 200){
           ElMessage.success('登录成功');
-          Object.assign(store.myinfos,res.data.data)
+          store.dispatch('myinfos/updateMyInfos',res.data.data)
+          console.log(store.state.myinfos.myinfos)
           router.push("/home")
         }
       })

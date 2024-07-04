@@ -1,59 +1,24 @@
-// store.js
-import { reactive } from 'vue';
+import { createStore } from 'vuex';
+import createPersistedState from "vuex-persistedstate";
+import myinfos from './modules/myinfos';
+import flag from './modules/flag';
 
-const store = reactive({
-  users: [{
-    name: 'Tom',
-    id: 'tomlikeschatting',
-    signature: 'Tom likes chatting. ',
-    avatar_url: 'src/assets/images/avatar-yellow.png',
-  }, {
-    name: 'Alice',
-    id: 'alicelikessleeping',
-    signature: 'Alice likes sleeping. ',
-    avatar_url: 'src/assets/images/avatar-purple.png',
-  }],
-  groups: [{
-    name: 'VueLean', id: '999888', avatar_url: 'src/assets/images/chatroom_logo.png'
-  }, {
-    name: 'SpringBoot', id: '12345', avatar_url: 'src/assets/images/chatroom_logo.png'
-  }, {
-    name: 'Maven', id: '987789', avatar_url: 'src/assets/images/chatroom_logo.png'
-  },],
-
-  reports: [{
-    sender: 'Tom',
-    other: 'Alice',
-    description: 'Illegal Speech'
-  }],
-  //this param is the user infos after you've login
-  myinfos: {
-    accountNum: "123",
-    birthday: "",
-    createTime: "",
-    id: null,
-    location: "",
-    mail: "",
-    password: "",
-    photo: "",
-    sex: "",
-    state: null,
-    updateTime: null,
-    username: ""
+const store = createStore({
+  modules: {
+    myinfos,
+    flag
   },
-
-  categories: [
-    {
-      name: 'friends', id: '1'
-    },{
-      name: 'groups', id: '2'
-    },{
-      name: 'teachers', id: '3'
-    },{
-      name: 'classmates', id: '4'
-    },
-
+  plugins: [
+    createPersistedState({
+      storage: window.sessionStorage,
+      reducer(val) {
+        return {
+          myinfos: val.myinfos // 保留 myinfos 模块的状态
+        };
+      },
+      logErrors: true // 输出错误日志以便调试
+    })
   ]
-})
+});
 
 export default store;

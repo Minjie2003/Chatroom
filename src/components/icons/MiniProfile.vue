@@ -1,16 +1,19 @@
 <template>
   <div class="profile-container">
     <div class="avatar-wrapper">
-      <el-avatar :size="50" :src="avatar_url" class="custom-avatar"/>
+      <el-avatar :size="50" :src="phototUrl" class="custom-avatar" @click="handleAvatarClick"/>
     </div>
     <div class="user-info">
-      <span class="user-name">{{ name }}</span>
-      <span class="user-id">@{{ id }}</span>
+      <span class="user-name">{{ myinfos.username }}</span>
+      <span class="user-id">{{ myinfos.mail }}</span>
     </div>
   </div>
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 export default {
   props: {
     avatar_url: {
@@ -24,6 +27,19 @@ export default {
     id: {
       type: String,
       required: true
+    }
+  },
+  //... 操作符用于将 mapState 返回的对象展开到当前组件的 computed 计算属性中,myinfos：模块名
+  setup(){
+    const store = useStore()
+    const router = useRouter()  //创建一个router实例
+    const handleAvatarClick = () =>{
+      router.push("/profile");
+    }
+    const myinfos = computed(() => store.state.myinfos.myinfos);
+    const phototUrl = '/my_chatroom/'+myinfos.value.photo
+    return{
+      handleAvatarClick,myinfos,phototUrl
     }
   }
 }

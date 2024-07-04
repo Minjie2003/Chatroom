@@ -3,7 +3,7 @@ import ElementPlus from 'element-plus'
 import {createI18n} from "vue-i18n";
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
+import store from '@/store/store'
 import App from './App.vue'
 import router from "./router"
 import axios from 'axios'
@@ -22,7 +22,7 @@ export let i18n = createI18n({
 })
 
 app.config.globalProperties.$http = axios
-/*app.use(store)  */   //此时任意的组件里面就可以去取vuex的数据了
+app.use(store)    //此时任意的组件里面就可以去取vuex的数据了
 app.use(ElementPlus)
 app.use(router)
 app.use(i18n)

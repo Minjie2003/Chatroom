@@ -1,12 +1,13 @@
 <template>
   <el-card class="profile" id="MainProfile">
     <div class="background" :style="{ backgroundImage: `url(${backgroundImage})` }">
-      <el-image
+      <el-avatar
           class="avatar"
-          :src="avatar_url"
-          :alt="$t('profile.avatar')"
-          fit="cover"
-      ></el-image>
+          :src="phototUrl"  
+          @mouseover="isHover = true"
+          @mouseleave="isHover = false"
+          :class="{'hover-image':isHover}"       
+      />
     </div>
     <!-- accountNum: "Minjie2003",
             birthday: "2024-07-03",
@@ -21,41 +22,54 @@
             updateTime: null,
             username: "新用户" -->
     <div class="userinfo">
-      <el-text class="cr-title user-name">{{ store.myinfos.username }}</el-text>
+      <el-text class="cr-title user-name">{{ myinfos.username }}</el-text>
+          <div class="edit-icon" @click="trueEdit">
+            <el-icon size="25" class="icon-hover"><Edit /></el-icon>
+            <span>点击修改</span>
+          </div>
+          <update-profile></update-profile>
       <el-descriptions>
-        <el-descriptions-item :label="$t('profile.gender')">{{ store.myinfos.sex }}</el-descriptions-item>
-        <el-descriptions-item :label="$t('profile.email')">{{ store.myinfos.mail }}</el-descriptions-item>
-        <el-descriptions-item :label="$t('profile.address')">{{ store.myinfos.location }}</el-descriptions-item>
-        <el-descriptions-item label="生日">{{ store.myinfos.birthday }}</el-descriptions-item>
-        <el-descriptions-item label="注册时间">{{ store.myinfos.createTime || 'NULL' }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('profile.gender')">{{ myinfos.sex }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('profile.email')">{{ myinfos.mail }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('profile.address')">{{ myinfos.location }}</el-descriptions-item>
+        <el-descriptions-item label="生日">{{ myinfos.birthday }}</el-descriptions-item>
+        <el-descriptions-item label="注册时间">{{ myinfos.createTime || 'NULL' }}</el-descriptions-item>
+        <el-descriptions-item label="图片">{{ myinfos.photo }}</el-descriptions-item>
       </el-descriptions>
     </div>
     <div class="additional-info">
       <el-card>
         <h3>{{ $t('profile.signature') }}</h3>
-        <p>{{ userInfo.signature }}</p>
+        <p>{{ signature }}</p>
       </el-card>
     </div>
   </el-card>
+  
 </template>
 
 <script setup>
-import { reactive } from 'vue';
-import store from '@/store/store.js'
-
+import {ref,reactive,computed } from 'vue'
+import { useStore } from 'vuex'
+import UpdateProfile from './UpdateProfile.vue'
+const store = useStore()   //创建一个store的实例
+const isHover = ref(false)
 const backgroundImage = 'src/assets/images/lake.png';
 const avatar_url = 'src/assets/images/avatar-yellow.png';
+const myinfos = computed(()=>store.state.myinfos.myinfos)
+const phototUrl = '/my_chatroom/'+myinfos.value.photo
+const signature = "田文镜，我*****"
+  // 获取 Vuex store 中的 isEdit 状态
+const isEdit = computed(() => store.state.flag.isEdit);
 
-const userInfo = reactive({
-  name: 'John Doe',
-  id: 'johndoe001',
-  gender: 'Male',
-  email: 'john.doe@example.com',
-  address: 'Sichuan, China',
-  telephone: '333444455555',
-  signature: 'This is a sample note.',
-});
-
+  // 改变 isEdit 的值为 true
+  const trueEdit = () => {
+    store.dispatch('flag/updateIsEdit', true);
+  };
+  
+  // 改变 isEdit 的值为 false
+  const falseEdit = () => {
+    store.dispatch('flag/updateIsEdit', false);
+  };
 </script>
 
 <style scoped>
@@ -106,5 +120,20 @@ const userInfo = reactive({
 
 .additional-info p {
   margin-bottom: 20px;
+}
+.hover-image {
+  scale: 1.1;
+}
+.edit-icon {
+  margin: 10px; /* 可以根据需要调整图标和文本之间的间距 */
+  text-align: right;
+  align-items: center;
+}
+h2{
+  text-align: center;
+  margin: 0%;
+}
+.edit-icon:hover{
+  color: green;
 }
 </style>
