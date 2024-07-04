@@ -44,7 +44,7 @@
 <script>
 import { ref } from 'vue';
 import { ElRow, ElCol, ElCard, ElInput, ElButton } from 'element-plus';
-import UserLayout from "@/components/user/UserLayout.vue";
+import UserLayout from "@/components/UserLayout.vue";
 export default {
   name: 'ListManage',
   components: {

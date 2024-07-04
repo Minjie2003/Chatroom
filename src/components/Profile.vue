@@ -1,5 +1,5 @@
 <template>
-  <el-card class="profile">
+  <el-card class="profile" id="MainProfile">
     <div class="background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <el-image
           class="avatar"
@@ -21,7 +21,7 @@
             updateTime: null,
             username: "新用户" -->
     <div class="userinfo">
-      <h2>{{ store.myinfos.username }}</h2>
+      <el-text class="cr-title user-name">{{ store.myinfos.username }}</el-text>
       <el-descriptions>
         <el-descriptions-item :label="$t('profile.gender')">{{ store.myinfos.sex }}</el-descriptions-item>
         <el-descriptions-item :label="$t('profile.email')">{{ store.myinfos.mail }}</el-descriptions-item>
@@ -38,8 +38,6 @@
     </div>
   </el-card>
 </template>
-
-
 
 <script setup>
 import { reactive } from 'vue';
@@ -63,13 +61,20 @@ const userInfo = reactive({
 <style scoped>
 .profile {
   text-align: center;
-  padding: 20px 50px;
+  height: 100vh;
+  padding: 5px 5px;
+}
+
+#MainProfile {
+  border-style: none;
 }
 
 .background {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 50vh;
+  border-radius: 0.5rem 0.5rem 0 0;
+  border-bottom-style: none;
   background-size: cover;
   background-position: center;
   margin-bottom: 5px;
@@ -91,7 +96,7 @@ const userInfo = reactive({
 }
 
 .additional-info {
-  margin-top: 20px;
+  margin-top: 15px;
   text-align: left;
 }
 

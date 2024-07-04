@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import UserLayout from "@/components/user/UserLayout.vue";
+import UserLayout from "@/components/UserLayout.vue";
 export default {
   name: 'About',
   data() {

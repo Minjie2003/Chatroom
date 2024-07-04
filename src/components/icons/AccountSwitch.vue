@@ -8,7 +8,7 @@
           placement="left"
       >
       <el-icon
-          class="interactive-icon"
+          class="effected-icon"
           :size="25" color="#50b5ff">
         <SwitchButton/>
       </el-icon>

@@ -27,7 +27,7 @@ const store = reactive({
     description: 'Illegal Speech'
   }],
   //this param is the user infos after you've login
-  myinfos:{
+  myinfos: {
     accountNum: "123",
     birthday: "",
     createTime: "",
@@ -47,8 +47,13 @@ const store = reactive({
       name: 'friends', id: '1'
     },{
       name: 'groups', id: '2'
+    },{
+      name: 'teachers', id: '3'
+    },{
+      name: 'classmates', id: '4'
     },
 
   ]
 })
+
 export default store;

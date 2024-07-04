@@ -118,7 +118,7 @@
 <script setup>
 import {ref} from 'vue'
 import store from '@/store/store.js'
-import MiniProfile from "@/components/common/navigation/header/MiniProfile.vue";
+import MiniProfile from "@/components/icons/MiniProfile.vue";
 
 /* Tabs*/
 const activeName = ref('first')

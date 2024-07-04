@@ -1,13 +1,13 @@
 <template>
   <div class="background" :style="{ backgroundImage: `url(${welcome})` }">
-    <div class="container">
+    <div class="header-container">
       <PasswordReset></PasswordReset>
     </div>
   </div>
 </template>
 
 <script setup>
-import PasswordReset from '@/components/Identify/PasswordReset.vue'
+import PasswordReset from '@/components/auth/PasswordReset.vue'
 import welcome from "@/assets/images/welcome.jpg"
 </script>
 
@@ -22,7 +22,7 @@ import welcome from "@/assets/images/welcome.jpg"
   background-position: center;
 }
 
-.container {
+.header-container {
   display: flex;
   justify-content: center;
   align-items: center;

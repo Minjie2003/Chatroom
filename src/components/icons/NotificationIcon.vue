@@ -1,6 +1,6 @@
 <script>
 import {Bell} from "@element-plus/icons-vue";
-import MiniProfile from "@/components/common/navigation/header/MiniProfile.vue";
+import MiniProfile from "@/components/icons/MiniProfile.vue";
 export default {
   components: {Bell, MiniProfile},
   data() {
@@ -31,7 +31,7 @@ export default {
           content="系统消息"
           placement="left"
       >
-        <el-icon class="interactive-icon" :size="25" color="#50b5ff">
+        <el-icon class="effected-icon" :size="25" color="#50b5ff">
           <Bell/>
         </el-icon>
       </el-tooltip>

@@ -35,5 +35,23 @@ export default {
         friends: '友達',
         about: 'アバウト',
         setting: '設定'
+    },
+    setting: {
+        title: '設定',
+
+        my_account: 'アカウント',
+        edit: '変更',
+
+        theme_and_background: 'テーマと背景',
+        theme_color: 'テーマカーラー',
+        background_image: '背景イメージ',
+
+        language: '言語',
+        English: '英語',
+        Chinese: '中国語',
+        Japanese: '日本語',
+
+        logout: 'ログアウト'
+
     }
 }

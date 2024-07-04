@@ -4,6 +4,6 @@
   </user-layout>
 </template>
 <script setup>
-import UserLayout from "@/components/user/UserLayout.vue";
+import UserLayout from "@/components/UserLayout.vue";
 
 </script>

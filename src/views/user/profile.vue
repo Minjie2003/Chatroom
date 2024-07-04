@@ -5,6 +5,6 @@
 </template>
 
 <script setup>
-import profile from "@/components/user/Profile.vue";
-import UserLayout from "@/components/user/UserLayout.vue";
+import profile from "@/components/Profile.vue";
+import UserLayout from "@/components/UserLayout.vue";
 </script>

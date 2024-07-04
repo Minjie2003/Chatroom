@@ -1,13 +1,13 @@
 <template>
   <div class="background" :style="{ backgroundImage: `url(${welcome})` }">
-    <div class="container">
+    <div class="header-container">
       <LoginIdentify></LoginIdentify>
     </div>
   </div>
 </template>
 
 <script setup>
-import LoginIdentify from '@/components/Identify/LoginIdentify.vue'
+import LoginIdentify from '@/components/auth/LoginIdentify.vue'
 import welcome from "@/assets/images/welcome.jpg"
 </script>
 
@@ -22,7 +22,7 @@ import welcome from "@/assets/images/welcome.jpg"
   background-position: center;
 }
 
-.container {
+.header-container {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -35,5 +35,24 @@ export default {
         friends: '好友',
         about: '关于',
         setting: '设置'
+    },
+
+    setting: {
+        title: '设置',
+
+        my_account: '我的账号',
+        edit: '编辑',
+
+        theme_and_background: '主题与背景',
+        theme_color: '主题颜色',
+        background_image: '背景图片',
+
+        language: '语言',
+        English: '英语',
+        Chinese: '中文',
+        Japanese: '日语',
+
+        logout: 'Logout'
+
     }
 }

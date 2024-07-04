@@ -69,12 +69,12 @@ const constantRoutes = [
     {
         path: '/test2',
         name: 'test2',
-        component: () => import('@/components/ContextMenuTest.vue')
+        component: () => import('@/components/chat/ChatPanel.vue')
     },
     {
         path: '/test',
         name: 'test',
-        component:() => import('@/components/Identify/Test.vue')
+        component:() => import('@/components/auth/Test.vue')
     }
 ];
 

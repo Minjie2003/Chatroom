@@ -5,7 +5,7 @@ Design and Developed by: iqonicthemes.in
 NOTE: This file contains the styling for responsive Template.
 */
 	@media (min-width:1200px) {
-		.container, .container-lg, .container-md, .container-sm, .container-xl { max-width: 1000px; }
+		.header-container, .container-lg, .container-md, .container-sm, .container-xl { max-width: 1000px; }
 	}
 	@media (min-width:1500px) {
 		body.sidebar-main .iq-sidebar { width: 80px; }

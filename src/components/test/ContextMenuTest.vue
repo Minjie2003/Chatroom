@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ContextMenu from '@/components/ContextMenu.vue';
+import ContextMenu from '@/components/test/ContextMenu.vue';
 import {ElMessage} from "element-plus";
 
 export default {

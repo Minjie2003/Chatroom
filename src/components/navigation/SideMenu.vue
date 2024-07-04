@@ -64,7 +64,7 @@
 <script setup>
 import {ref} from 'vue'
 import {
-  Setting, User, ChatLineRound, More, Star, HomeFilled, TurnOff, Open, ChatDotRound, Message
+  Setting, User, More, Star, HomeFilled, TurnOff, Open, Message
 } from '@element-plus/icons-vue'
 
 const isCollapse = ref(false)
@@ -73,7 +73,11 @@ const isCollapse = ref(false)
 
 <style>
 .side-menu{
-  width: 200px;
+  flex-basis: 9vw;
+  min-width: 50px;
+  width: 9vw;
+  flex-shrink: 1;
   min-height: 100vh;
+  border-style: none;
 }
 </style>

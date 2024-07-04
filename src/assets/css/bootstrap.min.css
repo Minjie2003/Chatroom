@@ -572,7 +572,7 @@ pre code {
 	overflow-y: scroll
 }
 
-.container {
+.header-container {
 	width: 100%;
 	padding-right: 15px;
 	padding-left: 15px;
@@ -581,25 +581,25 @@ pre code {
 }
 
 @media (min-width:576px) {
-	.container {
+	.header-container {
 		max-width: 540px
 	}
 }
 
 @media (min-width:768px) {
-	.container {
+	.header-container {
 		max-width: 720px
 	}
 }
 
 @media (min-width:992px) {
-	.container {
+	.header-container {
 		max-width: 960px
 	}
 }
 
 @media (min-width:1200px) {
-	.container {
+	.header-container {
 		max-width: 1140px
 	}
 }
@@ -617,14 +617,14 @@ pre code {
 }
 
 @media (min-width:576px) {
-	.container,
+	.header-container,
 	.container-sm {
 		max-width: 540px
 	}
 }
 
 @media (min-width:768px) {
-	.container,
+	.header-container,
 	.container-md,
 	.container-sm {
 		max-width: 720px
@@ -632,7 +632,7 @@ pre code {
 }
 
 @media (min-width:992px) {
-	.container,
+	.header-container,
 	.container-lg,
 	.container-md,
 	.container-sm {
@@ -641,7 +641,7 @@ pre code {
 }
 
 @media (min-width:1200px) {
-	.container,
+	.header-container,
 	.container-lg,
 	.container-md,
 	.container-sm,
@@ -4558,7 +4558,7 @@ input[type=submit].btn-block {
 	padding: .5rem 1rem
 }
 
-.navbar .container,
+.navbar .header-container,
 .navbar .container-fluid,
 .navbar .container-lg,
 .navbar .container-md,
@@ -4649,7 +4649,7 @@ input[type=submit].btn-block {
 }
 
 @media (max-width:575.98px) {
-	.navbar-expand-sm>.container,
+	.navbar-expand-sm>.header-container,
 	.navbar-expand-sm>.container-fluid,
 	.navbar-expand-sm>.container-lg,
 	.navbar-expand-sm>.container-md,
@@ -4678,7 +4678,7 @@ input[type=submit].btn-block {
 		padding-right: .5rem;
 		padding-left: .5rem
 	}
-	.navbar-expand-sm>.container,
+	.navbar-expand-sm>.header-container,
 	.navbar-expand-sm>.container-fluid,
 	.navbar-expand-sm>.container-lg,
 	.navbar-expand-sm>.container-md,
@@ -4699,7 +4699,7 @@ input[type=submit].btn-block {
 }
 
 @media (max-width:767.98px) {
-	.navbar-expand-md>.container,
+	.navbar-expand-md>.header-container,
 	.navbar-expand-md>.container-fluid,
 	.navbar-expand-md>.container-lg,
 	.navbar-expand-md>.container-md,
@@ -4728,7 +4728,7 @@ input[type=submit].btn-block {
 		padding-right: .5rem;
 		padding-left: .5rem
 	}
-	.navbar-expand-md>.container,
+	.navbar-expand-md>.header-container,
 	.navbar-expand-md>.container-fluid,
 	.navbar-expand-md>.container-lg,
 	.navbar-expand-md>.container-md,
@@ -4749,7 +4749,7 @@ input[type=submit].btn-block {
 }
 
 @media (max-width:991.98px) {
-	.navbar-expand-lg>.container,
+	.navbar-expand-lg>.header-container,
 	.navbar-expand-lg>.container-fluid,
 	.navbar-expand-lg>.container-lg,
 	.navbar-expand-lg>.container-md,
@@ -4778,7 +4778,7 @@ input[type=submit].btn-block {
 		padding-right: .5rem;
 		padding-left: .5rem
 	}
-	.navbar-expand-lg>.container,
+	.navbar-expand-lg>.header-container,
 	.navbar-expand-lg>.container-fluid,
 	.navbar-expand-lg>.container-lg,
 	.navbar-expand-lg>.container-md,
@@ -4799,7 +4799,7 @@ input[type=submit].btn-block {
 }
 
 @media (max-width:1199.98px) {
-	.navbar-expand-xl>.container,
+	.navbar-expand-xl>.header-container,
 	.navbar-expand-xl>.container-fluid,
 	.navbar-expand-xl>.container-lg,
 	.navbar-expand-xl>.container-md,
@@ -4828,7 +4828,7 @@ input[type=submit].btn-block {
 		padding-right: .5rem;
 		padding-left: .5rem
 	}
-	.navbar-expand-xl>.container,
+	.navbar-expand-xl>.header-container,
 	.navbar-expand-xl>.container-fluid,
 	.navbar-expand-xl>.container-lg,
 	.navbar-expand-xl>.container-md,
@@ -4855,7 +4855,7 @@ input[type=submit].btn-block {
 	justify-content: flex-start
 }
 
-.navbar-expand>.container,
+.navbar-expand>.header-container,
 .navbar-expand>.container-fluid,
 .navbar-expand>.container-lg,
 .navbar-expand>.container-md,
@@ -4879,7 +4879,7 @@ input[type=submit].btn-block {
 	padding-left: .5rem
 }
 
-.navbar-expand>.container,
+.navbar-expand>.header-container,
 .navbar-expand>.container-fluid,
 .navbar-expand>.container-lg,
 .navbar-expand>.container-md,
@@ -10541,7 +10541,7 @@ a.text-dark:hover {
 	body {
 		min-width: 992px!important
 	}
-	.container {
+	.header-container {
 		min-width: 992px!important
 	}
 	.navbar {

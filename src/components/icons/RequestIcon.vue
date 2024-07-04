@@ -8,7 +8,7 @@
           placement="left-start"
       >
         <el-icon
-            class="interactive-icon"
+            class="effected-icon"
             color="#50b5ff" :size="25">
           <Message/>
         </el-icon>
@@ -42,7 +42,7 @@
 </template>
 <script>
 import {Bell, Message} from "@element-plus/icons-vue";
-import MiniProfile from "@/components/common/navigation/header/MiniProfile.vue";
+import MiniProfile from "@/components/icons/MiniProfile.vue";
 
 export default {
   components: {Message, MiniProfile, Bell},

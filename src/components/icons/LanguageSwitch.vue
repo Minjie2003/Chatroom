@@ -7,7 +7,7 @@
           content="切换语言"
           placement="left"
       >
-      <el-icon class="interactive-icon" :size="25" color="#50b5ff">
+      <el-icon class="effected-icon" :size="25" color="#50b5ff">
         <Guide/>
       </el-icon>
     </el-tooltip>

@@ -1,6 +1,6 @@
 <template>
   <div class="background" :style="{ backgroundImage: `url(${welcome})` }">
-    <div class="container">
+    <div class="header-container">
       <div class="home-page">
         <h1 style="color:white">Welcome ChatRoom</h1>
         <div class="links">
@@ -26,7 +26,7 @@ import welcome from "@/assets/images/welcome.jpg"
   background-position: center;
 }
 
-.container {
+.header-container {
   display: flex;
   justify-content: center;
   align-items: center;
