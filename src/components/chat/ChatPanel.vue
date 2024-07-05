@@ -3,47 +3,62 @@
   <div class="chat-outer-panel" ref="chatPanel">
     <el-row class="title-container" justify="center">
       <el-text class="conversation-title" size="large">
-        {{ session.name }}
+        {{ selected_session.value.nickName }}
       </el-text>
     </el-row>
 
     <el-row>
       <div class="chat-inner-panel">
         <div class="scrollbar-container">
-          <el-scrollbar>
+          <el-scrollbar class="msg-scrollbar" ref="msg_scrollbar">
             <div
                 style="display: grid; align-content: center; align-items: center;"
-                v-for="msg in messages">
+                v-for="msg in msg_list"
+                :key="msg.id "
+                ref="msg_bubble"
+            >
               <!-- Other Message -->
               <div class="message-bubble"
-                   v-if="msg.sender==='other'">
+                   v-if="msg.username !== '张三' ">
                 <el-avatar
                     class="message-avatar"
-                    :src="msg.avatar">
+                    :src="cr_default.avatar.purple">
                 </el-avatar>
+
                 <div style="display: flex; flex-flow: column nowrap; align-content: start;">
-                  <el-text style="align-self: start;">{{ msg.sender }}</el-text>
-                  <el-text style="align-self: start;" class="other-message">
-                    {{ msg.text }}
-                  </el-text>
+                  <el-text style="align-self: start;">{{ msg.username }}</el-text>
+
+                  <div class="message-container">
+                    <el-text v-if="msg.category === 0" class="other-message message-text">{{ msg.content }}</el-text>
+                    <el-image v-if="msg.category === 1" class="other-message message-image"
+                              style="padding: 1em; width: 10em; height: 10em;
+                               min-width: 5em; min-height: 5em;"
+                              :src="cr_defaults.avatar.yellow"/>
+                  </div>
                 </div>
+
                 <span></span>
               </div>
+
               <!-- My Message-->
               <div class="message-bubble"
                    v-else>
                 <span></span>
                 <div>
                   <div style="display: flex; flex-flow: column nowrap; align-content: end;">
-                    <el-text style="align-self: end;">{{ msg.sender }}</el-text>
-                    <el-text style="align-self: end;" class="my-message">
-                      {{ msg.text }}
-                    </el-text>
+                    <el-text style="align-self: end;">{{ msg.username }}</el-text>
+                    <div class="message-container" style="align-self: end;">
+                      <el-text v-if="msg.category === 0" class="my-message message-text">{{ msg.content }}</el-text>
+                      <el-image v-if="msg.category === 1" class="my-message message-image"
+                                style="padding: 1em; width: 10em; height: 10em;
+                               min-width: 5em; min-height: 5em;"
+                                :src="cr_defaults.avatar.yellow"/>
+                    </div>
                   </div>
                 </div>
                 <el-avatar
                     class="message-avatar"
-                    :src="msg.avatar">
+                    :src="msg.headPath || cr_defaults.avatar.yellow">
                 </el-avatar>
               </div>
 
@@ -52,25 +67,44 @@
         </div>
       </div>
     </el-row>
+
     <!--Edit Area-->
     <div class="edit-area">
       <div class="toolbar">
-          <el-icon class="effected-icon" :size="25" color="#0BFD" ><Share/></el-icon>
-          <el-icon class="effected-icon" :size="25" color="#0BFD" ><Files/></el-icon>
-          <el-icon class="effected-icon" :size="25" color="#0BFD" ><Picture/></el-icon>
-          <el-icon class="effected-icon" :size="25" color="#0BFD" ><Camera/></el-icon>
-          <el-icon class="effected-icon" :size="25" color="#0BFD" ><Location/></el-icon>
-          <el-icon class="effected-icon" :size="25" color="#0BFD" ><Setting/></el-icon>
-          <el-icon class="effected-icon" :size="25" color="#0BFD" ><Plus/></el-icon>
+        <el-icon class="effected-icon" :size="25" color="#0BFD">
+          <Share/>
+        </el-icon>
+        <el-icon class="effected-icon" :size="25" color="#0BFD">
+          <Files/>
+        </el-icon>
+        <el-icon class="effected-icon" :size="25" color="#0BFD" @click="handlePictureClick">
+          <Picture/>
+        </el-icon>
+        <el-icon class="effected-icon" :size="25" color="#0BFD">
+          <Camera/>
+        </el-icon>
+        <el-icon class="effected-icon" :size="25" color="#0BFD">
+          <Location/>
+        </el-icon>
+        <el-icon class="effected-icon" :size="25" color="#0BFD">
+          <Setting/>
+        </el-icon>
+        <el-icon class="effected-icon" :size="25" color="#0BFD">
+          <Plus/>
+        </el-icon>
       </div>
 
-      <el-button class="send-button">Send</el-button>
+      <div>
+        <el-button class="send-button" @click="fetchMsgList">Refresh</el-button>
+        <el-button class="send-button" @click="handleSendClick">Send</el-button>
+      </div>
 
       <el-input class="message-input" v-model="message_input"
                 maxlength="1024" show-word-limit
                 placeholder="Input Message to Send..."
                 clearable :autosize="{minRows: 1, maxRows: 3}"
-                type="textarea" rows=2 />
+                type="textarea" rows=2
+      />
     </div>
 
   </div>
@@ -78,49 +112,82 @@
 
 <script>
 import {Camera, Files, Location, Picture, Plus, Setting, Share} from "@element-plus/icons-vue";
+import samples from "@/store/samples.js";
+import {ElMessage} from "element-plus";
+import {selected_session} from "@/store/modules/conv.js";
+import {computed, reactive, ref, watch} from "vue";
+import axios from "axios";
+import myinfos from "@/store/modules/myinfos.js";
+import cr_default from "@/store/modules/cr_default.js";
+import cr_defaults from "@/store/modules/cr_default.js";
 
 export default {
+  computed: {
+    cr_defaults() {
+      return cr_defaults
+    },
+    cr_default() {
+      return cr_default
+    },
+    myinfos() {
+      return myinfos
+    },
+    selected_session() {
+      return selected_session
+    }
+  },
+
   components: {Share, Location, Camera, Picture, Files, Plus, Setting},
   data() {
     return {
       message_input: '',
-
-      session: {
-        name: 'Session Name'
-      },
-      messages: [
-        {sender: 'me', text: 'Hello! ', avatar: 'src/assets/images/avatar-purple.png'},
-        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
-        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
-        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
-        {sender: 'me', text: 'Hello! ', avatar: 'src/assets/images/avatar-purple.png'},
-        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
-        {sender: 'me', text: 'Hello! ', avatar: 'src/assets/images/avatar-purple.png'},
-        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
-        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
-        {
-          sender: 'other',
-          text: 'test test test test test testtest test testtest test testtest test ' +
-              'testtest test testtest test testtest test test' +
-              'test test testtest test testtest test testtest test test' +
-              'test test testtest test testtest test testtest test test' +
-              'test test testtest test testtest test test! ',
-          avatar: 'src/assets/images/avatar-yellow.png'
-        },
-        {sender: 'me', text: 'Hello! ', avatar: 'src/assets/images/avatar-purple.png'},
-        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
-        {sender: 'me', text: 'Hello! ', avatar: 'src/assets/images/avatar-purple.png'},
-        {sender: 'me', text: 'Hello! ', avatar: 'src/assets/images/avatar-purple.png'},
-        {sender: 'me', text: 'Hello! ', avatar: 'src/assets/images/avatar-purple.png'},
-        {sender: 'other', text: 'Hi there! ', avatar: 'src/assets/images/avatar-yellow.png'},
-
-      ],
+      session: ref(selected_session),
+      msg_list: reactive([])
     };
   },
+
   methods: {
-    sendMessage() {
-    }
-  }
+    fetchMsgList() {
+      axios.post('my_chatroom/message/get_message_list',
+          {sessionId: selected_session.value.sessionId},
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            }
+          })
+          .then(res => {
+            this.msg_list = res.data.data
+            console.log(this.msg_list)
+            ElMessage.info('Fetch Message List')
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
+
+    handleSendClick() {
+      if (this.message_input !== '') {
+        this.msg_list.push({
+          id: 99,
+          sender: 'me',
+          text: this.message_input,
+          avatar: samples.demo_user.avatar_url,
+        })
+        this.scrollToLatestMessage()
+        ElMessage.success('Send Success')
+      } else {
+        ElMessage.warning('Empty Message')
+      }
+    },
+
+    handlePictureClick() {
+      ElMessage.info('Insert Picture')
+    },
+
+    scrollToLatestMessage() {
+      ElMessage.info('Scrolling to latest message (to be impl). ')
+    },
+  },
 };
 </script>
 
@@ -234,7 +301,7 @@ export default {
 
 }
 
-.send-button{
+.send-button {
   margin: 10px;
   flex-shrink: 2;
   flex-basis: 2rem;
@@ -244,7 +311,7 @@ export default {
   font-size: 1rem;
   align-self: start;
   justify-self: start;
-  opacity: 0.8;
+  opacity: 0.4;
   margin-left: 1rem;
 }
 

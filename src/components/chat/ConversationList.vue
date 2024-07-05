@@ -5,94 +5,85 @@
 
     <div class="scrollbar-container">
       <el-scrollbar class="conversation-scrollbar">
-        <VueDraggable ref="el" v-model="list">
+        <VueDraggable ref="el" v-model="cur_cl">
           <div
               class="conversations"
-              v-for="item in list" :key="item.id">
+              v-for="conv in cur_cl" :key="conv.id"
+              @click="handleConvClick(conv)"
+          >
 
             <div class="conversation-entry">
-              <el-avatar size="30" src="src/assets/images/avatar-purple.png"></el-avatar>
+              <el-avatar :src=" 'src/assets/images/avatar-purple.png' "
+              />
               <div style="display: flex; flex-flow: row nowrap;">
-                <el-text size="large" style="color:#333; " truncated>{{ item.name }}</el-text>
-                <el-text size="small" style="color:#888; " truncated>@{{ item.id }}</el-text>
+                <el-text class="conv-name" size="large" style="color:#333; " truncated>{{
+                    conv.nickName || conv.name
+                  }}
+                </el-text>
+                <el-text class="conv-id" size="small" style="color:#888; " truncated>@{{ conv.id }}</el-text>
               </div>
-              <el-text size="small" style="color:#666; " truncated>
-                Latest Message.
-                This is some test words.
-                This is some test words.
+              <div>
+                <el-text v-show="conv.unreadNum"
+                         class="unread-number" size="small"
+                >
+                  {{ conv.unreadNum }}
+                </el-text>
+              </div>
+
+              <el-text class="last-content" size="small" style="color:#666; " truncated>
+                {{ conv.lastContent || 'No messages. ' }}
               </el-text>
+
             </div>
 
           </div>
+
+          <div v-if="cur_cl && cur_cl.length === 0">
+            <p>No Conversation.</p>
+          </div>
+
         </VueDraggable>
       </el-scrollbar>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import {ref} from 'vue'
-import {VueDraggable} from 'vue-draggable-plus'
-import {ElMessage, useCursor} from "element-plus";
+<script setup>
 
-const conversations = ref([
-  {
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },{
-    name: 'Joao',
-    id: 1
-  },
-  {
-    name: 'Jean',
-    id: 2
-  },
-  {
-    name: 'Johanna',
-    id: 3
-  },
-  {
-    name: 'Juan',
-    id: 4
-  },
-  {
-    name: 'Tommy',
-    id: 5
-  }
-])
+import {current_conversation_list, selected_session} from "@/store/modules/conv.js";
+import {VueDraggable} from "vue-draggable-plus";
+import {onMounted, ref} from "vue";
+import axios from "axios";
+import {ElMessage} from "element-plus";
+
+const cur_cl = ref(current_conversation_list)
+
+onMounted(() => {
+  get_session_list()
+  ElMessage.info('Fetch current conversation list. ')
+})
+const get_session_list = () => {
+  axios.post('/my_chatroom/contact_session/get_contact_session_list', {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+      .then(res => {
+        if (res.data.code === 0) {
+          ElMessage.error('fail to get session list')
+        }
+        cur_cl.value = res.data.data
+      })
+      .catch(err => {
+        console.error(err);
+      })
+}
+
+const handleConvClick = (conv) => {
+  selected_session.value = conv
+  ElMessage.info('Selected' + conv.nickName + '@' + conv.id)
+}
+
 </script>
 
 <style scoped>
@@ -103,7 +94,7 @@ const conversations = ref([
 }
 
 @media (max-width: 800px) {
-  .list-title{
+  .list-title {
     font-size: 1rem;
     transition: all 0.3s ease;
   }
@@ -118,9 +109,28 @@ const conversations = ref([
 
 .conversation-entry {
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 4fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-template-areas: 'sidebar header'   'sidebar header';
+  gap: 4px;
+  padding: 4px;
+}
+
+.unread-number {
+  display: flex;
+  width: 1em;
+  height: 1em;
+  color: white;
+  padding: 1px;
+  font-size: 1em;
+  place-content: center;
+  align-self: center;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.last-content {
+  font-size: 0.8em;
 }
 
 .conversation-entry > .el-avatar {
@@ -131,7 +141,7 @@ const conversations = ref([
 
 .conversation-entry > .el-text {
   align-self: center;
-  justify-self: end;
+  justify-self: start;
 }
 
 .conversation-entry:hover {

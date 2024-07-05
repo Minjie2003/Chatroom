@@ -53,6 +53,27 @@ export default {
         Japanese: '日语',
 
         logout: 'Logout'
+    },
 
-    }
+    about: {
+        title: '关于此项目',
+        p1: '这是一个以学习为目的的项目。',
+        h_group_info: '小组信息',
+        members: {
+            zhl: '郑海林',
+            zmj: '钟民杰',
+            zxj: '钟晓军',
+            zpy: '周鹏宇',
+        }
+        ,
+        p_group_info: '成员：' +
+            '@:about.members.zhl ' +
+            '@:about.members.zmj ' +
+            '@:about.members.zxj ' +
+            '@:about.members.zpy ',
+        b_github: 'Github仓库： ',
+        github_link: 'https://github.com/Minjie2003/Chatroom',
+        b_email: '邮箱：',
+    },
+
 }

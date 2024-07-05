@@ -26,7 +26,11 @@
               v-for="notify in invitations">
             <el-row justify="space-evenly">
               <el-col :span="4">
-                <mini-profile class="notify-profile"></mini-profile>
+                <mini-profile class="notify-profile"
+                              :avatar_url="cr_default.avatar.purple"
+                              :name="cr_default.user_info.name"
+                              :user_id="cr_default.user_info.user_id"
+                ></mini-profile>
               </el-col>
               <el-col :span="12" style="padding-top: 3em;">
                 <el-text multiple>{{ notify.remark }}</el-text>
@@ -47,8 +51,14 @@
 <script>
 import {Bell, Message} from "@element-plus/icons-vue";
 import MiniProfile from "@/components/icons/MiniProfile.vue";
+import cr_default from "@/store/modules/cr_default.js";
 
 export default {
+  computed: {
+    cr_default() {
+      return cr_default
+    },
+  },
   components: {Message, MiniProfile, Bell},
   data() {
     return {

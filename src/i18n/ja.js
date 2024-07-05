@@ -53,5 +53,25 @@ export default {
 
         logout: 'ログアウト'
 
-    }
+    },
+    about: {
+        title: 'このプロジェクトについて',
+        p1: '学びのために開発したプロジェクト。',
+        h_group_info: 'グループインフォ',
+        members: {
+            zhl: '郑海林',
+            zmj: '钟民杰',
+            zxj: '钟晓军',
+            zpy: '周鹏宇',
+        }
+        ,
+        p_group_info: 'メンバー：' +
+            '@:about.members.zhl ' +
+            '@:about.members.zmj ' +
+            '@:about.members.zxj ' +
+            '@:about.members.zpy ',
+        b_github: 'Github Repo： ',
+        github_link: 'https://github.com/Minjie2003/Chatroom',
+        b_email: 'メール：',
+    },
 }

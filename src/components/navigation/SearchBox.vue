@@ -1,14 +1,17 @@
 <template>
-  <el-input
-      class="search-box"
-      v-model="searchInput"
-      placeholder="Searching..."
-      maxlength="20"
-  >
+  <div class="search-box">
+    <el-input
+    class="search-box-input"
+    v-model="searchInput"
+    placeholder="Searching..."
+    maxlength="20"
+    >
     <template #append>
       <el-button class="custom-button" :icon="Search" style="color:  #50b5ff;"/>
     </template>
-  </el-input>
+    </el-input>
+  </div>
+
 </template>
 
 <script>
@@ -30,6 +33,7 @@ export default {
 </script>
 
 <style>
+
 
 .el-input:hover {
   border-radius: 3px;

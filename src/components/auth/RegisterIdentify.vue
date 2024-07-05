@@ -11,7 +11,7 @@
           <el-row>
             <el-col :span="24">
               <el-form-item label="账号" prop="username">
-                <el-input v-model="registerForm.username" placeholder="请输入账号"></el-input>
+                <el-input v-model="registerForm.accountNum" placeholder="请输入账号"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -21,7 +21,7 @@
             </el-col>
             <el-col :span="24">
               <el-form-item label="确认密码" prop="confirmpassword">
-                <el-input type="password" v-model="registerForm.confirmpassword" placeholder="请确认密码"></el-input>
+                <el-input type="password" v-model="registerForm.confirm_password" placeholder="请确认密码"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -31,10 +31,10 @@
             </el-col>
             <el-col :span="14">
               <el-form-item label="验证码" prop="verify">
-                <el-input v-model="registerForm.verify" placeholder="请输入验证码" maxlength="6"></el-input>
+                <el-input v-model="registerForm.mailverify" placeholder="请输入验证码" maxlength="6"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="9">       
+            <el-col :span="9">
                 <div class="right-content">
                     <el-button type="success" @click="emailverify">获取验证码</el-button>
                 </div>
@@ -68,19 +68,19 @@ import axios from 'axios';
 
 const router = useRouter();
 const registerForm = reactive({
-  username: '',
+  accountNum: '',
   password: '',
-  confirmpassword:'',
+  confirm_password:'',
   email:'',
-  verify:'',
+  mailverify:'',
 });
 
 const isButtonDisabled = ref(false)  //计时器的启用
 const countdown = ref(0) //计时器的时间,后续里面调整
 const time = ref(null)
 //验证基础的字段是否为空或者合法
-const isNull = () => {
-  if (registerForm.username.trim() === '') {
+const validateInput = () => {
+  if (registerForm.accountNum.trim() === '') {
     ElMessage.error('请输入账号');
     return false;
   }
@@ -88,11 +88,11 @@ const isNull = () => {
     ElMessage.error('请输入密码');
     return false;
   }
-  if (registerForm.confirmpassword.trim() === '') {
+  if (registerForm.confirm_password.trim() === '') {
     ElMessage.error('请输入确认的密码');
     return false;
   }
-  if (registerForm.confirmpassword.trim() != registerForm.password.trim()) {
+  if (registerForm.confirm_password.trim() !== registerForm.password.trim()) {
     ElMessage.error('两次密码不一致');
     return false;
   }
@@ -104,7 +104,7 @@ const isNull = () => {
     ElMessage.error('请输入合法的邮箱');
     return false;
   }
-  if (registerForm.verify.trim() === '') {
+  if (registerForm.mailverify.trim() === '') {
     ElMessage.error('请输入验证码');
     return false;
   }
@@ -129,8 +129,8 @@ const emailverify = () =>{
         ElMessage.error('请输入合法的邮箱');
         return ;
     }
-    axios.get('/my_chatroom/user/get_reg_mail_verify?mail='+registerForm.email)
-    .then(res => {
+    axios.get('/my_chatroom/user/get_reg_mail_verify?mail=' + registerForm.email)
+    .then( res => {
         const temp = res.data.code
         if(temp === 200){
             ElMessage.success('验证码已发送！')
@@ -160,17 +160,12 @@ const startTimer = () => {
 
 //处理提交信息
 const handleSubmit = () => {
-  const formData = new FormData();
-  formData.append('password', registerForm.password.trim());
-  formData.append('accountNum', registerForm.username.trim());
-  formData.append('mail', registerForm.email.trim());
-  formData.append('mailVerify', registerForm.verify.trim());
 
-  if (!isNull()) {
+  if (!validateInput()) {
     return; // 如果有字段为空或者输入无效，则直接返回，不执行后续逻辑
   }
 
-  axios.post("/my_chatroom/user/reg", formData,{
+  axios.post("/my_chatroom/user/reg", registerForm,{
     headers: {
       'Content-Type': 'multipart/form-data'
     }

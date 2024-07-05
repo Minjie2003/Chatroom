@@ -21,7 +21,7 @@
             </el-col>
             <el-col :span="14">
               <el-form-item label="验证码" prop="captcha">
-                <el-input v-model="loginForm.captcha" placeholder="请输入验证码" maxlength="5" @keyup.enter="handleSubmit"></el-input>
+                <el-input v-model="loginForm.captcha" placeholder="请输入验证码" maxlength="5" @keyup.enter="handleLoginSubmit"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="9">
@@ -44,7 +44,7 @@
             </el-col>
             <el-col :span="6">
               <div class="right-content">
-                <el-button type="primary" @click="handleSubmit">{{ $t('auth.login')}}</el-button>
+                <el-button type="primary" @click="handleLoginSubmit">{{ $t('auth.login')}}</el-button>
               </div>
             </el-col>
           </el-row>
@@ -58,8 +58,9 @@
   import CaptchaInput from './CaptchaInput.vue'
   import { ElMessage } from 'element-plus'
   import axios from 'axios';
-  import { useRouter } from 'vue-router' 
+  import { useRouter } from 'vue-router'
   import {useStore} from 'vuex'
+  import {serialize} from "object-to-formdata";
 
   const store = useStore()
   const loginForm = reactive({
@@ -67,10 +68,10 @@
     password: '',
     captcha: ''
   });
-  
+
   const router = useRouter()
   //验证基础的字段是否为空
-  const isNull = () => {
+  const validateEmpty = () => {
     if (loginForm.username.trim() === '') {
       ElMessage.error('请输入账号');
       return false;
@@ -85,17 +86,19 @@
     }
     return true;
 };
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.append('accountNum', loginForm.username.trim());
-    formData.append('password', loginForm.password.trim());
-    formData.append('verify', loginForm.captcha.trim());
+  const handleLoginSubmit = () => {
 
-    if (!isNull()) {
+    if (!validateEmpty()) {
       return; // 如果有字段为空，则直接返回，不执行后续逻辑
     }
 
-    axios.post("/my_chatroom/user/login", formData,{
+    const renamedLoginData = {
+      accountNum: loginForm.username,
+      password: loginForm.password,
+      verify: loginForm.captcha
+    }
+
+    axios.post("/my_chatroom/user/login", renamedLoginData,{
       headers: {
         'Content-Type': 'multipart/form-data'
       }
