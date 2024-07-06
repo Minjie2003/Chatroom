@@ -1,19 +1,42 @@
 <template>
-  <div class="cr-header">
+  <div class="header">
 
-    <logo app_logo="src/assets/images/chatroom_logo.png" app_name="Chatroom"/>
+    <span id="pad1"></span>
 
-    <search-box/>
+    <div class="logo-container">
+      <logo :app_logo="Chatroom.LOGO" :app_name="Chatroom.NAME"/>
+    </div>
 
-    <div class="header-mini-profile-container">
+    <span id="pad2"></span>
+    <div class="search-box-container">
+      <div class="search-box">
+        <el-input
+            class="search-box-input"
+            v-model="searchInput"
+            placeholder="Searching..."
+            maxlength="20"
+        >
+          <template #append>
+            <el-button class="custom-button" :icon="Search" style="color:  #50b5ff;"/>
+          </template>
+        </el-input>
+      </div>
+    </div>
+
+    <div class="mini-profile-container">
       <el-dropdown>
         <mini-profile
-            :avatar_url="photo_url || user_demo.avatar_url"
-            :name="myinfos.username || user_demo.name"
-            :user_id="myinfos.id || user_demo.id"
+            :avatar_url="userInfo.avatar_url"
+            :name="userInfo.username"
+            :user_id="userInfo.accountNum"
         ></mini-profile>
         <template #dropdown>
-          <profile class="dropdown-profile"></profile>
+          <div class="profile-scrollbar-container">
+            <el-scrollbar max-height="60vh">
+              <profile class="dropdown-profile" :profile-data="toProfileData(userInfo)"></profile>
+            </el-scrollbar>
+          </div>
+
         </template>
       </el-dropdown>
     </div>
@@ -24,6 +47,8 @@
       <language-switch/>
       <account-switch/>
     </div>
+
+    <span id="pad3"></span>
 
   </div>
 </template>
@@ -39,39 +64,38 @@ import AccountSwitch from "@/components/icons/AccountSwitch.vue";
 
 import {Search} from "@element-plus/icons-vue";
 import Profile from "@/components/Profile.vue";
-import {useStore} from "vuex";
-import {useRouter} from "vue-router";
 import {computed} from "vue";
+import {Chatroom, thisUser, toProfileData} from "@/store/cr_config.js";
 
 export default {
   name: "Header",
-
-  //... 操作符用于将 mapState 返回的对象展开到当前组件的 computed 计算属性中,myinfos：模块名
-  setup(){
-    const store = useStore()
-    const router = useRouter()  //创建一个router实例
-
-    const myinfos = computed(() => store.state.myinfos);
-    const photo_url = '/my_chatroom/'+ myinfos.value.photo
-
-    return {
-      myinfos, photo_url
+  computed: {
+    Search() {
+      return Search
+    },
+    Chatroom() {
+      return Chatroom
     }
+  },
+  methods: {toProfileData},
+
+  setup() {
+    const userInfo = computed(() => {
+      return {
+        ...toProfileData(thisUser.value)
+      }
+    })
+
+    return {userInfo}
   },
 
   data() {
     return {
-      header_app_logo: 'src/assets/images/chatroom_logo.png',
       search_input: '',
       search_icon: Search,
-      icon_size: 25,
-      user_demo: {
-        name: 'Default',
-        id: 'NULL',
-        avatar_url: 'src/assets/images/avatar-yellow.png',
-      }
     }
   },
+
   components: {
     Profile,
     InvitationMessage,
@@ -87,47 +111,83 @@ export default {
 </script>
 
 <style>
-.cr-header {
+.header {
   width: 100%;
   height: var(--cr-header-height);
   opacity: var(--cr-default-opacity);
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr 1fr;
-  align-content: center;
-  position: fixed;
+  grid-template-columns: 1fr 3fr 3fr 6fr 3fr 3fr 1fr;
+  grid-template-areas: 'left logo span search avatar tool right';
+  align-content: start;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  background-color: #DDDA;
+  z-index: 99;
 }
 
-.cr-header logo {
-  justify-self: center;
-  align-self: center;
+.header:hover {
+  background-color: #EEED;
 }
 
-.cr-header  > .search-box {
-  height: 50%;
-  width: 40%;
-  align-self: center;
-  justify-self: center;
-  min-width: 160px;
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("src/assets/images/transparent-bg.png");
+  background-size: cover;
 }
 
-.header-mini-profile-container {
-  align-self: center;
-  justify-self: center;
+.header * {
+  z-index: 99;
+}
+
+#pad1 {
+  grid-area: left
+}
+
+#pad2 {
+  grid-area: span
+}
+
+#pad3 {
+  grid-area: right
+}
+
+.logo-container {
+  grid-area: logo;
+}
+
+.search-box-container {
+  grid-area: search;
+  place-content: center;
+}
+
+.search-box {
+  min-width: 120px;
+  width: 70%;
+  height: 70%;
+
+}
+
+.mini-profile-container {
+  grid-area: avatar;
 }
 
 .dropdown-profile {
-  width: calc(60vh * 3/4);
-  height: 65vh !important;
-  .background {
-    height: 25vh;
-  }
-  .avatar {
-    width: 100px;
-    height: 100px;
+  width: 30vw;
+  height: 100%;
+  .el-avatar {
+    width: 120px;
+    height: 120px;
   }
 }
 
 .header-icons-container {
+  grid-area: tool;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   justify-content: center;

@@ -47,6 +47,8 @@ export default {
   height: var(--cr-logo-size);
   border-radius: 50%; /* Circular logo */
   transition: all 0.3s ease;
+  box-shadow: 0 0 1rem rgba(150, 211, 211, 0.61);
+  border: 2px solid rgba(125, 214, 222, 0.82)
 }
 
 @media (max-width: 600px) {

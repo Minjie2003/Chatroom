@@ -73,11 +73,17 @@ const isCollapse = ref(false)
 
 <style>
 .side-menu{
-  flex-basis: 9vw;
+  flex-basis: 15vw;
   min-width: 50px;
-  width: 9vw;
+  width: 15vw;
   flex-shrink: 1;
   min-height: 100vh;
   border-style: none;
+  background-color: transparent;
+}
+
+.side-menu > .el-menu-item:hover {
+  background-color: rgba(238, 238, 238, 0.75);
+  border-radius: 5px;
 }
 </style>

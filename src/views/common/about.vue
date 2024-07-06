@@ -1,27 +1,26 @@
 <template>
-  <user-layout has-logged-in=true>
-    <div class="about-container">
-      <h2>{{ $t('about.title')}}</h2>
-      <p>{{ $t('about.p1') }}</p>
+  <div class="about-container">
+    <h2>{{ $t('about.title') }}</h2>
+    <p>{{ $t('about.p1') }}</p>
 
-      <h1>{{ $t('about.h_group_info') }}</h1>
-      <p>{{ $t('about.p_group_info')}}</p>
+    <h1>{{ $t('about.h_group_info') }}</h1>
+    <p>{{ $t('about.p_group_info') }}</p>
 
-      <ul>
-        <li><strong>{{ $t('about.b_github')}}</strong>
-          <a :href="$t('about.github_link')" target="_blank">
-            {{ $t('about.github_link') }}</a></li>
-      </ul>
-    </div>
-  </user-layout>
+    <ul>
+      <li><strong>{{ $t('about.b_github') }}</strong>
+        <a :href="$t('about.github_link')" target="_blank">
+          {{ $t('about.github_link') }}</a></li>
+    </ul>
+  </div>
 </template>
 
 <script>
-import UserLayout from "@/components/UserLayout.vue";
+import UserLayout from "@/components/CrLayout.vue";
+
 export default {
   name: 'About',
 
-  components:{
+  components: {
     UserLayout
   }
 };

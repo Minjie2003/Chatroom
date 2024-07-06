@@ -23,13 +23,14 @@ username
 *  Conversation Attributes
 *
 * */
+
 export const crConv = {
   category: null,
   contactId: null,
   createTime: null,
   groupId: null,
   headPath: null,
-  id: null,
+  id: 0,
   isDeleted: null,
   isHide: null,
   lastContent: null,
@@ -42,6 +43,8 @@ export const crConv = {
   username: null
 };
 
-export const selected_session = ref(null)
+export const selected_session = ref({
+  ...crConv
+})
 
 export const current_conversation_list = reactive([])

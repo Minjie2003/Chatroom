@@ -5,7 +5,7 @@
     </div>
     <div class="user-info">
       <span class="user-name">{{ name }}</span>
-      <span class="user-id">{{ user_id }}</span>
+      <span class="user-id">@{{ user_id }}</span>
     </div>
   </div>
 </template>

@@ -67,8 +67,8 @@ const constantRoutes = [
     component: () => import('@/views/admin/home.vue')
   },
   {
-    path: '/test2',
-    name: 'test2',
+    path: '/test/chat_panel',
+    name: 'test_chat_panel',
     component: () => import('@/components/chat/ChatPanel.vue')
   },
   {
@@ -76,9 +76,13 @@ const constantRoutes = [
     name: 'test',
     component: () => import('@/components/auth/Test.vue')
   }, {
-    path: '/test_connection',
-    name: 'test',
+    path: '/test/connection',
+    name: 'test_connection',
     component: () => import('@/components/test/TestConnection.vue')
+  },{
+    path: '/test/profile',
+    name: '/test_profile',
+    component: () => import('@/components/test/TestProfile.vue')
   },
 
 ];

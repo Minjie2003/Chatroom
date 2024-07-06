@@ -1,112 +1,112 @@
 <template>
-  <user-layout>
-    <el-container>
-      <el-aside width="20vw" style="min-width: 150px;">
+  <el-container>
+    <el-aside width="20vw" style="min-width: 150px;">
 
-        <el-text id="list-title">List Management</el-text>
+      <el-text id="list-title">List Management</el-text>
 
-        <div class="edit-container">
-          <el-input
-              class="search-box category-search"
-              v-model="categorySearchInput"
-              placeholder="Search..."
-              maxlength="20"
-          >
-            <template #append>
-              <el-button class="custom-button" :icon="Search" style="color:  #50b5ff;"
-                         @click="SearchOthers"
-              />
-            </template>
-          </el-input>
-          <el-button type="primary" @click="OpenNewListDialog">New List</el-button>
-        </div>
-
-        <div class="scrollbar-container">
-          <el-scrollbar>
-            <VueDraggable ref="el" v-model="user_cl" :on-change="()=>ElMessage.info('You switched the position.')">
-              <el-card
-                  class="list-card selectable"
-                  v-for="list in user_cl"
-                  :key="list.id"
-              >
-                <el-text class="list-name"> {{ list.name }}</el-text>
-                <el-text class="list-id"> @{{ list.id }}</el-text>
-              </el-card>
-            </VueDraggable>
-          </el-scrollbar>
-        </div>
-
-      </el-aside>
-      <el-main class="list-display">
-
-        <el-card class="item-card selectable"
-                 v-for="item in user_cl" :key="item.id">
-          <el-row justify="space-around">
-            <el-col span="8">
-              <mini-profile :user_id="item.id" :name="item.name" :avatar_url="item.avatar_url"></mini-profile>
-            </el-col>
-
-            <el-col span="8" class="edit-buttons">
-              <el-button type="primary" @click="SendMessageToOther">Send Message</el-button>
-              <el-button type="danger" @click="DeleteDialogVisible = true">Delete</el-button>
-            </el-col>
-          </el-row>
-        </el-card>
-
-<!--Dialogs -->
-        <el-dialog
-            v-model="DeleteDialogVisible"
-            title="Warning"
-            width="500"
-            :before-close="handleDeleteDialogClose"
+      <div class="edit-container">
+        <el-input
+            class="search-box category-search"
+            v-model="categorySearchInput"
+            placeholder="Search..."
+            maxlength="20"
         >
-          <span>Delete Friend/Group</span>
-          <template #footer>
-            <div class="dialog-footer">
-              <el-button @click="DeleteDialogVisible = false">
-                Cancel
-              </el-button>
-              <el-button type="primary" @click="DeleteDialogVisible = false">
-                Confirm
-              </el-button>
-            </div>
+          <template #append>
+            <el-button class="custom-button" :icon="Search" style="color:  #50b5ff;"
+                       @click="SearchOthers"
+            />
           </template>
-        </el-dialog>
+        </el-input>
+        <el-button type="primary" @click="OpenNewListDialog">New List</el-button>
+      </div>
 
-        <el-dialog
-            v-model="NewListDialogVisible"
-            title="New List"
-            width="500"
-            align-center
-        >
-          <el-form>
-            <el-form-item>
-              <el-input v-model="input_list_data.name"
-                        placeholder="Input List Name"
-              />
-            </el-form-item>
-            <el-form-item>
-              <el-radio-group v-model="input_list_data.category">
-                <el-radio-button :value="0" label="0">Group</el-radio-button>
-                <el-radio-button :value="1" label="0">Friend</el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-          </el-form>
-          <template #footer>
-            <div class="dialog-footer">
-              <el-button @click="NewListDialogVisible = false">
-                Cancel
-              </el-button>
-              <el-button type="primary" @click="HandleNewListConfirm">
-                Confirm
-              </el-button>
-            </div>
-          </template>
-        </el-dialog>
+      <div class="scrollbar-container">
+        <el-scrollbar>
+          <VueDraggable ref="el" v-model="user_cl" :on-change="()=>ElMessage.info('You switched the position.')">
+            <el-card
+                class="list-card selectable"
+                v-for="list in user_cl"
+                :key="list.id"
+                @click="handleListSelect(list)"
+            >
+              <el-text class="list-name"> {{ list.name }}</el-text>
+              <el-text class="list-id"> @{{ list.id }}</el-text>
+            </el-card>
+          </VueDraggable>
+        </el-scrollbar>
+      </div>
 
-      </el-main>
-    </el-container>
-  </user-layout>
+    </el-aside>
+    <el-main class="list-display">
+
+      <el-card class="item-card selectable"
+               v-for="item in sl_items" :key="item.id">
+        <el-row justify="space-around">
+
+          <el-col span="8">
+            <mini-profile :user_id="item.id" :name="item.name" :avatar_url="item.avatar_url"></mini-profile>
+          </el-col>
+
+          <el-col span="8" class="edit-buttons">
+            <el-button type="primary" @click="SendMessageToOther">Send Message</el-button>
+            <el-button type="danger" @click="DeleteDialogVisible = true">Delete</el-button>
+          </el-col>
+        </el-row>
+      </el-card>
+
+      <!--Dialogs -->
+      <el-dialog
+          v-model="DeleteDialogVisible"
+          title="Warning"
+          width="500"
+          :before-close="handleDeleteDialogClose"
+      >
+        <span>Delete Friend/Group</span>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="DeleteDialogVisible = false">
+              Cancel
+            </el-button>
+            <el-button type="primary" @click="DeleteDialogVisible = false">
+              Confirm
+            </el-button>
+          </div>
+        </template>
+      </el-dialog>
+
+      <el-dialog
+          v-model="NewListDialogVisible"
+          title="New List"
+          width="500"
+          align-center
+      >
+        <el-form>
+          <el-form-item>
+            <el-input v-model="input_list_data.name"
+                      placeholder="Input List Name"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-radio-group v-model="input_list_data.category">
+              <el-radio-button :value="0" label="0">Group</el-radio-button>
+              <el-radio-button :value="1" label="0">Friend</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="NewListDialogVisible = false">
+              Cancel
+            </el-button>
+            <el-button type="primary" @click="HandleNewListConfirm">
+              Confirm
+            </el-button>
+          </div>
+        </template>
+      </el-dialog>
+
+    </el-main>
+  </el-container>
 
 </template>
 
@@ -115,20 +115,29 @@
 import MiniProfile from "@/components/icons/MiniProfile.vue";
 import store from "@/store/store.js"
 import {onMounted, ref} from "vue";
-import UserLayout from "@/components/UserLayout.vue";
+import UserLayout from "@/components/CrLayout.vue";
 import {Search} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
 import {VueDraggable} from "vue-draggable-plus";
 import axios from "axios";
-import user_contact_lists from "@/store/modules/contacts.js";
+import user_contact_lists, {selected_list_items} from "@/store/modules/contacts.js";
 
 const user_cl = ref(user_contact_lists)
+const sl_items = ref(selected_list_items)
+const selected_list = ref(null)
+
 const categorySearchInput = ref('')
 const DeleteDialogVisible = ref(false)
 const NewListDialogVisible = ref(false)
 
+
 const SearchOthers = () => {
   ElMessage.info('Searching... ')
+}
+
+const handleListSelect = (list) => {
+  this.selected_list = list
+  axios.post('my_chatroom/contact_session/show_session', {id: list.id})
 }
 
 const OpenNewListDialog = () => {

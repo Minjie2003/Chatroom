@@ -1,5 +1,5 @@
 <template>
-  <div class="conversation-list">
+  <div class="conversation-list" ref="sessionList">
     <el-text class="list-title cr-title" size="large" truncated>Conversations</el-text>
     <el-divider border-style="solid"></el-divider>
 
@@ -8,7 +8,7 @@
         <VueDraggable ref="el" v-model="cur_cl">
           <div
               class="conversations"
-              v-for="conv in cur_cl" :key="conv.id"
+              v-for="conv in sortedConversations" :key="conv.id"
               @click="handleConvClick(conv)"
           >
 
@@ -52,16 +52,23 @@
 
 import {current_conversation_list, selected_session} from "@/store/modules/conv.js";
 import {VueDraggable} from "vue-draggable-plus";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import {selectedOtherInfo} from "@/store/cr_config.js";
 
 const cur_cl = ref(current_conversation_list)
+const sortedConversations = computed(() => {
+  if(!cur_cl.value) return null
+  return cur_cl.value.slice().sort((a, b) => b.unreadNum - a.unreadNum);
+});
+
+const emit = defineEmits(['selectedChange'])
 
 onMounted(() => {
   get_session_list()
-  ElMessage.info('Fetch current conversation list. ')
 })
+
 const get_session_list = () => {
   axios.post('/my_chatroom/contact_session/get_contact_session_list', {
     headers: {
@@ -79,9 +86,22 @@ const get_session_list = () => {
       })
 }
 
+const fetchOtherInfo = (otherId) => {
+  axios.post('my_chatroom/user/get_contact_info', {id: otherId},{headers: {'Content-Type': 'multipart/form-data'}})
+      .then(res => { selectedOtherInfo.value =res.data.data; ElMessage.info(res.data.message)})
+      .catch(err => console.log(err))
+}
+
+defineExpose({
+  get_session_list,
+  fetchOtherInfo,
+})
+
+
 const handleConvClick = (conv) => {
   selected_session.value = conv
-  ElMessage.info('Selected' + conv.nickName + '@' + conv.id)
+  fetchOtherInfo(selected_session.value.contactId)
+  emit('selectedChange')
 }
 
 </script>

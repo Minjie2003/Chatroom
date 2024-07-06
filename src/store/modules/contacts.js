@@ -1,9 +1,7 @@
 import {reactive} from "vue";
 
-const crContactList = {
+export const user_contact_lists = reactive([])
+export const selected_list_items = reactive([])
 
-}
-
-const user_contact_lists = reactive([])
 
 export default user_contact_lists;
