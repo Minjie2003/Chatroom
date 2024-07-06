@@ -113,18 +113,17 @@
 
 <script setup>
 import MiniProfile from "@/components/icons/MiniProfile.vue";
-import store from "@/store/store.js"
 import {onMounted, ref} from "vue";
-import UserLayout from "@/components/CrLayout.vue";
 import {Search} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
 import {VueDraggable} from "vue-draggable-plus";
 import axios from "axios";
-import user_contact_lists, {selected_list_items} from "@/store/modules/contacts.js";
+import {selected_list, selected_list_items, user_contact_lists} from "@/store/cr_config.js";
 
-const user_cl = ref(user_contact_lists)
-const sl_items = ref(selected_list_items)
-const selected_list = ref(null)
+const user_cl = user_contact_lists
+const sl_items = selected_list_items
+
+const sl = selected_list
 
 const categorySearchInput = ref('')
 const DeleteDialogVisible = ref(false)
@@ -136,7 +135,7 @@ const SearchOthers = () => {
 }
 
 const handleListSelect = (list) => {
-  this.selected_list = list
+  this.sl = list
   axios.post('my_chatroom/contact_session/show_session', {id: list.id})
 }
 

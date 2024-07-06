@@ -1,8 +1,8 @@
 <template>
   <div class="chat-outer-panel" ref="chatPanel">
-    <el-row class="title-container" justify="center"  @click="OtherInfoDialogVisible = true">
+    <el-row class="title-container" justify="center" @click="OtherInfoDialogVisible = true">
       <el-text class="conversation-title" size="large">
-        {{ selected_session.value.nickName }}
+        {{ selected_session.nickName }}
       </el-text>
     </el-row>
 
@@ -19,8 +19,8 @@
 
             <div
                 style="display: grid; align-content: center; align-items: center;"
-                v-for="msg in msg_list"
-                :key="msg.id "
+                v-for="(msg, index) in msg_list"
+                :key="index"
                 ref="msg_bubble"
             >
 
@@ -34,7 +34,7 @@
                     :src="msg.headPath">
                 </el-avatar>
 
-                <div  style="display: flex; flex-flow: column nowrap; align-content: start;">
+                <div style="display: flex; flex-flow: column nowrap; align-content: start;">
                   <el-text style="align-self: start;">{{ msg.username }}</el-text>
 
                   <div class="message-bubble other-bubble">
@@ -107,7 +107,7 @@
       </div>
 
       <div>
-<!--        <el-button class="send-button" @click="fetchMsgList">Refresh</el-button>-->
+        <!--        <el-button class="send-button" @click="fetchMsgList">Refresh</el-button>-->
         <el-button class="send-button" @click="handleSendClick">Send</el-button>
       </div>
 
@@ -138,13 +138,10 @@
 <script>
 import {Camera, Files, Location, Picture, Plus, Setting, Share} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
-import {selected_session} from "@/store/modules/conv.js";
-import {computed, reactive, ref, watch} from "vue";
 import axios from "axios";
 import {
-  DefaultProfileData,
-  DefaultUserData,
-  modifyProfileDialogVisible,
+  current_conv_msg_list,
+  selected_session,
   selectedOtherInfo,
   thisUser
 } from "@/store/cr_config.js";
@@ -154,14 +151,15 @@ export default {
   emits: ['updateList'],
   computed: {
     selected_session() {
-      return selected_session
+      return selected_session.value
     },
     thisUser() {
-      return thisUser
+      return thisUser.value
     },
     otherInfo() {
-      return selectedOtherInfo
-    }
+      return selectedOtherInfo.value
+    },
+
   },
 
   components: {Share, Location, Camera, Picture, Files, Plus, Setting},
@@ -170,8 +168,8 @@ export default {
       message_input: '',
       OtherInfoDialogVisible: false,
       inputUserNickname: '',
+      msg_list: current_conv_msg_list,
 
-      msg_list: reactive([])
     };
   },
 
@@ -217,7 +215,7 @@ export default {
     },
 
     handleNicknameModify() {
-      if(this.inputUserNickname === '') {
+      if (this.inputUserNickname === '') {
         ElMessage.error('Empty Name')
         return
       }
@@ -225,9 +223,9 @@ export default {
             id: selected_session.value.id,
             nickName: this.inputUserNickname,
           },
-          { headers: {"Content-Type": "multipart/form-data"} }
-      ).then( res => {
-        if(res.data.message !== '')   ElMessage.info(res.data.message)
+          {headers: {"Content-Type": "multipart/form-data"}}
+      ).then(res => {
+        if (res.data.message !== '') ElMessage.info(res.data.message)
         else ElMessage.info('Modification Success')
       }).catch(err => console.log(err))
       this.OtherInfoDialogVisible = false
@@ -320,7 +318,7 @@ export default {
 
 .message-avatar:hover {
   box-shadow: 0 0 20px rgba(40, 166, 250, 0.77);
-  border-color: rgba(150,209,246,0.47);
+  border-color: rgba(150, 209, 246, 0.47);
   transition: all 0.3s ease-in-out;
 }
 

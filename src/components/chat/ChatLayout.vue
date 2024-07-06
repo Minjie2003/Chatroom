@@ -20,15 +20,9 @@
 import SessionList from "@/components/chat/ConversationList.vue";
 import ChatPanel from "@/components/chat/ChatPanel.vue";
 import Profile from "@/components/Profile.vue";
-import {DefaultProfileData, DefaultUserData, selectedOtherInfo} from "@/store/cr_config.js";
-import {ref} from "vue";
-import {selected_session} from "@/store/modules/conv.js";
+import { selectedOtherInfo} from "@/store/cr_config.js";
 
-const otherInfo = ref({
-  ...DefaultProfileData(),
-  ...DefaultUserData()
-})
-
+const otherInfo = selectedOtherInfo
 
 </script>
 

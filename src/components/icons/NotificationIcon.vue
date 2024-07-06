@@ -1,33 +1,12 @@
-<script>
+<script setup>
 import {Bell} from "@element-plus/icons-vue";
 import MiniProfile from "@/components/icons/MiniProfile.vue";
-import cr_default from "@/store/modules/cr_default.js";
+import {ref} from "vue";
+import {thisUser} from "@/store/cr_config.js";
 
-export default {
-  computed: {
-    cr_default() {
-      return cr_default
-    }
-  },
-  components: {Bell, MiniProfile},
-  data() {
-    return {
-      tip_visible: false,
-      notifications: [
-        {
-          type: 'friend application',
-          sender: {
-            name: 'Bob',
-            id: 'boblikeschatting',
-            avatar_url: 'src/assets/images/chatroom_logo.png'
-          },
-          time: '2024/7/11',
-          remark: 'I want to make friends with you!'
-        },
-      ]
-    }
-  }
-}
+const tip_visible = ref(false)
+const tu = thisUser
+
 </script>
 
 <template>
@@ -55,9 +34,9 @@ export default {
             <el-row justify="space-evenly">
               <el-col :span="4">
                 <mini-profile class="notify-profile"
-                  :avatar_url="cr_default.avatar.purple"
-                              :name="cr_default.user_info.name"
-                              :user_id="cr_default.user_info.user_id"
+                              :avatar_url="this.tu.avatar_url"
+                              :name="this.tu.username"
+                              :user_id="this.tu.accountNum"
                 ></mini-profile>
               </el-col>
               <el-col :span="12" style="padding-top: 3em;">

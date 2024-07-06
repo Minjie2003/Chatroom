@@ -4,11 +4,24 @@ import {ElMessage} from "element-plus";
 
 export const CR_DEBUG_ON = ref(false);
 
-export const Chatroom = reactive({
-  NAME: 'Chatroom',
-  SHORT_NAME: 'CR',
-  LOGO: 'src/assets/images/chatroom_logo.png'
-})
+export const crConv = {
+  category: null,
+  contactId: null,
+  createTime: null,
+  groupId: null,
+  headPath: null,
+  id: 0,
+  isDeleted: null,
+  isHide: null,
+  lastContent: null,
+  messageType: null,
+  nickName: null,
+  sessionId: null,
+  unreadNum: null,
+  updateTime: null,
+  userId: null,
+  username: null
+};
 
 export const DefaultUserData = () => ({
   accountNum: 'user0000',
@@ -38,6 +51,14 @@ export const DefaultProfileData = () => ({
   backgroundImage: 'src/assets/images/lake.png'
 });
 
+
+
+export const Chatroom = reactive({
+  NAME: 'Chatroom',
+  SHORT_NAME: 'CR',
+  LOGO: 'src/assets/images/chatroom_logo.png'
+})
+
 export const thisUser = ref({
   ...DefaultProfileData(),
   ...DefaultUserData(),
@@ -47,6 +68,19 @@ export const selectedOtherInfo = ref({
   ...DefaultProfileData(),
   ...DefaultUserData()
 })
+
+export const selected_session = ref({
+  ...crConv
+})
+export const current_conversation_list = ref([])
+
+export const current_conv_msg_list = ref([])
+export const user_contact_lists = ref([])
+
+export const selected_list_items = ref([])
+
+export  const selected_list = ref(null)
+
 
 /* UserController.java:
 *  user/
@@ -60,8 +94,6 @@ export const selectedOtherInfo = ref({
 *     /....
 *
 * */
-
-
 
 export const getUserInfo = () => {
   axios.post('my_chatroom/user/get_userinfo')
@@ -79,6 +111,7 @@ export const toProfileData = (userInfo) => {
   }
 }
 
+
 export const modifyProfileDialogVisible = ref(false)
 
 
@@ -87,6 +120,7 @@ export const modifyProfileDialogVisible = ref(false)
 *
 *
 * */
+
 
 
 

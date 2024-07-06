@@ -27,9 +27,9 @@
             <el-row justify="space-evenly">
               <el-col :span="4">
                 <mini-profile class="notify-profile"
-                              :avatar_url="cr_default.avatar.purple"
-                              :name="cr_default.user_info.name"
-                              :user_id="cr_default.user_info.user_id"
+                              :avatar_url="sendUser.avatar_url"
+                              :name="sendUser.username"
+                              :user_id="sendUser.accountNum"
                 ></mini-profile>
               </el-col>
               <el-col :span="12" style="padding-top: 3em;">
@@ -48,35 +48,19 @@
     </template>
   </el-dropdown>
 </template>
-<script>
+
+<script setup>
 import {Bell, Message} from "@element-plus/icons-vue";
 import MiniProfile from "@/components/icons/MiniProfile.vue";
-import cr_default from "@/store/modules/cr_default.js";
+import {computed, ref} from "vue";
+import {DefaultProfileData} from "@/store/cr_config.js";
 
-export default {
-  computed: {
-    cr_default() {
-      return cr_default
-    },
-  },
-  components: {Message, MiniProfile, Bell},
-  data() {
-    return {
-      tip_visible: false,
-      invitations: [
-        {
-          type: 'friend application',
-          sender: {
-            name: 'Bob',
-            id: 'boblikeschatting',
-          },
-          time: '2024/7/11',
-          remark: 'I want to make friends with you!'
-        },
-      ]
+const tip_visible = ref(false)
+const sendUser = computed(() => {
+      return DefaultProfileData()
     }
-  }
-}
+)
+
 </script>
 
 <style>

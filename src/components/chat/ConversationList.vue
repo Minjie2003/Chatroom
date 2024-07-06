@@ -5,10 +5,10 @@
 
     <div class="scrollbar-container">
       <el-scrollbar class="conversation-scrollbar">
-        <VueDraggable ref="el" v-model="cur_cl">
+        <VueDraggable ref="el" v-model="ccl">
           <div
               class="conversations"
-              v-for="conv in sortedConversations" :key="conv.id"
+              v-for="conv in ccl" :key="conv.id"
               @click="handleConvClick(conv)"
           >
 
@@ -17,7 +17,7 @@
               />
               <div style="display: flex; flex-flow: row nowrap;">
                 <el-text class="conv-name" size="large" style="color:#333; " truncated>{{
-                    conv.nickName || conv.name
+                    conv.nickName
                   }}
                 </el-text>
                 <el-text class="conv-id" size="small" style="color:#888; " truncated>@{{ conv.id }}</el-text>
@@ -38,7 +38,7 @@
 
           </div>
 
-          <div v-if="cur_cl && cur_cl.length === 0">
+          <div v-if="ccl && ccl.length === 0">
             <p>No Conversation.</p>
           </div>
 
@@ -50,23 +50,30 @@
 
 <script setup>
 
-import {current_conversation_list, selected_session} from "@/store/modules/conv.js";
 import {VueDraggable} from "vue-draggable-plus";
-import {computed, onMounted, ref} from "vue";
+import { onMounted} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
-import {selectedOtherInfo} from "@/store/cr_config.js";
+/*shared state*/
 
-const cur_cl = ref(current_conversation_list)
-const sortedConversations = computed(() => {
-  if(!cur_cl.value) return null
-  return cur_cl.value.slice().sort((a, b) => b.unreadNum - a.unreadNum);
-});
+import {CR_DEBUG_ON, current_conversation_list, selected_session, selectedOtherInfo} from "@/store/cr_config.js";
+
+const ccl = current_conversation_list
+const ss = selected_session
+const soi = selectedOtherInfo
+
 
 const emit = defineEmits(['selectedChange'])
 
 onMounted(() => {
   get_session_list()
+  if( current_conversation_list.value && current_conversation_list.value.length > 0) {
+    selected_session.value = current_conversation_list.value[0]
+    if(CR_DEBUG_ON){ ElMessage.info('Selected Default Conv @' + selected_session.value.nickName) }
+    emit("selectedChange")
+  }else {
+    if(CR_DEBUG_ON){ ElMessage.info('No Conv Selected.')}
+  }
 })
 
 const get_session_list = () => {
@@ -77,9 +84,12 @@ const get_session_list = () => {
   })
       .then(res => {
         if (res.data.code === 0) {
-          ElMessage.error('fail to get session list')
+          if(res.data.message !== ''){
+            ElMessage.error(res.data.message)
+          }
         }
-        cur_cl.value = res.data.data
+        current_conversation_list.value = res.data.data
+
       })
       .catch(err => {
         console.error(err);
@@ -88,7 +98,7 @@ const get_session_list = () => {
 
 const fetchOtherInfo = (otherId) => {
   axios.post('my_chatroom/user/get_contact_info', {id: otherId},{headers: {'Content-Type': 'multipart/form-data'}})
-      .then(res => { selectedOtherInfo.value =res.data.data; ElMessage.info(res.data.message)})
+      .then(res => { selectedOtherInfo.value = res.data.data;})
       .catch(err => console.log(err))
 }
 
