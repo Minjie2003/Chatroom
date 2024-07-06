@@ -52,7 +52,6 @@ export const DefaultProfileData = () => ({
 });
 
 
-
 export const Chatroom = reactive({
   NAME: 'Chatroom',
   SHORT_NAME: 'CR',
@@ -69,17 +68,15 @@ export const selectedOtherInfo = ref({
   ...DefaultUserData()
 })
 
-export const selected_session = ref({
-  ...crConv
-})
-export const current_conversation_list = ref([])
+
+export const conversation_list = ref([])
 
 export const current_conv_msg_list = ref([])
 export const user_contact_lists = ref([])
 
 export const selected_list_items = ref([])
 
-export  const selected_list = ref(null)
+export const selected_list = ref(null)
 
 
 /* UserController.java:
@@ -98,8 +95,13 @@ export  const selected_list = ref(null)
 export const getUserInfo = () => {
   axios.post('my_chatroom/user/get_userinfo')
       .then(res => {
-        thisUser.value = res.data.data
-        if(CR_DEBUG_ON) {ElMessage.warning('Updated User Info.')}
+        let code = res.data.code
+        if (code === 200) {
+          thisUser.value = res.data.data
+          ElMessage.success('fetchUserInfo')
+        } else {
+          ElMessage.warning(res.data.message)
+        }
       })
       .catch(err => console.log(err))
 }
@@ -115,11 +117,60 @@ export const toProfileData = (userInfo) => {
 export const modifyProfileDialogVisible = ref(false)
 
 
-/*  contact_session
-*
-*
-*
-* */
+export const crStore = reactive({
+
+  hasLoggedIn: false,
+  setHasLoggedIn(val) {
+    this.hasLoggedIn = val
+  },
+  getHasLoggedIn() {
+    return this.hasLoggedIn
+  },
+
+  userInfo: {
+    ...DefaultUserData()
+  },
+  getUserInfo() {
+    return this.userInfo
+  },
+  getUserProfile() {
+    return {
+      ...DefaultProfileData(),
+      ...this.userInfo
+    }
+  },
+
+  setUserInfo(info) {
+    this.userInfo = {
+      ...this.userInfo,
+      ...info
+    }
+  },
+
+  conversationList: [],
+  setConversationList(list) {
+    this.conversationList = list
+  },
+
+  selectedConversation: null,
+  setSelectedConversation(conversation) {
+    this.selectedConversation = conversation
+  },
+  /*Current Conversation or Selected OtherInfo*/
+  otherInfo: null,
+  setOtherInfo(info) {
+    this.otherInfo = info
+  },
+
+  messageList: [],
+  setMessageList(list) {
+    this.messageList = list
+  },
+  appendMessages(messages) {
+    this.messageList.push(messages)
+  },
+
+})
 
 
 

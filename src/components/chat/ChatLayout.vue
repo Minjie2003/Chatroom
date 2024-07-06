@@ -20,7 +20,7 @@
 import SessionList from "@/components/chat/ConversationList.vue";
 import ChatPanel from "@/components/chat/ChatPanel.vue";
 import Profile from "@/components/Profile.vue";
-import { selectedOtherInfo} from "@/store/cr_config.js";
+import { selectedOtherInfo} from "@/store/crStore.js";
 
 const otherInfo = selectedOtherInfo
 

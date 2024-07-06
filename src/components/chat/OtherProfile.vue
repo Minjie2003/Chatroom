@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import {DefaultUserData} from "@/store/cr_config.js";
+import {DefaultUserData} from "@/store/crStore.js";
 import {ref} from "vue";
 import Profile from "@/components/Profile.vue";
 

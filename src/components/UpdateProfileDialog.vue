@@ -40,7 +40,7 @@
 <script setup>
 import {reactive, computed, ref} from 'vue';
 import {useStore} from 'vuex';
-import {CR_DEBUG_ON, modifyProfileDialogVisible, thisUser, toProfileData} from "@/store/cr_config.js";
+import {CR_DEBUG_ON, modifyProfileDialogVisible, thisUser, toProfileData} from "@/store/crStore.js";
 import {ElMessage} from "element-plus";
 import axios from "axios";
 

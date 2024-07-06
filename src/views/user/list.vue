@@ -118,7 +118,7 @@ import {Search} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
 import {VueDraggable} from "vue-draggable-plus";
 import axios from "axios";
-import {selected_list, selected_list_items, user_contact_lists} from "@/store/cr_config.js";
+import {selected_list, selected_list_items, user_contact_lists} from "@/store/crStore.js";
 
 const user_cl = user_contact_lists
 const sl_items = selected_list_items

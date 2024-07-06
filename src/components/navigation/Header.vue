@@ -65,7 +65,7 @@ import AccountSwitch from "@/components/icons/AccountSwitch.vue";
 import {Search} from "@element-plus/icons-vue";
 import Profile from "@/components/Profile.vue";
 import {computed} from "vue";
-import {Chatroom, thisUser, toProfileData} from "@/store/cr_config.js";
+import {Chatroom, thisUser, toProfileData} from "@/store/crStore.js";
 
 export default {
   name: "Header",

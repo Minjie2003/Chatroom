@@ -2,40 +2,40 @@
   <div class="chat-outer-panel" ref="chatPanel">
     <el-row class="title-container" justify="center" @click="OtherInfoDialogVisible = true">
       <el-text class="conversation-title" size="large">
-        {{ selected_session.nickName }}
+        {{ selected_conversation?.nickName ?? 'No Conversation Selected'}}
       </el-text>
     </el-row>
 
     <el-row>
       <div class="chat-inner-panel">
         <div class="scrollbar-container">
-          <el-scrollbar class="msg-scrollbar" ref="msg_scrollbar">
+          <el-scrollbar class="msg-scrollbar" ref="msg_scrollbar" v-infinite-scroll="handleMessageScroll">
             <div>
               <el-alert type="warning"
                         class="no-message" style="font-size: 2em; margin-top: 2em;"
-                        v-show="msg_list.length === 0"> No Message.
+                        v-show="message_list?.length === 0"> No Message.
               </el-alert>
             </div>
 
             <div
                 style="display: grid; align-content: center; align-items: center;"
-                v-for="(msg, index) in msg_list"
-                :key="index"
+                v-for="msg in message_list"
+                :key="msg.id"
                 ref="msg_bubble"
             >
 
               <!-- Other Message -->
               <div class="message-row"
-                   v-if="msg.username !== thisUser.value.username ">
+                   v-if="msg?.username !== user_info?.username ">
                 <span></span>
 
                 <el-avatar
                     class="message-avatar other-avatar"
-                    :src="msg.headPath">
+                    :src="msg?.headPath">
                 </el-avatar>
 
                 <div style="display: flex; flex-flow: column nowrap; align-content: start;">
-                  <el-text style="align-self: start;">{{ msg.username }}</el-text>
+                  <el-text style="align-self: start;">{{ msg?.username }}</el-text>
 
                   <div class="message-bubble other-bubble">
                     <el-text v-if="msg.category === 0" class="other-message message-text">{{ msg.content }}</el-text>
@@ -57,7 +57,7 @@
                 <span></span>
                 <div>
                   <div style="display: flex; flex-flow: column nowrap; align-content: end;">
-                    <el-text style="align-self: end;">{{ msg.username }}</el-text>
+                    <el-text style="align-self: end;">{{ msg?.username }}</el-text>
                     <div class="message-container me-bubble" style="align-self: end;">
                       <el-text v-if="msg.category === 0" class="my-message message-text">{{ msg.content }}</el-text>
                       <el-image v-if="msg.category === 1" class="my-message message-image"
@@ -111,7 +111,7 @@
         <el-button class="send-button" @click="handleSendClick">Send</el-button>
       </div>
 
-      <el-input class="message-input" v-model="message_input" ref="message_input"
+      <el-input class="message-input" v-model="messageInput" ref="messageInputRef"
                 maxlength="1024" show-word-limit
                 placeholder="Input Message to Send..."
                 clearable :autosize="{minRows: 1, maxRows: 3}"
@@ -122,11 +122,11 @@
     <el-dialog class="otherInfoDialog" v-model="OtherInfoDialogVisible">
       <div class="other-info-container">
         <el-text class="other-info-title">Other Info</el-text>
-        <el-text class="other-name">{{ otherInfo.usrname }}</el-text>
+        <el-text class="other-name">{{ other_info?.username }}</el-text>
         <div class="nickname-edit">
           <el-text>备注</el-text>
-          <el-input v-model="inputUserNickname"
-                    :placeholder="otherInfo.nickName"
+          <el-input v-model="nicknameInput"
+                    :placeholder="other_info.nickName"
           />
           <el-button @click="handleNicknameModify">Modify</el-button>
         </div>
@@ -135,113 +135,147 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {Camera, Files, Location, Picture, Plus, Setting, Share} from "@element-plus/icons-vue";
-import {ElMessage} from "element-plus";
+import {crStore} from "@/store/crStore.js";
+import {computed, ref, watch} from "vue";
 import axios from "axios";
-import {
-  current_conv_msg_list,
-  selected_session,
-  selectedOtherInfo,
-  thisUser
-} from "@/store/cr_config.js";
+import {ElMessage} from "element-plus";
 
-export default {
-
-  emits: ['updateList'],
-  computed: {
-    selected_session() {
-      return selected_session.value
-    },
-    thisUser() {
-      return thisUser.value
-    },
-    otherInfo() {
-      return selectedOtherInfo.value
-    },
-
-  },
-
-  components: {Share, Location, Camera, Picture, Files, Plus, Setting},
-  data() {
-    return {
-      message_input: '',
-      OtherInfoDialogVisible: false,
-      inputUserNickname: '',
-      msg_list: current_conv_msg_list,
-
-    };
-  },
-
-  methods: {
-    fetchMsgList() {
-      axios.post('my_chatroom/message/get_message_list',
-          {sessionId: selected_session.value.sessionId},
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            }
-          })
-          .then(res => {
-            this.msg_list = res.data.data
-          })
-
-          .catch(err => {
-            console.log(err)
-          })
-    },
-
-    handleSendClick() {
-      if (this.message_input === '') {
-        ElMessage.warning('Empty Message')
-      }
-      axios.post('my_chatroom/message/send_message',
-          {
-            content: this.message_input,
-            contactSessionId: selected_session.value.id,
-            sessionId: selected_session.value.sessionId
-          }, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          .then(res => {
-            if (res.data.code === 200) {
-              ElMessage.success('Send Success')
-              this.$refs.message_input.clear()
-            }
-            this.fetchMsgList()
-          }).catch(err => console.log(err))
-    },
-
-    handleNicknameModify() {
-      if (this.inputUserNickname === '') {
-        ElMessage.error('Empty Name')
-        return
-      }
-      axios.post('my_chatroom/contact_session/update_nick_name', {
-            id: selected_session.value.id,
-            nickName: this.inputUserNickname,
-          },
-          {headers: {"Content-Type": "multipart/form-data"}}
-      ).then(res => {
-        if (res.data.message !== '') ElMessage.info(res.data.message)
-        else ElMessage.info('Modification Success')
-      }).catch(err => console.log(err))
-      this.OtherInfoDialogVisible = false
-      this.$emit('updateList')
-    },
+const message_list = computed(()=> crStore.messageList)
+const selected_conversation = computed(() => crStore.selectedConversation)
+const user_info = computed(() => crStore.userInfo)
+const other_info = computed(() => crStore.otherInfo)
 
 
-    handlePictureClick() {
-      ElMessage.info('Insert Picture')
-    },
 
-    scrollToLatestMessage() {
-      ElMessage.info('Scrolling to latest message (to be impl). ')
-    },
-  },
+const messageInput = ref('')
+const messageInputRef = ref(null)
+const nicknameInput = ref('')
+
+const OtherInfoDialogVisible = ref(false)
+
+
+watch(() => crStore.selectedConversation, async (newConv, oldConv) => {
+  console.log(`Conv Change: ${oldConv?.nickName} to ${newConv?.nickName} fetchMessageList called` )
+  console.log(`Current User Info: ${crStore.userInfo}`)
+  fetchMessageList()
+  console.log(message_list.value)
+})
+
+const fetchMessageList = () => {
+  axios.post('my_chatroom/message/get_message_list',
+      {sessionId: selected_conversation.value?.sessionId},
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
+      })
+      .then(res => {
+        let code = res.data.code
+        if(code === 200) {
+          crStore.setMessageList(res.data.data)
+          ElMessage.success('Fetch message list.')
+        }else {
+          console.error('fetchMessageList failed')
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+}
+
+
+
+const fetchRestMessage = async (sessionId) => {
+  try {
+    const response = await axios.get('my_chatroom/message/get_rest_message', {
+      params: {
+        sessionId: sessionId
+      },
+      withCredentials: true // Ensure cookies are sent with the request if session-based authentication is used
+    });
+
+    const data = response.data;
+
+    if (data.code === 200) {
+      // Handle success
+      console.log('Success:', data);
+      return data.data; // Assuming the messages are in data.data
+    } else {
+      // Handle failure
+      console.error('Error:', data.message);
+      ElMessage.error(data.message || 'Failed to fetch rest messages');
+      return null;
+    }
+  } catch (error) {
+    // Handle error
+    console.error('Error:', error);
+    ElMessage.error('Request failed');
+    return null;
+  }
 };
+
+const handleMessageScroll = async () => {
+  let rest = await fetchRestMessage(selected_conversation.value.sessionId)
+  crStore.appendMessages(rest)
+  console.log('fetchRestMessage')
+  console.log(message_list.value.length)
+}
+
+const handleSendClick = () =>  {
+  if (messageInput.value === '') {
+    ElMessage.warning('Empty Message')
+    return
+  }
+  if(crStore.selectedConversation === null) {
+    ElMessage.error('No Conversation Selected')
+    return
+  }
+
+  axios.post('my_chatroom/message/send_message',
+      {
+        content: messageInput.value,
+        contactSessionId: selected_conversation.value?.id,
+        sessionId: selected_conversation.value?.sessionId
+      }, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then( res => {
+        if (res.data.code === 200) {
+          ElMessage.success('Send Success')
+          messageInput.value = ''
+          messageInputRef.value.value = ''
+        }
+        fetchMessageList()
+      }).catch(err => console.log(err))
+}
+
+
+const handleNicknameModify = () =>  {
+  if (nicknameInput.value === '') {
+    ElMessage.error('Empty Nickname Not Allowed. ')
+    return
+  }
+  axios.post('my_chatroom/contact_session/update_nick_name', {
+        id: selected_conversation.value?.id,
+        nickName: nicknameInput.value,
+      },
+      {headers: {"Content-Type": "multipart/form-data"}}
+  ).then(res => {
+    let code = res.data.code
+    if(code !== 200) ElMessage.error('Modify Failed')
+    else ElMessage.success('Modification Success')
+  }).catch(err => console.log(err))
+  OtherInfoDialogVisible.value = false
+}
+
+const handlePictureClick = () => {
+  ElMessage.info('Send Picture(TO BE IMPL)')
+}
+
 </script>
 
 <style scoped>

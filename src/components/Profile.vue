@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import {DefaultProfileData, modifyProfileDialogVisible} from "@/store/cr_config.js";
+import {DefaultProfileData, modifyProfileDialogVisible} from "@/store/crStore.js";
 import UpdateProfileDialog from './UpdateProfileDialog.vue'
 import {ref} from "vue";
 import {Edit} from "@element-plus/icons-vue";

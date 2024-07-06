@@ -55,7 +55,7 @@
 <script setup>
 import {reactive, ref} from 'vue';
 import { ChatDotRound, User, Bell } from '@element-plus/icons-vue';
-import {thisUser} from "@/store/cr_config.js";
+import {thisUser} from "@/store/crStore.js";
 
 const user = reactive({
   ...thisUser.value

@@ -1,7 +1,8 @@
 <template>
-  <ChatLayout></ChatLayout>
+  <ChatPanel ref="chatPanel"></ChatPanel>
 </template>
 
 <script setup>
-import ChatLayout from "@/components/chat/ChatLayout.vue";
+import ChatPanel from "@/components/chat/ChatPanel.vue";
+
 </script>

@@ -14,7 +14,7 @@
     </div>
 
     <div class="cr-right">
-      <p><ConversationList></ConversationList></p>
+      <p><ConversationList @selected-change=""></ConversationList></p>
     </div>
 
     <div class="cr-footer">
@@ -29,6 +29,8 @@
 import SideMenu from "@/components/navigation/SideMenu.vue";
 import Header from "@/components/navigation/Header.vue";
 import ConversationList from "@/components/chat/ConversationList.vue";
+
+
 
 </script>
 

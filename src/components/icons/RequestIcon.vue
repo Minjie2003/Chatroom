@@ -53,7 +53,7 @@
 import {Bell, Message} from "@element-plus/icons-vue";
 import MiniProfile from "@/components/icons/MiniProfile.vue";
 import {computed, ref} from "vue";
-import {DefaultProfileData} from "@/store/cr_config.js";
+import {DefaultProfileData} from "@/store/crStore.js";
 
 const tip_visible = ref(false)
 const sendUser = computed(() => {

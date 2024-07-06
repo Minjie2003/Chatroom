@@ -10,7 +10,7 @@
 <script setup>
 
 import {onMounted, ref} from "vue";
-import {CR_DEBUG_ON, getUserInfo} from "@/store/cr_config.js";
+import {CR_DEBUG_ON, getUserInfo} from "@/store/crStore.js";
 import {ElMessage} from "element-plus";
 // Define the reactive debug state
 

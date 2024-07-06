@@ -5,11 +5,11 @@
 
     <div class="scrollbar-container">
       <el-scrollbar class="conversation-scrollbar">
-        <VueDraggable ref="el" v-model="ccl">
+        <VueDraggable ref="el" v-model="conversation_list">
           <div
               class="conversations"
-              v-for="conv in ccl" :key="conv.id"
-              @click="handleConvClick(conv)"
+              v-for="conv in conversation_list" :key="conv.id"
+              @click="handleConversationSelect(conv)"
           >
 
             <div class="conversation-entry">
@@ -31,14 +31,14 @@
               </div>
 
               <el-text class="last-content" size="small" style="color:#666; " truncated>
-                {{ conv.lastContent || 'No messages. ' }}
+                {{ conv.lastContent ?? 'No messages. ' }}
               </el-text>
 
             </div>
 
           </div>
 
-          <div v-if="ccl && ccl.length === 0">
+          <div v-if="conversation_list && conversation_list.length === 0">
             <p>No Conversation.</p>
           </div>
 
@@ -51,67 +51,70 @@
 <script setup>
 
 import {VueDraggable} from "vue-draggable-plus";
-import { onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
-/*shared state*/
+import {crStore} from "@/store/crStore.js";
 
-import {CR_DEBUG_ON, current_conversation_list, selected_session, selectedOtherInfo} from "@/store/cr_config.js";
+const conversation_list = computed(() => crStore.conversationList)
+const other_info = computed(() => crStore.otherInfo)
+const selectedConversation = computed( () =>crStore.selectedConversation)
 
-const ccl = current_conversation_list
-const ss = selected_session
-const soi = selectedOtherInfo
+onMounted(async () => {
+  crStore.setSelectedConversation(null)
+  console.log('try to fetch conversation list');
+  await fetchConversationList();
 
-
-const emit = defineEmits(['selectedChange'])
-
-onMounted(() => {
-  get_session_list()
-  if( current_conversation_list.value && current_conversation_list.value.length > 0) {
-    selected_session.value = current_conversation_list.value[0]
-    if(CR_DEBUG_ON){ ElMessage.info('Selected Default Conv @' + selected_session.value.nickName) }
-    emit("selectedChange")
-  }else {
-    if(CR_DEBUG_ON){ ElMessage.info('No Conv Selected.')}
+  if (conversation_list.value && conversation_list.value.length > 0) {
+    selectedConversation.value = conversation_list.value[0];
+    crStore.setSelectedConversation(conversation_list.value[0])
+    ElMessage.info('Selected Default Conv @' + selectedConversation.value?.nickName);
+  } else {
+    ElMessage.warning('No Conversation Selected');
   }
-})
+});
 
-const get_session_list = () => {
-  axios.post('/my_chatroom/contact_session/get_contact_session_list', {
-    headers: {
-      'Content-Type': 'multipart/form-data'
+const fetchConversationList = async () => {
+  try {
+    const res = await axios.post('/my_chatroom/contact_session/get_contact_session_list', {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    const code = res.data.code;
+    if (code === 200) {
+      crStore.setConversationList(res.data.data);
+      conversation_list.value = res.data.data; /*make it updated in sync*/
+    } else {
+      ElMessage.info('ERROR:' + res.data.message);
     }
-  })
-      .then(res => {
-        if (res.data.code === 0) {
-          if(res.data.message !== ''){
-            ElMessage.error(res.data.message)
-          }
-        }
-        current_conversation_list.value = res.data.data
-
-      })
-      .catch(err => {
-        console.error(err);
-      })
-}
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 const fetchOtherInfo = (otherId) => {
+  if(!otherId) console.log('fetchOtherInfo fail: No otherId')
   axios.post('my_chatroom/user/get_contact_info', {id: otherId},{headers: {'Content-Type': 'multipart/form-data'}})
-      .then(res => { selectedOtherInfo.value = res.data.data;})
+      .then(res => {
+         let code = res.data.code
+        if(code === 200) {
+          crStore.setOtherInfo(res.data.data)
+        }
+      })
       .catch(err => console.log(err))
 }
 
 defineExpose({
-  get_session_list,
+  fetchConversationList,
   fetchOtherInfo,
 })
 
-
-const handleConvClick = (conv) => {
-  selected_session.value = conv
-  fetchOtherInfo(selected_session.value.contactId)
-  emit('selectedChange')
+const handleConversationSelect = (conv) => {
+  crStore.setSelectedConversation(conv)
+  console.log(`conv@handleConversationSelect: ${conv.contactId}`)
+  fetchOtherInfo(conv?.contactId)
 }
 
 </script>

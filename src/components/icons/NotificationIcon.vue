@@ -2,7 +2,7 @@
 import {Bell} from "@element-plus/icons-vue";
 import MiniProfile from "@/components/icons/MiniProfile.vue";
 import {ref} from "vue";
-import {thisUser} from "@/store/cr_config.js";
+import {thisUser} from "@/store/crStore.js";
 
 const tip_visible = ref(false)
 const tu = thisUser

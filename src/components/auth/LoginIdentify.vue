@@ -64,6 +64,7 @@ import axios from 'axios';
 import {useRouter} from 'vue-router'
 import {useStore} from 'vuex'
 import {serialize} from "object-to-formdata";
+import {crStore} from "@/store/crStore.js";
 
 const store = useStore()
 const loginForm = reactive({
@@ -91,8 +92,7 @@ const validateEmpty = () => {
   }
   return true;
 };
-const handleLoginSubmit = () => {
-
+const handleLoginSubmit = async () => {
   if (!validateEmpty()) {
     return; // 如果有字段为空，则直接返回，不执行后续逻辑
   }
@@ -101,11 +101,14 @@ const handleLoginSubmit = () => {
     accountNum: loginForm.username,
     password: loginForm.password,
     verify: loginForm.captcha
+  };
+
+  ElMessage.info('Waiting for response.');
+  const loginSuccess = await fetchUserInfo(renamedLoginData);
+
+  if (loginSuccess) {
+    await router.push("/home");
   }
-
-  fetchUserInfo(renamedLoginData)
-  router.push("/home")
-
 };
 
 const hoverLink = (linkName, isHover) => {
@@ -119,30 +122,39 @@ const hoverLink = (linkName, isHover) => {
   }
 };
 
-const fetchUserInfo = (query_data) => {
-  axios.post("/my_chatroom/user/login", query_data, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
+const fetchUserInfo = async (query_data) => {
+  try {
+    const res = await axios.post("/my_chatroom/user/login", query_data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    const tem = res.data.code;
+    if (tem === 1 || tem === 3) {
+      ElMessage.error('账号或密码错误');
+      return false;
+    } else if (tem === 2) {
+      ElMessage.error('该账号已被封禁');
+      return false;
+    } else if (tem === 4) {
+      ElMessage.error('验证码错误');
+      return false;
+    } else if (tem === 200) {
+      ElMessage.success('登录成功');
+
+      store.dispatch('myinfos/updateMyInfos', res.data.data);
+      crStore.setUserInfo(res.data.data);
+      console.log('fetchUserInfo');
+      console.log(crStore.userInfo);
+      return true;
     }
-  })
-      .then(res => {
-        let tem = res.data.code
-        if (tem === 1 || tem === 3) {
-          ElMessage.error('账号或密码错误');
-        } else if (tem === 2) {
-          ElMessage.error('该账号已被封禁');
-        } else if (tem === 4) {
-          ElMessage.error('验证码错误');
-        } else if (tem === 200) {
-          ElMessage.success('登录成功');
-          store.dispatch('myinfos/updateMyInfos', res.data.data)
-          console.log(store.state.myinfos.myinfos)
-        }
-      })
-      .catch(err => {
-        console.error(err); // 打印错误信息
-      });
-}
+  } catch (err) {
+    console.error(err);
+    ElMessage.error('登录失败，请稍后再试');
+    return false;
+  }
+};
 
 </script>
 
