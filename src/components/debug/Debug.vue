@@ -3,14 +3,14 @@
     <h1> DEBUG ON </h1>
     <p><strong>Toggle</strong> Press <strong>Ctrl</strong></p>
     <h2>Profile</h2>
-    <el-button @click="getUserInfo(); ElMessage.info('Update User Info.')">Refresh</el-button>
+    <el-button @click="refreshUserInfo(); ElMessage.info('Update User Info.')">Refresh</el-button>
   </div>
 </template>
 
 <script setup>
 
 import {onMounted, ref} from "vue";
-import {CR_DEBUG_ON, getUserInfo} from "@/store/crStore.js";
+import {CR_DEBUG_ON, refreshUserInfo} from "@/store/crStore.js";
 import {ElMessage} from "element-plus";
 // Define the reactive debug state
 

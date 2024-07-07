@@ -22,15 +22,22 @@
 
       <div class="scrollbar-container">
         <el-scrollbar>
-          <VueDraggable ref="el" v-model="user_cl" :on-change="()=>ElMessage.info('You switched the position.')">
+          <VueDraggable ref="el" v-model="contact_group_list"
+                        :on-change="()=>ElMessage.info('You switched the position.')">
             <el-card
-                class="list-card selectable"
-                v-for="list in user_cl"
-                :key="list.id"
-                @click="handleListSelect(list)"
+                class="group-card selectable"
+                v-for="group in contact_group_list"
+                :key="group.id"
+                @click="handleContactGroupSelect(group)"
             >
-              <el-text class="list-name"> {{ list.name }}</el-text>
-              <el-text class="list-id"> @{{ list.id }}</el-text>
+              <el-text class="list-name"> {{ group.name }}</el-text>
+              <el-text class="list-id"> @{{ group.id }}</el-text>
+              <div class="tag-container">
+                <el-tag v-show="group.isDefault" type="danger">Default</el-tag>
+                <el-tag v-show="group.category === CR_CHATROOM" type="primary">Chatroom</el-tag>
+                <el-tag v-show="group.category === CR_FRIEND" type="success">Friend</el-tag>
+                <el-tag v-show="group.convoCount === 0" type="warning">Empty</el-tag>
+              </div>
             </el-card>
           </VueDraggable>
         </el-scrollbar>
@@ -39,16 +46,16 @@
     </el-aside>
     <el-main class="list-display">
 
-      <el-card class="item-card selectable"
-               v-for="item in sl_items" :key="item.id">
+      <el-card class="item-card cr-card selectable"
+               v-for="conv in selected_contact_group_items" :key="conv.id">
         <el-row justify="space-around">
 
           <el-col span="8">
-            <mini-profile :user_id="item.id" :name="item.name" :avatar_url="item.avatar_url"></mini-profile>
+            <mini-profile :user_id="conv.id" :name="conv.nickName" :avatar_url="conv.avatar_url"></mini-profile>
           </el-col>
-
+          <span></span>
           <el-col span="8" class="edit-buttons">
-            <el-button type="primary" @click="SendMessageToOther">Send Message</el-button>
+            <el-button type="primary" @click="SendMessageToOther(conv)">Send Message</el-button>
             <el-button type="danger" @click="DeleteDialogVisible = true">Delete</el-button>
           </el-col>
         </el-row>
@@ -59,7 +66,6 @@
           v-model="DeleteDialogVisible"
           title="Warning"
           width="500"
-          :before-close="handleDeleteDialogClose"
       >
         <span>Delete Friend/Group</span>
         <template #footer>
@@ -82,12 +88,12 @@
       >
         <el-form>
           <el-form-item>
-            <el-input v-model="input_list_data.name"
+            <el-input v-model="newGroup.name"
                       placeholder="Input List Name"
             />
           </el-form-item>
           <el-form-item>
-            <el-radio-group v-model="input_list_data.category">
+            <el-radio-group v-model="newGroup.category">
               <el-radio-button :value="0" label="0">Group</el-radio-button>
               <el-radio-button :value="1" label="0">Friend</el-radio-button>
             </el-radio-group>
@@ -113,30 +119,93 @@
 
 <script setup>
 import MiniProfile from "@/components/icons/MiniProfile.vue";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {Search} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
 import {VueDraggable} from "vue-draggable-plus";
 import axios from "axios";
-import {selected_list, selected_list_items, user_contact_lists} from "@/store/crStore.js";
+import {crStore} from "@/store/crStore.js";
+import {useRouter} from "vue-router";
 
-const user_cl = user_contact_lists
-const sl_items = selected_list_items
+const contact_group_list = computed(() => {
+  return crStore.contactGroupList.map(group => {
+    const convoCount = crStore.conversationList.filter(convo => convo.groupId === group.groupId).length;
+    return {
+      ...group,
+      convoCount
+    };
+  });
+});
 
-const sl = selected_list
+const selected_group = computed(() => crStore.selectedContactGroup)
+const selected_contact_group_items = computed(() => {
+  return crStore.conversationList.filter((conv) => conv.groupId === selected_group.value?.id)
+})
 
 const categorySearchInput = ref('')
 const DeleteDialogVisible = ref(false)
-const NewListDialogVisible = ref(false)
 
+const NewListDialogVisible = ref(false)
+const CR_CHATROOM = 0
+const CR_FRIEND = 1
+const newGroup = ref({
+  name: 'Default',
+  category: CR_CHATROOM
+})
+
+const router = useRouter()
+
+onMounted(() => {
+  ElMessage.info('TRY: fetchContactGroupList')
+  fetchContactGroupList()
+})
+
+const fetchContactGroupList = async () => {
+  try {
+    const res = await axios.post('/my_chatroom/contact_group/get_group');
+    let code = res.data.code
+    if (code === 200) {
+      crStore.setContactGroupList(res.data.data)
+      ElMessage.success(code.message || 'fetchContactGroupList Success')
+    } else {
+      ElMessage.warning(code.message || 'fetchContactGroupList Failed')
+    }
+  } catch (err) {
+    console.error(err);
+    ElMessage.error('Failed to fetch contact list');
+  }
+};
+
+const createNewContactGroup = async () => {
+  try {
+    const res = await axios.post('/my_chatroom/contact_group/create_group', newGroup.value, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    if (res.data.code === 0) {
+      ElMessage.error('Failed to create new contact group');
+    } else {
+      ElMessage.success('New contact group created successfully');
+      await fetchContactGroupList();
+      ElMessage.info('Contact Group List Refreshed')
+    }
+  } catch (err) {
+    console.error(err);
+    ElMessage.error('Failed to create new contact group');
+  }
+};
+
+defineExpose({
+  fetchContactGroupList
+})
+
+const handleContactGroupSelect = (group) => {
+  crStore.setSelectedContactGroup(group)
+}
 
 const SearchOthers = () => {
   ElMessage.info('Searching... ')
-}
-
-const handleListSelect = (list) => {
-  this.sl = list
-  axios.post('my_chatroom/contact_session/show_session', {id: list.id})
 }
 
 const OpenNewListDialog = () => {
@@ -144,55 +213,16 @@ const OpenNewListDialog = () => {
   NewListDialogVisible.value = true
 }
 
-const SendMessageToOther = () => {
+const SendMessageToOther = (conv) => {
   ElMessage.info('Sending...')
+  crStore.setSelectedConversation(conv)
+  router.push('chat')
 }
-
-const handleDeleteDialogClose = () => {
-  ElMessage.info('Delete Other... ')
-}
-
-const fetch_contact_list = () => {
-  axios.post('/my_chatroom/contact_group/get_group')
-      .then(res => {
-        user_cl.value = res.data.data
-      })
-      .catch(err => {
-        console.error(err);
-      })
-}
-
-const input_list_data = ref({
-  name: 'NewList',
-  category: 0
-})
 
 const HandleNewListConfirm = () => {
-  create_new_list()
+  createNewContactGroup()
   NewListDialogVisible.value = false
 }
-
-const create_new_list = () => {
-  axios.post('/my_chatroom/contact_group/create_group', input_list_data.value, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  })
-      .then(res => {
-        if (res.data.code === 0) {
-          ElMessage.error('fail to create')
-        }
-        fetch_contact_list()
-      })
-      .catch(err => {
-        console.error(err);
-      })
-}
-
-onMounted(() => {
-  ElMessage.info('Fetching contact list.')
-  fetch_contact_list()
-})
 
 </script>
 
@@ -225,8 +255,21 @@ onMounted(() => {
 }
 
 .scrollbar-container {
-  height: 80vh;
+  height: 60vh;
 }
+
+.cr-card {
+  --el-card-padding: 5px;
+  background-color: var(--cr-bg-color);
+}
+
+.group-card {
+  display: flex;
+  flex-flow: row wrap;
+  --el-card-padding: 5px;
+  background-color: var(--cr-bg-color);
+}
+
 
 
 </style>

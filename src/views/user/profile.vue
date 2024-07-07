@@ -5,12 +5,12 @@
 <script setup>
 import Profile from "@/components/Profile.vue";
 import {computed, onMounted, ref} from "vue";
-import {thisUser, toProfileData, getUserInfo} from "@/store/crStore.js";
+import {thisUser, toProfileData, refreshUserInfo} from "@/store/crStore.js";
 
 const userInfo = thisUser
 
 onMounted(() => {
-  getUserInfo()
+  refreshUserInfo()
 })
 
 </script>

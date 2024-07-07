@@ -69,16 +69,6 @@ export const selectedOtherInfo = ref({
 })
 
 
-export const conversation_list = ref([])
-
-export const current_conv_msg_list = ref([])
-export const user_contact_lists = ref([])
-
-export const selected_list_items = ref([])
-
-export const selected_list = ref(null)
-
-
 /* UserController.java:
 *  user/
 *       /logout
@@ -92,7 +82,7 @@ export const selected_list = ref(null)
 *
 * */
 
-export const getUserInfo = () => {
+export const refreshUserInfo = () => {
   axios.post('my_chatroom/user/get_userinfo')
       .then(res => {
         let code = res.data.code
@@ -170,6 +160,21 @@ export const crStore = reactive({
     this.messageList.push(messages)
   },
 
+
+  /* List */
+  contactGroupList: [],
+  setContactGroupList(list) {
+    this.contactGroupList = list
+  },
+
+  selectedContactGroup: null,
+  setSelectedContactGroup(group) {
+    this.selectedContactGroup = group
+  },
+  selectedContactGroupItems: [],
+  setSelectedContactGroupItem(items) {
+    this.selectedContactGroupItems = items
+  }
 })
 
 

@@ -5,11 +5,11 @@
 import UserLayout from "@/components/CrLayout.vue";
 import UserSpace from "@/components/UserSpace.vue";
 import {onMounted} from "vue";
-import {CR_DEBUG_ON, getUserInfo} from "@/store/crStore.js";
+import {CR_DEBUG_ON, refreshUserInfo} from "@/store/crStore.js";
 import {ElMessage} from "element-plus";
 
 onMounted(() => {
-  getUserInfo()
+  refreshUserInfo()
   if(CR_DEBUG_ON) ElMessage.info('fetch userinfo')
 })
 
