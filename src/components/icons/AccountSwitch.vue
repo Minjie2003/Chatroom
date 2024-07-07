@@ -21,16 +21,20 @@
     <template #dropdown>
       <el-dropdown-menu>
         <el-dropdown-item>
-          <el-icon size="25" color="#50b5ff">
-            <Switch></Switch>
-          </el-icon>
-          <el-text>切换</el-text>
+          <div @click="switchAccount">
+            <el-icon size="25" color="#50b5ff">
+              <Switch></Switch>
+            </el-icon>
+            <el-text>切换</el-text>
+          </div>
         </el-dropdown-item>
         <el-dropdown-item>
-          <el-icon size="25" color="#50b5ff">
+          <div @click="logoutAccount">
+            <el-icon size="25" color="#50b5ff">
             <SwitchButton></SwitchButton>
-          </el-icon>
-          <el-text>注销</el-text>
+            </el-icon>
+            <el-text>注销</el-text>
+          </div>
         </el-dropdown-item>
       </el-dropdown-menu>
     </template>
@@ -41,9 +45,26 @@
 
 import {Switch, SwitchButton} from "@element-plus/icons-vue";
 import {ref} from "vue";
-
+import { useRouter } from "vue-router";
+import axios, { Axios } from "axios";
+import { ElMessage } from "element-plus";
+const router = useRouter()
+const switchAccount=()=>{
+  router.push("/auth/login")
+}
 const tip_visible = ref(false)
-
+const logoutAccount=()=>{
+  axios.get("/my_chatroom/user/logout")
+  .then(res=>{
+    const tem = res.data.code
+    if(tem === 200){
+      ElMessage.success("注销成功");
+      switchAccount()
+    }
+  }).catch(err=>{
+    ElMessage.error(err.data)
+  })
+}
 </script>
 
 
