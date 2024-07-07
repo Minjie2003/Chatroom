@@ -60,7 +60,7 @@ import InvitationMessage from "@/components/icons/RequestIcon.vue";
 import Notification from "@/components/icons/NotificationIcon.vue";
 import LanguageSwitch from "@/components/icons/LanguageSwitch.vue";
 import AccountSwitch from "@/components/icons/AccountSwitch.vue";
-
+import getuserinfos  from "@/utils/getuserinfos";
 import {Search} from "@element-plus/icons-vue";
 import Profile from "@/components/Profile.vue";
 import {computed, ref} from "vue";
@@ -144,11 +144,6 @@ const userInfo = computed(() => {
 .dropdown-profile {
   width: 30vw;
   height: 100%;
-
-  .el-avatar {
-    width: 120px;
-    height: 120px;
-  }
 }
 
 .header-icons-container {

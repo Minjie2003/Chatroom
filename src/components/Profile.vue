@@ -42,6 +42,7 @@
 </template>
 
 <script setup>
+
 import {DefaultProfileData, modifyProfileDialogVisible} from "@/store/crStore.js";
 import UpdateProfileDialog from './UpdateProfileDialog.vue'
 import {ref} from "vue";
@@ -58,6 +59,32 @@ defineProps({
   }
 })
 
+// =======
+// import {ref,computed,onMounted} from 'vue'
+// import getuserinfos  from "@/utils/getuserinfos"; 
+// import { useStore } from 'vuex'
+// import UpdateProfile from './UpdateProfile.vue';
+
+// // import UpdateProfile from './UpdateProfile.vue'
+// const store = useStore()   //创建一个store的实例
+// onMounted(() => {
+//   getuserinfos(store)
+// });
+// const isHover = ref(false)
+// const backgroundImage = 'src/assets/images/lake.png';
+// const isEdit = computed(() => store.state.flag.isEdit)
+// const myinfos = computed(() => store.state.myinfos.myinfos);
+// const phototUrl = '/my_chatroom/'+myinfos.value.photo
+// const signature = "田文镜，我*****"
+
+// // 改变 isEdit 的值为 true
+// const trueEdit = () => {
+//   store.dispatch('flag/updateIsEdit', true);
+//   console.log(isEdit.value)
+// };
+  
+
+// >>>>>>> Stashed changes
 </script>
 
 <style scoped>

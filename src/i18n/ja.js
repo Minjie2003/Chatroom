@@ -74,4 +74,18 @@ export default {
         github_link: 'https://github.com/Minjie2003/Chatroom',
         b_email: 'メール：',
     },
+    manager: {
+        user_management: 'ユーザー管理',
+        chatroom_management: 'チャットルーム管理',
+        report_management: '通報管理',
+        placeholder: 'キーワードを入力してください',
+        reset_password: 'パスワードをリセット：',
+        ban_user: 'ユーザーを禁止：',
+        unban_user: 'ユーザーの禁止を解除：',
+        ban_chatroom: 'チャットルームを禁止',
+        because: '理由',
+        report: '通報',
+        already_warned: '既に警告されました'
+      }
+      
 }

@@ -128,7 +128,7 @@ const fetchUserInfo = async (query_data) => {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
-    });
+    })
 
     const tem = res.data.code;
     if (tem === 1 || tem === 3) {

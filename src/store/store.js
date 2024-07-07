@@ -3,6 +3,7 @@ import createPersistedState from "vuex-persistedstate";
 import myinfos from './modules/myinfos';
 import flag from './modules/flag';
 
+
 const store = createStore({
   plugins: [
     createPersistedState({

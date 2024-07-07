@@ -75,5 +75,19 @@ export default {
         github_link: 'https://github.com/Minjie2003/Chatroom',
         b_email: '邮箱：',
     },
+    manager: {
+        user_management: '用户管理',
+        chatroom_management: '聊天室管理',
+        report_management: '举报管理',
+        placeholder: '请输入关键词',
+        reset_password: '重置密码：',
+        ban_user: '封禁用户',
+        unban_user: '解封用户',
+        ban_chatroom: '封禁聊天室',
+        because: '因为',
+        report: '举报',
+        already_warned: '已警告'
+      }
+      
 
 }

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="test-container">
     <h1>Tests</h1>
     <h2>Get Group</h2>
@@ -105,4 +105,4 @@ const get_session_list = () => {
   display: grid;
   padding: 2em;
 }
-</style>
+</style> -->

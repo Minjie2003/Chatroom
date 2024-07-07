@@ -77,6 +77,9 @@ const constantRoutes = [
     component: () => import('@/components/auth/Test.vue')
   }, {
     path: '/test/connection',
+  }, 
+  {
+    path: '/test_connection',
     name: 'test_connection',
     component: () => import('@/components/test/TestConnection.vue')
   },{

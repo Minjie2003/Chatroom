@@ -93,5 +93,18 @@ export default {
     b_github: 'Github Repo: ',
     github_link: 'https://github.com/Minjie2003/Chatroom',
     b_email: 'Email: ',
+  },
+  manager:{
+    user_management: 'User Management',
+    chatroom_management: 'Chatroom Management',
+    report_management: 'Report Management',
+    placeholder:'Please enter keywords',
+    reset_password: 'Reset Password',
+    ban_user: 'Ban User',
+    unban_user: 'Unban User',
+    ban_chatroom: 'Ban Chatroom',
+    because: 'Because:',
+    report: 'Report:',
+    already_warned: 'Already Warned'
   }
 }

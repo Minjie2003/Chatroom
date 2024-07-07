@@ -1,7 +1,7 @@
 <template>
     <div>
       <el-card class="login-card">
-        <h2 class="login-title">管理员登录</h2>
+        <h2 class="login-title">用户登录</h2>
         <el-form
           :model="loginForm"
           label-width="60px"
@@ -33,14 +33,18 @@
           <el-row>
             <el-col :span="18">
               <div class="left-content">
-                <router-link to="/auth/login" class="link" @mouseover="hoverLink('forgotPassword', true)" @mouseleave="hoverLink('forgotPassword', false)">
-                  用户登录
+                <router-link to="/auth/reset" class="link" @mouseover="hoverLink('forgotPassword', true)" @mouseleave="hoverLink('forgotPassword', false)">
+                  忘记密码?
+                </router-link>
+                <span class="divider">|</span>
+                <router-link to="/auth/register" class="link" @mouseover="hoverLink('register', true)" @mouseleave="hoverLink('register', false)">
+                  马上注册
                 </router-link>
               </div>
             </el-col>
             <el-col :span="6">
               <div class="right-content">
-                <el-button type="primary" @click="handleSubmit">登录</el-button>
+                <el-button type="primary" @click="handleSubmit">{{ $t('auth.login')}}</el-button>
               </div>
             </el-col>
           </el-row>
@@ -54,16 +58,16 @@
   import CaptchaInput from './CaptchaInput.vue'
   import { ElMessage } from 'element-plus'
   import axios from 'axios';
-  import {useStore} from 'vuex'
-  import { useRouter } from 'vue-router'
-  const router = useRouter()
-  const store = useStore()
+  import { useRouter } from 'vue-router' 
+  import store from "@/store/index.js"
+
   const loginForm = reactive({
     username: '',
     password: '',
     captcha: ''
   });
-
+  
+  const router = useRouter()
   //验证基础的字段是否为空
   const isNull = () => {
     if (loginForm.username.trim() === '') {
@@ -90,12 +94,12 @@
       return; // 如果有字段为空，则直接返回，不执行后续逻辑
     }
 
-    axios.post("/my_chatroom/manager/manager_login", formData,{
+    axios.post("/my_chatroom/user/login", formData,{
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     })
-    .then(res => {
+      .then(res => {
         let tem = res.data.code
         if(tem === 1 || tem === 3){
           ElMessage.error('账号或密码错误');
@@ -105,7 +109,8 @@
           ElMessage.error('验证码错误');
         }else if(tem === 200){
           ElMessage.success('登录成功');
-          router.push("/admin")
+          Object.assign(store.myinfos,res.data.data)
+          router.push("/home")
         }
       })
       .catch(err => {
@@ -161,7 +166,7 @@
   }
 
   .link:hover {
-    color: #1890ff; /* 悬浮时的颜色 */
+    color: #e3ba4c; /* 悬浮时的颜色 */
     text-decoration: underline; /* 悬浮时的下划线 */
   }
   .left-content {

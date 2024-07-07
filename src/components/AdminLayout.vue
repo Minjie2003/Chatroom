@@ -52,7 +52,7 @@
         <el-col span="4">
           <mini-profile :avatar_url="group.avatar_url"
                         :name="group.name"
-                        :user_id="group.id"
+                        :id="group.id"
           ></mini-profile>
         </el-col>
 
@@ -117,7 +117,7 @@
 </template>
 <script setup>
 import {ref} from 'vue'
-import store from '@/store/store.js'
+import store from '@/store/index.js'
 import MiniProfile from "@/components/icons/MiniProfile.vue";
 
 /* Tabs*/

@@ -3,7 +3,7 @@ import ElementPlus from 'element-plus'
 import {createI18n} from "vue-i18n";
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import store from '@/store/store'
+import store from '@/store/index'
 import App from './App.vue'
 import router from "./router"
 import axios from 'axios'
