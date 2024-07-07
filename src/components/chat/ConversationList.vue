@@ -5,6 +5,7 @@
 
     <div class="scrollbar-container">
       <el-scrollbar class="conversation-scrollbar">
+
         <VueDraggable ref="el" v-model="conversation_list">
           <div
               class="conversations"
@@ -12,17 +13,25 @@
               @click="handleConversationSelect(conv)"
           >
 
-            <div class="conversation-entry">
-              <el-avatar :src=" 'src/assets/images/avatar-purple.png' "
-              />
-              <div style="display: flex; flex-flow: row nowrap;">
+            <div class="conversation-entry" :class="{selected: crStore.selectedConversation?.id === conv?.id}">
+
+              <el-avatar :src=" 'src/assets/images/avatar-purple.png' "/>
+
+              <div class="name-id-container" style="display: flex; flex-flow: row nowrap;">
                 <el-text class="conv-name" size="large" style="color:#333; " truncated>{{
                     conv.nickName
                   }}
                 </el-text>
                 <el-text class="conv-id" size="small" style="color:#888; " truncated>@{{ conv.id }}</el-text>
               </div>
-              <div>
+
+              <div class="conv-tags">
+                <el-tag v-if="conv.category === CR_Constant.CHATROOM">Chatroom</el-tag>
+                <el-tag v-if="conv.category === CR_Constant.FRIEND" type="success">Friend</el-tag>
+                <el-tag v-if="conv.isDeleted" type="danger">HasQuit</el-tag>
+              </div>
+
+              <div class="unread-icon-container">
                 <el-text v-show="conv.unreadNum"
                          class="unread-number" size="small"
                 >
@@ -54,11 +63,11 @@ import {VueDraggable} from "vue-draggable-plus";
 import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
-import {crStore} from "@/store/crStore.js";
+import {CR_Constant, crStore} from "@/store/crStore.js";
 
 const conversation_list = computed(() => crStore.conversationList)
 const other_info = computed(() => crStore.otherInfo)
-const selectedConversation = computed( () =>crStore.selectedConversation)
+const selectedConversation = computed(() => crStore.selectedConversation)
 
 onMounted(async () => {
   crStore.setSelectedConversation(null)
@@ -66,7 +75,6 @@ onMounted(async () => {
   await fetchConversationList();
 
   if (conversation_list.value && conversation_list.value.length > 0) {
-    selectedConversation.value = conversation_list.value[0];
     crStore.setSelectedConversation(conversation_list.value[0])
     ElMessage.info('Selected Default Conv @' + selectedConversation.value?.nickName);
   } else {
@@ -85,7 +93,6 @@ const fetchConversationList = async () => {
     const code = res.data.code;
     if (code === 200) {
       crStore.setConversationList(res.data.data);
-      conversation_list.value = res.data.data; /*make it updated in sync*/
     } else {
       ElMessage.info('ERROR:' + res.data.message);
     }
@@ -95,11 +102,11 @@ const fetchConversationList = async () => {
 };
 
 const fetchOtherInfo = (otherId) => {
-  if(!otherId) console.log('fetchOtherInfo fail: No otherId')
-  axios.post('my_chatroom/user/get_contact_info', {id: otherId},{headers: {'Content-Type': 'multipart/form-data'}})
+  if (!otherId) console.log('fetchOtherInfo fail: No otherId')
+  axios.post('my_chatroom/user/get_contact_info', {id: otherId}, {headers: {'Content-Type': 'multipart/form-data'}})
       .then(res => {
-         let code = res.data.code
-        if(code === 200) {
+        let code = res.data.code
+        if (code === 200) {
           crStore.setOtherInfo(res.data.data)
         }
       })
@@ -147,6 +154,12 @@ const handleConversationSelect = (conv) => {
   grid-template-areas: 'sidebar header'   'sidebar header';
   gap: 4px;
   padding: 4px;
+  background-color: var(--cr-shadow-color);
+}
+
+.selected {
+  background-color: var(--cr-hot-hover-color);
+  box-shadow: 0 0 2rem var(--cr-hot-hover-color);
 }
 
 .unread-number {
@@ -166,16 +179,48 @@ const handleConversationSelect = (conv) => {
   font-size: 0.8em;
 }
 
+.conversation-entry {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+      'avatar name tag unread'
+      'avatar last last last'
+  ;
+}
+
 .conversation-entry > .el-avatar {
-  grid-area: sidebar;
+  grid-area: avatar;
   align-self: center;
   justify-self: center;
 }
 
-.conversation-entry > .el-text {
+.conversation-entry > .name-id-container {
+  grid-area: name;
   align-self: center;
   justify-self: start;
 }
+
+.conversation-entry > .conv-tags {
+  grid-area: tag;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.conversation-entry > .unread-icon-container {
+  grid-area: unread;
+  align-self: center;
+  justify-self: start;
+}
+
+.conversation-entry > .last-content {
+  grid-area: last;
+  align-self: center;
+  justify-self: start;
+}
+
+
+
 
 .conversation-entry:hover {
   background-color: var(--cr-light-hover-color);

@@ -1,13 +1,43 @@
 <template>
   <debug></debug>
   <cr-layout>
-    <router-view class="has-bg"></router-view>
+    <router-view></router-view>
   </cr-layout>
 </template>
 
 <script setup>
 import Debug from "@/components/debug/Debug.vue";
 import CrLayout from "@/components/CrLayout.vue";
+import {computed} from "vue";
+import {crStore} from "@/store/crStore.js";
+import {useRouter} from "vue-router";
+import {ElMessage} from "element-plus";
+
+const router = useRouter();
+
+router.beforeEach((to, from, next) => {
+
+  /*getHasLoggedIn fetches the user info by the way
+  * it relies on refreshUserInfo
+  * */
+
+  if (!crStore.getHasLoggedIn()) {
+    if (to.path !== '/auth/login') {
+      ElMessage.warning('Please Login.');
+      next('/auth/login');
+    } else {
+      next();
+    }
+  } else {
+    if (to.path === '/') {
+      next('/home');
+    } else {
+      next();
+    }
+  }
+});
+
+
 </script>
 
 <style>

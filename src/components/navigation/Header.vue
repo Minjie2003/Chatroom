@@ -53,9 +53,8 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import MiniProfile from "@/components/icons/MiniProfile.vue";
-import SearchBox from "@/components/navigation/SearchBox.vue";
 import Logo from "@/components/icons/Logo.vue";
 import InvitationMessage from "@/components/icons/RequestIcon.vue";
 import Notification from "@/components/icons/NotificationIcon.vue";
@@ -64,50 +63,15 @@ import AccountSwitch from "@/components/icons/AccountSwitch.vue";
 
 import {Search} from "@element-plus/icons-vue";
 import Profile from "@/components/Profile.vue";
-import {computed} from "vue";
-import {Chatroom, thisUser, toProfileData} from "@/store/crStore.js";
+import {computed, ref} from "vue";
+import {Chatroom, crStore, toProfileData} from "@/store/crStore.js";
 
-export default {
-  name: "Header",
-  computed: {
-    Search() {
-      return Search
-    },
-    Chatroom() {
-      return Chatroom
-    }
-  },
-  methods: {toProfileData},
 
-  setup() {
-    const userInfo = computed(() => {
-      return {
-        ...toProfileData(thisUser.value)
-      }
-    })
+const searchInput = ref('')
+const userInfo = computed(() => {
+  return crStore.getUserInfo()
+})
 
-    return {userInfo}
-  },
-
-  data() {
-    return {
-      search_input: '',
-      search_icon: Search,
-    }
-  },
-
-  components: {
-    Profile,
-    InvitationMessage,
-    AccountSwitch,
-    Notification,
-    LanguageSwitch,
-    Logo,
-    SearchBox,
-    MiniProfile,
-    Search
-  }
-}
 </script>
 
 <style>
@@ -180,6 +144,7 @@ export default {
 .dropdown-profile {
   width: 30vw;
   height: 100%;
+
   .el-avatar {
     width: 120px;
     height: 120px;

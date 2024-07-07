@@ -2,7 +2,7 @@
   <div class="chat-outer-panel" ref="chatPanel">
     <el-row class="title-container" justify="center" @click="OtherInfoDialogVisible = true">
       <el-text class="conversation-title" size="large">
-        {{ selected_conversation?.nickName ?? 'No Conversation Selected'}}
+        {{ selected_conversation?.nickName ?? 'No Conversation Selected' }}
       </el-text>
     </el-row>
 
@@ -15,63 +15,72 @@
                         class="no-message" style="font-size: 2em; margin-top: 2em;"
                         v-show="message_list?.length === 0"> No Message.
               </el-alert>
+              <el-alert type="error" v-if="selected_conversation?.isDeleted">
+                You have quit the conversation. You can review the history messages but
+                can't send new messages.
+              </el-alert>
             </div>
 
             <div
                 style="display: grid; align-content: center; align-items: center;"
-                v-for="msg in message_list"
+                v-for="(msg, index) in message_list"
                 :key="msg.id"
                 ref="msg_bubble"
             >
+              <div class="message-row-wrapper">
 
-              <!-- Other Message -->
-              <div class="message-row"
-                   v-if="msg?.username !== user_info?.username ">
-                <span></span>
-
-                <el-avatar
-                    class="message-avatar other-avatar"
-                    :src="msg?.headPath">
-                </el-avatar>
-
-                <div style="display: flex; flex-flow: column nowrap; align-content: start;">
-                  <el-text style="align-self: start;">{{ msg?.username }}</el-text>
-
-                  <div class="message-bubble other-bubble">
-                    <el-text v-if="msg.category === 0" class="other-message message-text">{{ msg.content }}</el-text>
-                    <el-image v-if="msg.category === 1" class="other-message message-image"
-                              style="padding: 1em; width: 10em; height: 10em;
-                               min-width: 5em; min-height: 5em;"
-                              :src="msg.content" :alt=" 'A picture at' + msg.content "/>
-                  </div>
+                <div class="message-time">
+                  {{ formatMessageTime(new Date(msg.sendTime) , index > 0 ? new Date(message_list[index - 1].sendTime) : null) }}
                 </div>
+                <!-- Other Message -->
+                <div class="message-row"
+                     v-if="msg?.username !== user_info?.username ">
+                  <span></span>
 
-                <span></span>
-                <span></span>
-              </div>
+                  <el-avatar
+                      class="message-avatar other-avatar"
+                      :src="msg?.headPath">
+                  </el-avatar>
 
-              <!-- My Message-->
-              <div class="message-row"
-                   v-else>
-                <span></span>
-                <span></span>
-                <div>
-                  <div style="display: flex; flex-flow: column nowrap; align-content: end;">
-                    <el-text style="align-self: end;">{{ msg?.username }}</el-text>
-                    <div class="message-container me-bubble" style="align-self: end;">
-                      <el-text v-if="msg.category === 0" class="my-message message-text">{{ msg.content }}</el-text>
-                      <el-image v-if="msg.category === 1" class="my-message message-image"
+                  <div style="display: flex; flex-flow: column nowrap; align-content: start;">
+                    <el-text style="align-self: start;">{{ msg?.username }}</el-text>
+
+                    <div class="message-bubble other-bubble">
+                      <el-text v-if="msg.category === 0" class="other-message message-text">{{ msg.content }}</el-text>
+                      <el-image v-if="msg.category === 1" class="other-message message-image"
                                 style="padding: 1em; width: 10em; height: 10em;
                                min-width: 5em; min-height: 5em;"
                                 :src="msg.content" :alt=" 'A picture at' + msg.content "/>
                     </div>
                   </div>
+
+                  <span></span>
+                  <span></span>
                 </div>
-                <el-avatar
-                    class="message-avatar my-avatar"
-                    :src="msg.headPath">
-                </el-avatar>
-                <span></span>
+
+                <!-- My Message-->
+                <div class="message-row"
+                     v-else>
+                  <span></span>
+                  <span></span>
+                  <div>
+                    <div style="display: flex; flex-flow: column nowrap; align-content: end;">
+                      <el-text style="align-self: end;">{{ msg?.username }}</el-text>
+                      <div class="message-container me-bubble" style="align-self: end;">
+                        <el-text v-if="msg.category === 0" class="my-message message-text">{{ msg.content }}</el-text>
+                        <el-image v-if="msg.category === 1" class="my-message message-image"
+                                  style="padding: 1em; width: 10em; height: 10em;
+                               min-width: 5em; min-height: 5em;"
+                                  :src="msg.content" :alt=" 'A picture at' + msg.content "/>
+                      </div>
+                    </div>
+                  </div>
+                  <el-avatar
+                      class="message-avatar my-avatar"
+                      :src="msg.headPath">
+                  </el-avatar>
+                  <span></span>
+                </div>
               </div>
 
             </div>
@@ -126,27 +135,50 @@
         <div class="nickname-edit">
           <el-text>备注</el-text>
           <el-input v-model="nicknameInput"
-                    :placeholder="other_info.nickName"
+                    :placeholder="other_info?.nickName"
+                    :value="other_info?.nickName"
           />
           <el-button @click="handleNicknameModify">Modify</el-button>
         </div>
       </div>
     </el-dialog>
+
+    <el-dialog
+        class="permission-dialog"
+        title="Enter Password"
+        v-model="PermissionDialogVisible"
+        width="30%"
+        @close="resetPermissionForm"
+    >
+      <el-form :model="permissionForm" ref="permission_form">
+        <el-form-item label="Password" :rules="[{ required: true, message: 'Please input password', trigger: 'blur' }]">
+          <el-input
+              v-model="permissionForm.password"
+              type="password"
+              autocomplete="off"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="PermissionDialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="submitPermissionForm">Submit</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script setup>
 import {Camera, Files, Location, Picture, Plus, Setting, Share} from "@element-plus/icons-vue";
 import {crStore} from "@/store/crStore.js";
-import {computed, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
 
-const message_list = computed(()=> crStore.messageList)
+const message_list = computed(() => crStore.messageList)
 const selected_conversation = computed(() => crStore.selectedConversation)
 const user_info = computed(() => crStore.userInfo)
 const other_info = computed(() => crStore.otherInfo)
-
 
 
 const messageInput = ref('')
@@ -154,16 +186,50 @@ const messageInputRef = ref(null)
 const nicknameInput = ref('')
 
 const OtherInfoDialogVisible = ref(false)
+const PermissionDialogVisible = ref(false)
+const permissionForm = ref({
+  password: ''
+})
+const hasGotPermission = ref(false)
+const hasFetchedAllMessage = ref(false)
 
+const resetPermissionForm= () => {
+  permissionForm.value.password = '';
+}
+
+const submitPermissionForm= async () => {
+  try {
+    const response = await axios.post('my_chatroom/user/get_permit', { password: permissionForm.value.password },
+        {
+          headers:{
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+    if (response.data.code === 200) {
+      ElMessage.success(response.data.message);
+      PermissionDialogVisible.value = false;
+      hasGotPermission.value = true
+    } else {
+      ElMessage.error(response.data.message);
+    }
+  } catch (error) {
+    console.error('Error submitting password:', error);
+    ElMessage.error('An error occurred while verifying the password');
+  }
+}
+
+onMounted(() => {
+  if(selected_conversation.value) {
+    fetchMessageList()
+  }
+})
 
 watch(() => crStore.selectedConversation, async (newConv, oldConv) => {
-  console.log(`Conv Change: ${oldConv?.nickName} to ${newConv?.nickName} fetchMessageList called` )
-  console.log(`Current User Info: ${crStore.userInfo}`)
   fetchMessageList()
-  console.log(message_list.value)
 })
 
 const fetchMessageList = () => {
+  hasFetchedAllMessage.value =false
   axios.post('my_chatroom/message/get_message_list',
       {sessionId: selected_conversation.value?.sessionId},
       {
@@ -173,11 +239,10 @@ const fetchMessageList = () => {
       })
       .then(res => {
         let code = res.data.code
-        if(code === 200) {
+        if (code === 200) {
           crStore.setMessageList(res.data.data)
           ElMessage.success('Fetch message list.')
-        }else {
-          console.error('fetchMessageList failed')
+        } else {
         }
       })
       .catch(err => {
@@ -186,8 +251,16 @@ const fetchMessageList = () => {
 }
 
 
-
 const fetchRestMessage = async (sessionId) => {
+  if(!hasGotPermission.value){
+    PermissionDialogVisible.value = true
+    ElMessage.warning('Get Permission First To View History')
+    return
+  }
+
+  if(hasFetchedAllMessage.value) {
+    return
+  }
   try {
     const response = await axios.get('my_chatroom/message/get_rest_message', {
       params: {
@@ -201,6 +274,7 @@ const fetchRestMessage = async (sessionId) => {
     if (data.code === 200) {
       // Handle success
       console.log('Success:', data);
+      ElMessage.success('Fetched Rest Message')
       return data.data; // Assuming the messages are in data.data
     } else {
       // Handle failure
@@ -216,19 +290,47 @@ const fetchRestMessage = async (sessionId) => {
   }
 };
 
+import { format, isToday, isYesterday, differenceInMinutes, isSameWeek, isSameYear } from 'date-fns';
+
+const formatMessageTime = (currentMessageTime, previousMessageTime) => {
+  const currentDateTime = new Date(currentMessageTime);
+  const previousDateTime = previousMessageTime ? new Date(previousMessageTime) : null;
+
+  if (previousDateTime && differenceInMinutes(currentDateTime, previousDateTime) < 3) {
+    return null; // Return null if the time gap is smaller than 3 minutes
+  }
+
+  if (isToday(currentDateTime)) {
+    return `Today ${format(currentDateTime, 'HH:mm')}`;
+  }
+
+  if (isYesterday(currentDateTime)) {
+    return `Yesterday ${format(currentDateTime, 'HH:mm')}`;
+  }
+
+  if (isSameWeek(currentDateTime, new Date())) {
+    return format(currentDateTime, 'EEEE HH:mm');
+  }
+
+  if (isSameYear(currentDateTime, new Date())) {
+    return format(currentDateTime, 'MMM d, HH:mm');
+  }
+
+  return format(currentDateTime, 'yyyy-MM-dd HH:mm');
+};
+
 const handleMessageScroll = async () => {
   let rest = await fetchRestMessage(selected_conversation.value.sessionId)
   crStore.appendMessages(rest)
-  console.log('fetchRestMessage')
-  console.log(message_list.value.length)
+  hasFetchedAllMessage.value = true
 }
 
-const handleSendClick = () =>  {
+const handleSendClick = () => {
   if (messageInput.value === '') {
     ElMessage.warning('Empty Message')
     return
   }
-  if(crStore.selectedConversation === null) {
+  if (crStore.selectedConversation === null) {
     ElMessage.error('No Conversation Selected')
     return
   }
@@ -243,7 +345,7 @@ const handleSendClick = () =>  {
           'Content-Type': 'multipart/form-data'
         }
       })
-      .then( res => {
+      .then(res => {
         if (res.data.code === 200) {
           ElMessage.success('Send Success')
           messageInput.value = ''
@@ -254,7 +356,7 @@ const handleSendClick = () =>  {
 }
 
 
-const handleNicknameModify = () =>  {
+const handleNicknameModify = () => {
   if (nicknameInput.value === '') {
     ElMessage.error('Empty Nickname Not Allowed. ')
     return
@@ -266,7 +368,7 @@ const handleNicknameModify = () =>  {
       {headers: {"Content-Type": "multipart/form-data"}}
   ).then(res => {
     let code = res.data.code
-    if(code !== 200) ElMessage.error('Modify Failed')
+    if (code !== 200) ElMessage.error('Modify Failed')
     else ElMessage.success('Modification Success')
   }).catch(err => console.log(err))
   OtherInfoDialogVisible.value = false
@@ -344,6 +446,19 @@ const handlePictureClick = () => {
   border-radius: 5px;
   box-shadow: 0 0 5px #fff4;
 }
+
+.message-time {
+  position: relative;
+  height: 0;
+  font-size: 1rem;
+  color: #f5f0dc;
+  margin-bottom: 2px;
+  text-align: center;
+  align-self: center;
+  top: 0;
+  text-shadow: 0 0 2px black;
+}
+
 
 .message-avatar {
   border: 2px solid rgba(76, 181, 255, 0.91);

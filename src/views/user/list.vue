@@ -36,7 +36,8 @@
                 <el-tag v-show="group.isDefault" type="danger">Default</el-tag>
                 <el-tag v-show="group.category === CR_CHATROOM" type="primary">Chatroom</el-tag>
                 <el-tag v-show="group.category === CR_FRIEND" type="success">Friend</el-tag>
-                <el-tag v-show="group.convoCount === 0" type="warning">Empty</el-tag>
+                <el-tag v-if="group.convoCount === 0" type="warning">Empty</el-tag>
+                <el-tag v-else type="success"> Count: {{ group.convoCount }}</el-tag>
               </div>
             </el-card>
           </VueDraggable>
@@ -124,12 +125,12 @@ import {Search} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
 import {VueDraggable} from "vue-draggable-plus";
 import axios from "axios";
-import {crStore} from "@/store/crStore.js";
+import {CR_Constant, crStore} from "@/store/crStore.js";
 import {useRouter} from "vue-router";
 
 const contact_group_list = computed(() => {
   return crStore.contactGroupList.map(group => {
-    const convoCount = crStore.conversationList.filter(convo => convo.groupId === group.groupId).length;
+    const convoCount = crStore.conversationList.filter(convo => convo.groupId === group.id).length;
     return {
       ...group,
       convoCount
@@ -146,8 +147,10 @@ const categorySearchInput = ref('')
 const DeleteDialogVisible = ref(false)
 
 const NewListDialogVisible = ref(false)
-const CR_CHATROOM = 0
-const CR_FRIEND = 1
+
+const CR_CHATROOM = CR_Constant.CHATROOM
+const CR_FRIEND = CR_Constant.FRIEND
+
 const newGroup = ref({
   name: 'Default',
   category: CR_CHATROOM

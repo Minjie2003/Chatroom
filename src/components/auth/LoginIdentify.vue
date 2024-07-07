@@ -143,7 +143,7 @@ const fetchUserInfo = async (query_data) => {
     } else if (tem === 200) {
       ElMessage.success('登录成功');
 
-      store.dispatch('myinfos/updateMyInfos', res.data.data);
+      await store.dispatch('myinfos/updateMyInfos', res.data.data);
       crStore.setUserInfo(res.data.data);
       console.log('fetchUserInfo');
       console.log(crStore.userInfo);
@@ -157,52 +157,97 @@ const fetchUserInfo = async (query_data) => {
 };
 
 </script>
-
 <style scoped>
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+  backdrop-filter: blur(10px); /* Blur effect for a frosted glass look */
+}
 
 .login-card {
   width: 400px;
   padding: 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8); /* Slightly transparent card background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .login-title {
   text-align: center;
   margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
 }
 
 .login-form {
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-/* 栅格布局调整 */
-.el-row {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
-.el-col {
-  margin-bottom: 10px;
-}
-
-.divider {
-  margin: 0 5px;
-}
-
-.link {
-  cursor: pointer;
-}
-
-.link:hover {
-  color: #e3ba4c; /* 悬浮时的颜色 */
-  text-decoration: underline; /* 悬浮时的下划线 */
-}
-
-.left-content {
-  text-align: left;
+.el-form-item {
+  margin-bottom: 15px;
 }
 
 .right-content {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-content {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  color: #409eff;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.divider {
+  margin: 0 10px;
+  color: #ccc;
+}
+
+.el-input {
+  width: 100%;
+}
+
+.el-button {
+  width: 100%;
+}
+
+.el-card {
+  padding: 20px;
+}
+
+.el-form-item__label {
+  color: #666;
+}
+
+.el-input__inner {
+  border-radius: 5px;
+  border: 1px solid #dcdfe6;
+}
+
+.el-input__inner:focus {
+  border-color: #409eff;
+}
+
+.el-button--primary {
+  background-color: #409eff;
+  border-color: #409eff;
+}
+
+.el-button--primary:hover {
+  background-color: #66b1ff;
+  border-color: #66b1ff;
 }
 </style>

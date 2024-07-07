@@ -4,10 +4,10 @@
 
 <script setup>
 import Profile from "@/components/Profile.vue";
-import {computed, onMounted, ref} from "vue";
-import {thisUser, toProfileData, refreshUserInfo} from "@/store/crStore.js";
+import {computed, onMounted} from "vue";
+import {thisUser, toProfileData, refreshUserInfo, crStore} from "@/store/crStore.js";
 
-const userInfo = thisUser
+const userInfo = computed(() => crStore.getUserInfo())
 
 onMounted(() => {
   refreshUserInfo()

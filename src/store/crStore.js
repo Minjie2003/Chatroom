@@ -39,7 +39,7 @@ export const DefaultUserData = () => ({
 });
 
 export const DefaultProfileData = () => ({
-  avatar_url: 'src/assets/images/avatar-yellow.png',
+  avatar_url: 'src/assets/images/avatar-default.jpg',
   username: '新用户',
   accountNum: 'user0000',
   sex: '未知',
@@ -82,19 +82,24 @@ export const selectedOtherInfo = ref({
 *
 * */
 
-export const refreshUserInfo = () => {
-  axios.post('my_chatroom/user/get_userinfo')
-      .then(res => {
-        let code = res.data.code
-        if (code === 200) {
-          thisUser.value = res.data.data
-          ElMessage.success('fetchUserInfo')
-        } else {
-          ElMessage.warning(res.data.message)
-        }
-      })
-      .catch(err => console.log(err))
-}
+export const refreshUserInfo = async () => {
+  try {
+    const res = await axios.post('my_chatroom/user/get_userinfo');
+    const code = res.data.code;
+    if (code === 200) {
+      crStore.setUserInfo(res.data.data);
+      ElMessage.success('fetchUserInfo Success');
+      return true;
+    } else {
+      ElMessage.warning(res.data.message);
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    ElMessage.error('An error occurred while fetching user info');
+    return false;
+  }
+};
 
 export const toProfileData = (userInfo) => {
   return {
@@ -106,35 +111,50 @@ export const toProfileData = (userInfo) => {
 
 export const modifyProfileDialogVisible = ref(false)
 
+export const CR_Constant = {
+  CHATROOM: 0,
+  FRIEND: 1,
+  FRIEND_REQUEST: 0,
+  CHATROOM_REQUEST: 1,
+  WARNING: 3,
+  REPORT: 4,
+
+  PENDING: 0,
+  ACCEPT: 2,
+  REFUSE: 1,
+
+}
 
 export const crStore = reactive({
 
-  hasLoggedIn: false,
-  setHasLoggedIn(val) {
-    this.hasLoggedIn = val
+
+  hasSynchronized: false,
+  setHasSynchronized(val) {
+    this.hasSynchronized = val;
   },
-  getHasLoggedIn() {
-    return this.hasLoggedIn
+  getHasSynchronized() {
+    return this.hasSynchronized;
+  },
+
+  async getHasLoggedIn() {
+    return await refreshUserInfo();
   },
 
   userInfo: {
     ...DefaultUserData()
   },
   getUserInfo() {
-    return this.userInfo
-  },
-  getUserProfile() {
     return {
       ...DefaultProfileData(),
       ...this.userInfo
-    }
+    };
   },
 
   setUserInfo(info) {
     this.userInfo = {
       ...this.userInfo,
       ...info
-    }
+    };
   },
 
   conversationList: [],
@@ -157,9 +177,10 @@ export const crStore = reactive({
     this.messageList = list
   },
   appendMessages(messages) {
-    this.messageList.push(messages)
+    if (Array.isArray(messages)) {
+      this.messageList = [...this.messageList, ...messages];
+    }
   },
-
 
   /* List */
   contactGroupList: [],
@@ -174,7 +195,46 @@ export const crStore = reactive({
   selectedContactGroupItems: [],
   setSelectedContactGroupItem(items) {
     this.selectedContactGroupItems = items
+  },
+
+  friendRequests: [],
+  chatroomRequests: [],
+  setRequests(friendRequests, chatroomRequests) {
+    this.friendRequests = friendRequests;
+    this.chatroomRequests = chatroomRequests;
+  },
+  getFriendRequests() {
+    return this.friendRequests;
+  },
+  getChatroomRequests() {
+    return this.chatroomRequests;
+  },
+  getRequests() {
+    return {
+      friendRequests: this.getFriendRequests(),
+      chatroomRequests: this.getChatroomRequests()
+    };
+  },
+  getMergedRequests() {
+    return [
+      ...this.getFriendRequests(),
+      ...this.getChatroomRequests()
+    ];
+  },
+
+  async fetchAndStoreRequests() {
+    try {
+      const [friendAdvice, chatroomAdvice] = await Promise.all([
+        axios.get('my_chatroom/advice/get_all_friend_advice'),
+        axios.get('my_chatroom/advice/get_all_chatroom_advice')
+      ]);
+      this.setRequests(friendAdvice.data.data, chatroomAdvice.data.data);
+      console.log(this.getMergedRequests())
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+    }
   }
+
 })
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="background" :style="{ backgroundImage: `url(${welcome})` }">
+  <div class="login-view-container" :style="{ backgroundImage: `url(${welcome})` }">
     <div class="header-container">
       <div class="home-page">
         <h1 style="color:white">Welcome ChatRoom</h1>
@@ -16,7 +16,7 @@
 import welcome from "@/assets/images/welcome.jpg"
 </script>
 <style scoped>
-.background {
+.login-view-container {
   position: fixed;
   top: 0;
   left: 0;

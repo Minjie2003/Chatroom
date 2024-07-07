@@ -44,11 +44,11 @@
         </el-tab-pane>
 
         <!-- Language Settings Tab -->
-        <el-tab-pane :label=" $t('setting.language') " name="language">
+        <el-tab-pane :label="$t('setting.language')" name="language">
           <el-radio-group v-model="language">
-            <el-radio-button :label="$t('setting.English')"></el-radio-button>
-            <el-radio-button :label="$t('setting.Chinese')"></el-radio-button>
-            <el-radio-button :label="$t('setting.Japanese')"></el-radio-button>
+            <el-radio-button :value="'en'" :label="$t('setting.English')"></el-radio-button>
+            <el-radio-button :value="'zh'" :label="$t('setting.Chinese')"></el-radio-button>
+            <el-radio-button :value="'jp'" :label="$t('setting.Japanese')"></el-radio-button>
             <!-- Add more languages as needed -->
           </el-radio-group>
         </el-tab-pane>

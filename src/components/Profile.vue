@@ -1,6 +1,6 @@
 <template>
   <el-card class="profile" id="MainProfile">
-    <div class="background" :style="{ backgroundImage: `url(${profileData.backgroundImage})` }">
+    <div class="login-view-container" :style="{ backgroundImage: `url(${profileData.backgroundImage})` }">
       <el-avatar
           class="profile-avatar"
           :src="profileData.avatar_url"
@@ -72,7 +72,7 @@ defineProps({
   border-style: none;
 }
 
-.background {
+.login-view-container {
   position: relative;
   width: 100%;
   height: 40vh;
