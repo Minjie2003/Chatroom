@@ -3,7 +3,7 @@
     <div class="login-view-container" :style="{ backgroundImage: `url(${profileData.backgroundImage})` }">
       <el-avatar
           class="profile-avatar"
-          :src="profileData.avatar_url"
+          :src="phototUrl"
           @mouseover="isHover = true"
           @mouseleave="isHover = false"
           :class="{'hover-image':isHover}"

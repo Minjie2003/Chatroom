@@ -29,7 +29,7 @@
     <div class="mini-profile-container">
       <el-dropdown>
         <mini-profile
-            :avatar_url="userInfo.avatar_url"
+            :avatar_url="phototUrl"
             :name="userInfo.username"
             :user_id="userInfo.accountNum"
         ></mini-profile>
@@ -109,11 +109,19 @@ import LanguageSwitch from "@/components/icons/LanguageSwitch.vue";
 import AccountSwitch from "@/components/icons/AccountSwitch.vue";
 import {Search} from "@element-plus/icons-vue";
 import Profile from "@/components/Profile.vue";
-import {computed, ref} from "vue";
+import getuserinfos  from "@/utils/getuserinfos";
+import {computed, ref,onMounted} from "vue";
 import {Chatroom, CR_Constant, crStore, toProfileData} from "@/store/crStore.js";
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import { useStore } from "vuex";
 
+const store = useStore()   //创建一个store的实例
+ onMounted(() => {
+   getuserinfos(store)
+ });
+const myinfos = computed(() => store.state.myinfos.myinfos);
+const phototUrl = '/my_chatroom/'+myinfos.value.photo
 
 const searchInput = ref('')
 const userInfo = computed(() => {
