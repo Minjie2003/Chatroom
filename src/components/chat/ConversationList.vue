@@ -82,6 +82,7 @@ onMounted(async () => {
   }
 });
 
+
 const fetchConversationList = async () => {
   try {
     const res = await axios.post('/my_chatroom/contact_session/get_contact_session_list', {
@@ -113,16 +114,16 @@ const fetchOtherInfo = (otherId) => {
       .catch(err => console.log(err))
 }
 
-defineExpose({
-  fetchConversationList,
-  fetchOtherInfo,
-})
-
 const handleConversationSelect = (conv) => {
   crStore.setSelectedConversation(conv)
   console.log(`conv@handleConversationSelect: ${conv.contactId}`)
   fetchOtherInfo(conv?.contactId)
 }
+
+defineExpose({
+  fetchConversationList,
+  fetchOtherInfo,
+})
 
 </script>
 

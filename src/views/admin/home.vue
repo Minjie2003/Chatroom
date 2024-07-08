@@ -1,5 +1,8 @@
 <template>
-<admin-layout></admin-layout>
+  <div class="admin-wrapper">
+
+    <admin-layout></admin-layout>
+  </div>
 </template>
 
 
@@ -8,6 +11,3 @@
 import AdminLayout from "@/components/admin/AdminLayout.vue";
 
 </script>
-<style scoped>
-
-</style>

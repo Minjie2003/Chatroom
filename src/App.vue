@@ -1,27 +1,34 @@
 <template>
   <debug></debug>
-  <cr-layout>
+  <cr-layout v-if="!crStore.getIsAdmin()">
     <router-view></router-view>
   </cr-layout>
+  <router-view v-else/>
 </template>
 
 <script setup>
 import Debug from "@/components/debug/Debug.vue";
 import CrLayout from "@/components/CrLayout.vue";
-import {computed} from "vue";
 import {crStore} from "@/store/crStore.js";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 
 const router = useRouter();
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 
-  /*getHasLoggedIn fetches the user info by the way
-  * it relies on refreshUserInfo
-  * */
+  if(crStore.getIsAdmin()) {
+    if(to.path ==='/'){
+      next('/admin')
+    }
+  }
+/*  if(from.path === '/admin/login'){
+    crStore.setIsAdmin(true)
+  }*/
 
-  if (!crStore.getHasLoggedIn()) {
+  const loggedIn = await crStore.getHasLoggedIn()
+
+  if (!loggedIn) {
     if (to.path !== '/auth/login') {
       ElMessage.warning('Please Login.');
       next('/auth/login');
@@ -36,7 +43,6 @@ router.beforeEach((to, from, next) => {
     }
   }
 });
-
 
 </script>
 

@@ -22,7 +22,7 @@
       <el-dropdown-menu>
         <el-dropdown-item>
           <div @click="switchAccount">
-            <el-icon size="25" color="#50b5ff">
+            <el-icon size="25" color="#9d6d">
               <Switch></Switch>
             </el-icon>
             <el-text>切换</el-text>
@@ -30,7 +30,7 @@
         </el-dropdown-item>
         <el-dropdown-item>
           <div @click="logoutAccount">
-            <el-icon size="25" color="#50b5ff">
+            <el-icon size="25" color="#f33d">
             <SwitchButton></SwitchButton>
             </el-icon>
             <el-text>注销</el-text>
@@ -55,7 +55,7 @@ const switchAccount=()=>{
 const tip_visible = ref(false)
 const logoutAccount=()=>{
   axios.get("/my_chatroom/user/logout")
-  .then(res=>{
+  .then(res => {
     const tem = res.data.code
     if(tem === 200){
       ElMessage.success("注销成功");

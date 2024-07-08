@@ -114,6 +114,7 @@ export const modifyProfileDialogVisible = ref(false)
 export const CR_Constant = {
   CHATROOM: 0,
   FRIEND: 1,
+
   FRIEND_REQUEST: 0,
   CHATROOM_REQUEST: 1,
   WARNING: 3,
@@ -138,6 +139,14 @@ export const crStore = reactive({
 
   async getHasLoggedIn() {
     return await refreshUserInfo();
+  },
+
+  isAdmin: false,
+  setIsAdmin(val) {
+    this.isAdmin = val
+  },
+  getIsAdmin() {
+    return this.isAdmin
   },
 
   userInfo: {
@@ -217,8 +226,8 @@ export const crStore = reactive({
   },
   getMergedRequests() {
     return [
-      ...this.getFriendRequests(),
-      ...this.getChatroomRequests()
+      ...this.getFriendRequests() ||[],
+      ...this.getChatroomRequests() || []
     ];
   },
 
@@ -233,7 +242,32 @@ export const crStore = reactive({
     } catch (error) {
       console.error('Error fetching requests:', error);
     }
-  }
+  },
+
+  warningNotifications: [],
+  reportNotifications: [],
+  setNotifications(warnings, reports){
+    this.warningNotifications = warnings;
+    this.reportNotifications = reports;
+  },
+  getMergedNotifications() {
+    return [
+        ...this.warningNotifications,
+        ...this.reportNotifications,
+    ];
+  },
+
+  async fetchNotifications() {
+    try {
+      const [warningAdvice, reportAdvice] = await Promise.all([
+        axios.get('my_chatroom/advice/get_all_warn_advice'),
+        axios.get('my_chatroom/advice/get_all_report_advice')
+      ]);
+      this.setRequests(warningAdvice.data.data, reportAdvice.data.data);
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  },
 
 })
 

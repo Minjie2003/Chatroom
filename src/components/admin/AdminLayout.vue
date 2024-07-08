@@ -1,16 +1,16 @@
 <template>
-    <div class="user-layout">
+    <div class="admin-layout">
       <el-container>
         <el-header class="cr-header-container" style="padding: 0;">
           <AdminHeader/>
         </el-header>
-  
+
         <el-container>
-  
+
           <el-aside width="9vw">
             <AdminSidebar/>
           </el-aside>
-  
+
           <el-main style="padding: 0;">
             <div v-if="adminFlag === 1">
                 <user-management></user-management>
@@ -22,12 +22,12 @@
                 <report-managerment></report-managerment>
             </div>
           </el-main>
-  
+
         </el-container>
       </el-container>
     </div>
   </template>
-  
+
   <script>
   import {useStore} from 'vuex'
   import {computed} from 'vue'
@@ -53,18 +53,18 @@
     }
   }
   </script>
-  
+
   <style>
-  
+
   :root {
     --cr-header-height: 60px;
     --cr-sidebar-width: 300px;
   }
-  
+
   * {
     padding: 0;
     margin: 0;
   }
+
   </style>
-  
-  
+

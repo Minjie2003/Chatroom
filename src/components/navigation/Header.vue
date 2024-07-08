@@ -17,7 +17,10 @@
             maxlength="20"
         >
           <template #append>
-            <el-button class="custom-button" :icon="Search" style="color:  #50b5ff;"/>
+            <el-button class="custom-button"
+                       :icon="Search" style="color:  #50b5ff;"
+                       @click="handleHeaderSearch"
+            />
           </template>
         </el-input>
       </div>
@@ -51,6 +54,50 @@
     <span id="pad3"></span>
 
   </div>
+
+  <el-dialog
+      class="search-result-dialog"
+      v-model="SearchResultDialogVisible"
+      width="300px"
+      title="Search Results"
+  >
+    <el-tabs v-model="activeTab">
+      <el-tab-pane label="Users" name="users">
+        <el-scrollbar class="result-scrollbar">
+
+          <el-card v-for="user in searchResult.users" :key="user.id" class="result-entry">
+            <div class="text">
+              {{ user.username }} @({{ user.accountNum }})
+            </div>
+            <el-button @click="sendFriendRequest(user.id)">Send Friend Request</el-button>
+          </el-card>
+
+        </el-scrollbar>
+      </el-tab-pane>
+
+      <el-tab-pane label="Chatrooms" name="chatrooms">
+        <el-scrollbar class="result-scrollbar">
+
+          <el-card v-for="chatroom in searchResult.chatrooms" :key="chatroom.id" class="result-entry">
+            <div class="text">
+              {{ chatroom.name }} (Session ID: {{ chatroom.sessionId }})
+            </div>
+            <el-button @click="">Join Request</el-button>
+          </el-card>
+
+        </el-scrollbar>
+      </el-tab-pane>
+    </el-tabs>
+  </el-dialog>
+
+  <el-dialog class="remark-dialog" v-model="RemarkInputDialogVisible">
+    <el-text>Remark</el-text>
+    <el-input v-model="requestData.remark" label="remark"></el-input>
+    <el-button @click="submitRequest">Confirm</el-button>
+    <el-button @click="RemarkInputDialogVisible = false">Cancel</el-button>
+
+  </el-dialog>
+
 </template>
 
 <script setup>
@@ -60,17 +107,106 @@ import InvitationMessage from "@/components/icons/RequestIcon.vue";
 import Notification from "@/components/icons/NotificationIcon.vue";
 import LanguageSwitch from "@/components/icons/LanguageSwitch.vue";
 import AccountSwitch from "@/components/icons/AccountSwitch.vue";
-import getuserinfos  from "@/utils/getuserinfos";
 import {Search} from "@element-plus/icons-vue";
 import Profile from "@/components/Profile.vue";
 import {computed, ref} from "vue";
-import {Chatroom, crStore, toProfileData} from "@/store/crStore.js";
+import {Chatroom, CR_Constant, crStore, toProfileData} from "@/store/crStore.js";
+import axios from "axios";
+import {ElMessage} from "element-plus";
 
 
 const searchInput = ref('')
 const userInfo = computed(() => {
   return crStore.getUserInfo()
 })
+
+const searchResult = ref({
+  users: [],
+  chatrooms: [],
+})
+
+const SearchResultDialogVisible = ref(false)
+const RemarkInputDialogVisible = ref(false)
+
+
+const activeTab = ref('Users') /*Chatrooms*/
+
+const requestData = ref({
+  type: CR_Constant.FRIEND_REQUEST,
+  id: null,
+  remark: '',
+})
+
+const submitRequest = async () => {
+  if (requestData.value.type === CR_Constant.FRIEND_REQUEST) {
+    try {
+      const res = await axios.post('my_chatroom/advice/friend_req',
+          {receiveId: requestData.value.id, content: requestData.value.remark},
+          {headers: {'Content-Type': 'multipart/form-data'}}
+      );
+      let code = res.data.code
+      if(code === 200){
+        ElMessage.success("好友请求发送成功");
+        RemarkInputDialogVisible.value = false
+      }else if(code ===0){
+        ElMessage.warning("发送好友请求的receiveId未被后端接收到");
+      }else if(code === 1) {
+        ElMessage.warning("该用户已经是你的好友");
+        //关闭小窗和大窗
+        RemarkInputDialogVisible.value = false
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }else if(requestData.value.type === CR_Constant.CHATROOM_REQUEST){
+
+  }
+}
+
+const handleHeaderSearch = async () => {
+  await ExactSearch(searchInput.value)
+}
+
+const ExactSearch = async (input) => {
+  searchResult.value.users = await searchUserByKey(input)
+  searchResult.value.chatrooms = await searchChatroomByKey(input)
+  ElMessage.info('Searched Check at Console')
+  console.log(searchResult.value.users)
+  console.log(searchResult.value.chatrooms)
+  SearchResultDialogVisible.value = true
+}
+
+const sendFriendRequest = (user_id) => {
+  requestData.value.type = CR_Constant.FRIEND_REQUEST
+  requestData.value.id = user_id
+  RemarkInputDialogVisible.value = true
+}
+
+const joinChatroom = (id) => {
+
+}
+
+const searchUserByKey = async (key) => {
+  try {
+    const response = await axios.post('my_chatroom/user/select_user', {key},
+        {headers: {'Content-Type': 'multipart/form-data'}});
+    return response.data.data; // Assuming the users list is in response.data.data
+  } catch (error) {
+    console.error('Error searching users:', error);
+    return [];
+  }
+}
+
+const searchChatroomByKey = async (key) => {
+  try {
+    const response = await axios.post('my_chatroom/chatroom/select_chatroom', {key},
+        {headers: {'Content-Type': 'multipart/form-data'}});
+    return response.data.data; // Assuming the users list is in response.data.data
+  } catch (error) {
+    console.error('Error searching users:', error);
+    return [];
+  }
+}
 
 </script>
 
@@ -171,5 +307,6 @@ const userInfo = computed(() => {
   transform: scale(1.1);
   color: #ff4500;
 }
+
 </style>
 

@@ -10,6 +10,7 @@
       >
         <el-icon
             class="effected-icon"
+            :calss="{unreadMessage: hasNewEntry}"
             color="#50b5ff" :size="25"
             @mouseenter="tip_visible = true"
             @mouseleave="tip_visible = false"
@@ -27,16 +28,16 @@
           </el-dropdown-item>
 
           <el-dropdown-item
-              v-for="request in mergedRequests">
+              v-for="request in mergedRequests" :key="request.id">
 
             <div class="request-container">
-
 
               <mini-profile
                   class="notify-profile"
                   :avatar_url="request.headPath"
-                  :name="request.username"
+                  :name="request.username || 'NoName'"
                   :user_id="request.accountNum"
+                  style="grid-area: profile"
               />
 
               <!--                <mini-profile
@@ -45,11 +46,16 @@
                   :name="getSenderName(request.send_id)"
                   :user_id="getSenderAccountNum(request.send_id)"
               ></mini-profile>-->
+              <div class="category-tag" style="grid-area: category">
+                <el-tag v-if="request.category === CR_Constant.FRIEND">Friend Request</el-tag>
+                <el-tag v-if="request.category === CR_Constant.CHATROOM">Chatroom Request</el-tag>
+              </div>
 
+              <el-text class="request-remark" style="grid-area: remark" multiple>
+                REMARK: {{ request.content || 'No remark'}}
+              </el-text><!--advice.content-->
 
-              <el-text class="request-remark" multiple>REMARK: {{ request.content }}</el-text><!--advice.content-->
-
-              <div class="edit-area">
+              <div class="edit-area" style="grid-area: edit">
                 <div v-if="request.result === CR_Constant.PENDING"
                      class="pending">
                   <el-col :span="4" style="align-self: center">
@@ -91,13 +97,19 @@ import axios from "axios";
 const tip_visible = ref(false)
 
 const mergedRequests = computed(() => {
-  return crStore.getFriendRequests()
+  console.log(mergedRequests)
+  return crStore.getMergedRequests()
 })
+
+const hasNewEntry = computed(() => {
+  return mergedRequests.value?.length > 0;
+})
+
 const sendersData = ref({}); // Object to store sender data
 
 onMounted(async () => {
   await crStore.fetchAndStoreRequests()
-  console.log(crStore.getMergedRequests())
+  console.log('requests',crStore.getMergedRequests())
   await fetchSendersData()
 })
 
@@ -178,7 +190,7 @@ const getSenderAccountNum = (send_id) => {
 .notify-profile .user-info {
   display: grid;
   align-self: start;
-  margin-top: 3px;
+  margin-top: 2rem;
 }
 
 .request-title {
@@ -186,6 +198,20 @@ const getSenderAccountNum = (send_id) => {
   font-weight: bolder;
   width: 100%;
   text-align: center;
+}
+
+.request-container {
+  display: grid;
+  grid-template-columns: 2fr 3fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+  'profile category edit'
+  'profile remark edit'
+;
+}
+
+.unread-message{
+  color: orangered;
 }
 
 </style>

@@ -14,7 +14,7 @@
     </div>
 
     <div class="cr-right">
-      <p><ConversationList @selected-change=""></ConversationList></p>
+      <ConversationList/>
     </div>
 
     <div class="cr-footer">
@@ -29,8 +29,13 @@
 import SideMenu from "@/components/navigation/SideMenu.vue";
 import Header from "@/components/navigation/Header.vue";
 import ConversationList from "@/components/chat/ConversationList.vue";
+import {onMounted} from "vue";
+import {refreshUserInfo} from "@/store/crStore.js";
 
+onMounted(async () => {
+  await refreshUserInfo()
 
+})
 
 </script>
 
