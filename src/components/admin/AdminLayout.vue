@@ -1,11 +1,7 @@
 <template>
     <div class="admin-layout">
       <el-container>
-        <el-header class="cr-header-container" style="padding: 0;">
-          <AdminHeader/>
-        </el-header>
 
-        <el-container>
 
           <el-aside width="9vw">
             <AdminSidebar/>
@@ -23,7 +19,6 @@
             </div>
           </el-main>
 
-        </el-container>
       </el-container>
     </div>
   </template>
