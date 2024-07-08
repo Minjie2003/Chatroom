@@ -16,12 +16,12 @@
         <el-text class="cr-title user-id">@{{ profileData.accountNum }}</el-text>
       </div>
 
-      <div class="edit-icon" @click="modifyProfileDialogVisible = true; ElMessage.warning('open update')">
+      <div class="edit-icon" @click="trueEdit">
         <el-icon size="25" class="icon-hover">
           <Edit/>
         </el-icon>
       </div>
-      <update-profile-dialog></update-profile-dialog>
+      <update-profile></update-profile>
 
       <el-descriptions class="profile-descriptions">
         <el-descriptions-item :label="$t('profile.gender')">{{ profileData.sex }}</el-descriptions-item>
