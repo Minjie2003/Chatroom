@@ -16,11 +16,11 @@
         <el-text class="cr-title user-id">@{{ profileData.accountNum }}</el-text>
       </div>
 
-<!--      <div class="edit-icon" @click="modifyProfileDialogVisible = true; ElMessage.warning('open update')">
+      <div class="edit-icon" @click="modifyProfileDialogVisible = true; ElMessage.warning('open update')">
         <el-icon size="25" class="icon-hover">
           <Edit/>
         </el-icon>
-      </div>-->
+      </div>
       <update-profile-dialog></update-profile-dialog>
 
       <el-descriptions class="profile-descriptions">
@@ -48,6 +48,10 @@ import UpdateProfileDialog from './UpdateProfileDialog.vue'
 import {ref} from "vue";
 import {Edit} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
+import {computed,onMounted} from 'vue'
+import getuserinfos  from "@/utils/getuserinfos";
+import { useStore } from 'vuex'
+import UpdateProfile from './UpdateProfile.vue'
 
 const isHover = ref(false)
 
@@ -60,29 +64,24 @@ defineProps({
 })
 
 // =======
-// import {ref,computed,onMounted} from 'vue'
-// import getuserinfos  from "@/utils/getuserinfos"; 
-// import { useStore } from 'vuex'
-// import UpdateProfile from './UpdateProfile.vue';
 
-// // import UpdateProfile from './UpdateProfile.vue'
-// const store = useStore()   //创建一个store的实例
-// onMounted(() => {
-//   getuserinfos(store)
-// });
-// const isHover = ref(false)
-// const backgroundImage = 'src/assets/images/lake.png';
-// const isEdit = computed(() => store.state.flag.isEdit)
-// const myinfos = computed(() => store.state.myinfos.myinfos);
-// const phototUrl = '/my_chatroom/'+myinfos.value.photo
-// const signature = "田文镜，我*****"
 
-// // 改变 isEdit 的值为 true
-// const trueEdit = () => {
-//   store.dispatch('flag/updateIsEdit', true);
-//   console.log(isEdit.value)
-// };
-  
+ const store = useStore()   //创建一个store的实例
+ onMounted(() => {
+   getuserinfos(store)
+ });
+ const backgroundImage = 'src/assets/images/lake.png';
+ const isEdit = computed(() => store.state.flag.isEdit)
+ const myinfos = computed(() => store.state.myinfos.myinfos);
+ const phototUrl = '/my_chatroom/'+myinfos.value.photo
+ const signature = "田文镜，我*****"
+
+ // 改变 isEdit 的值为 true
+ const trueEdit = () => {
+   store.dispatch('flag/updateIsEdit', true);
+   console.log(isEdit.value)
+ };
+
 
 // >>>>>>> Stashed changes
 </script>
