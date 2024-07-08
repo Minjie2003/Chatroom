@@ -159,7 +159,6 @@ const newGroup = ref({
 const router = useRouter()
 
 onMounted(() => {
-  ElMessage.info('TRY: fetchContactGroupList')
   fetchContactGroupList()
 })
 
@@ -169,9 +168,7 @@ const fetchContactGroupList = async () => {
     let code = res.data.code
     if (code === 200) {
       crStore.setContactGroupList(res.data.data)
-      ElMessage.success(code.message || 'fetchContactGroupList Success')
     } else {
-      ElMessage.warning(code.message || 'fetchContactGroupList Failed')
     }
   } catch (err) {
     console.error(err);

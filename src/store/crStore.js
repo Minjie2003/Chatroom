@@ -88,7 +88,6 @@ export const refreshUserInfo = async () => {
     const code = res.data.code;
     if (code === 200) {
       crStore.setUserInfo(res.data.data);
-      ElMessage.success('fetchUserInfo Success');
       return true;
     } else {
       ElMessage.warning(res.data.message);
@@ -127,7 +126,6 @@ export const CR_Constant = {
 }
 
 export const crStore = reactive({
-
 
   hasSynchronized: false,
   setHasSynchronized(val) {

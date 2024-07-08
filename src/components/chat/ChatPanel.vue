@@ -241,7 +241,6 @@ const fetchMessageList = () => {
         let code = res.data.code
         if (code === 200) {
           crStore.setMessageList(res.data.data)
-          ElMessage.success('Fetch message list.')
         } else {
         }
       })

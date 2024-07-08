@@ -76,9 +76,8 @@ onMounted(async () => {
 
   if (conversation_list.value && conversation_list.value.length > 0) {
     crStore.setSelectedConversation(conversation_list.value[0])
-    ElMessage.info('Selected Default Conv @' + selectedConversation.value?.nickName);
   } else {
-    ElMessage.warning('No Conversation Selected');
+    console.warning('No Conversation Selected');
   }
 });
 

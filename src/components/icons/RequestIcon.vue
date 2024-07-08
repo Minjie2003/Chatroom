@@ -28,7 +28,7 @@
           </el-dropdown-item>
 
           <el-dropdown-item
-              v-for="request in mergedRequests" :key="request.id">
+              v-for="request in crStore.getMergedRequests()" :key="request.id">
 
             <div class="request-container">
 
@@ -102,7 +102,7 @@ const mergedRequests = computed(() => {
 })
 
 const hasNewEntry = computed(() => {
-  return mergedRequests.value?.length > 0;
+  return crStore.getMergedRequests().length > 0;
 })
 
 const sendersData = ref({}); // Object to store sender data

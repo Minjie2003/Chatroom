@@ -170,7 +170,6 @@ const handleHeaderSearch = async () => {
 const ExactSearch = async (input) => {
   searchResult.value.users = await searchUserByKey(input)
   searchResult.value.chatrooms = await searchChatroomByKey(input)
-  ElMessage.info('Searched Check at Console')
   console.log(searchResult.value.users)
   console.log(searchResult.value.chatrooms)
   SearchResultDialogVisible.value = true

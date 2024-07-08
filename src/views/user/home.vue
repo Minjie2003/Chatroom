@@ -10,7 +10,6 @@ import {ElMessage} from "element-plus";
 
 onMounted(() => {
   refreshUserInfo()
-  if(CR_DEBUG_ON) ElMessage.info('fetch userinfo')
 })
 
 </script>
