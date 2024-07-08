@@ -135,6 +135,9 @@ onMounted(async () => {
   top: calc(0px - var(--cr-header-height))
 }
 
+.cr-right {
+  z-index: 1
+}
 
 </style>
 

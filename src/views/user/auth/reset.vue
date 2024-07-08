@@ -20,6 +20,7 @@ import welcome from "@/assets/images/welcome.jpg"
   height: 100%;
   background-size: cover;
   background-position: center;
+  z-index: 9;
 }
 
 .header-container {
