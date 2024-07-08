@@ -164,8 +164,13 @@ const handleSubmit = () => {
   if (!validateInput()) {
     return; // 如果有字段为空或者输入无效，则直接返回，不执行后续逻辑
   }
+  const formData = new FormData();
+  formData.append('accountNum', registerForm.accountNum);
+  formData.append('password', registerForm.password);
+  formData.append('mail', registerForm.email);
+  formData.append('mailVerify', registerForm.mailverify);
 
-  axios.post("/my_chatroom/user/reg", registerForm,{
+  axios.post("/my_chatroom/user/reg", formData,{
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -180,6 +185,8 @@ const handleSubmit = () => {
         ElMessage.success('注册成功')
         clearInterval(time.value);
         router.push("/auth/login")
+      }else if(temp === 3){
+            ElMessage.error('参数有空字符串');
       }
     })
     .catch(err => {
