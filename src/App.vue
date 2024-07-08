@@ -29,7 +29,7 @@ router.beforeEach(async (to, from, next) => {
   const loggedIn = await crStore.getHasLoggedIn()
 
   if (!loggedIn) {
-    if (to.path !== '/auth/login') {
+    if (!to.path.startsWith('/auth')) {
       ElMessage.warning('Please Login.');
       next('/auth/login');
     } else {
